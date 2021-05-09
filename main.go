@@ -141,7 +141,7 @@ func main() {
 	templates = template.Must(template.ParseGlob("templates/*.html"))
 	port := os.Getenv("PORT")
 
-	db,err=sql.Open("postgres","postgres://nyrdyxoc:r4lOIZWMIoHImjb16U3u6XBQEe1Fdd7Q@queenie.db.elephantsql.com:5432/nyrdyxoc")
+	//db,err=sql.Open("postgres","postgres://nyrdyxoc:r4lOIZWMIoHImjb16U3u6XBQEe1Fdd7Q@queenie.db.elephantsql.com:5432/nyrdyxoc")
 
 	initTelegram()
 	//telegram()
