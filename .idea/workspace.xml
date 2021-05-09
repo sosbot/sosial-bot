@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="6d02dfad-6709-43bc-b44b-843c0edf2719" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
-    </list>
+    <list default="true" id="6d02dfad-6709-43bc-b44b-843c0edf2719" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -140,5 +135,9 @@
       <screen x="0" y="0" width="3440" height="1400" />
     </state>
     <state x="1404" y="304" key="git4idea.merge.GitPullDialog/0.0.3440.1400@0.0.3440.1400" timestamp="1620542209122" />
+    <state x="859" y="268" width="672" height="678" key="search.everywhere.popup" timestamp="1620563452456">
+      <screen x="0" y="0" width="3440" height="1400" />
+    </state>
+    <state x="859" y="268" width="672" height="678" key="search.everywhere.popup/0.0.3440.1400@0.0.3440.1400" timestamp="1620563452456" />
   </component>
 </project>
