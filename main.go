@@ -1,6 +1,7 @@
 package main
 
 import (
+	"database/sql"
 	"encoding/json"
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
 	"github.com/gorilla/mux"
@@ -10,6 +11,7 @@ import (
 	"net/http"
 	"os"
 	"strconv"
+	"time"
 )
 
 var (
@@ -19,6 +21,9 @@ var (
 	templates *template.Template
 )
 
+
+var db *sql.DB
+var err error
 func telegram() {
 	/*
 		   heroku consoleda icra run etmak lazimdir
@@ -122,8 +127,21 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 	//b := urc != 0
 	//if b {
 
-	msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Salam")
-	msg.ReplyToMessageID = update.Message.MessageID
+	var msg tgbotapi.Chattable
+	chatID:=update.Message.Chat.ID
+	switch  {
+	case 	update.Message.Photo!=nil:
+		photoArray:=*update.Message.Photo
+		photoLastIndex:=len(photoArray)-1
+		photo:=photoArray[photoLastIndex]
+		msg=tgbotapi.NewPhotoShare(chatID,photo.FileID)
+
+	default:
+		msg=tgbotapi.NewMessage(chatID,"not realized")
+	}
+
+	//msg: = tgbotapi.NewMessage(update.Message.Chat.ID, "Salam")
+	//msg.ReplyToMessageID = update.Message.MessageID
 
 	bot.Send(msg)
 	//}
@@ -142,6 +160,15 @@ func main() {
 	//	os.Exit(1)
 	//}
 	//defer db.Close(context.Background())
+
+	db,err=sql.Open("postgres","postgres://nyrdyxoc:r4lOIZWMIoHImjb16U3u6XBQEe1Fdd7Q@queenie.db.elephantsql.com:5432/nyrdyxoc")
+	db.SetMaxOpenConns(5)
+	db.SetMaxIdleConns(5)
+	db.SetConnMaxIdleTime(5*time.Minute)
+	if err!=nil{
+		panic(err.Error())
+	}
+
 	router := mux.NewRouter()
 
 	fs := http.FileServer(http.Dir("./static/"))
