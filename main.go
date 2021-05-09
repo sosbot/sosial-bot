@@ -11,6 +11,7 @@ import (
 	"net/http"
 	"os"
 	"strconv"
+	"time"
 )
 
 var (
@@ -111,7 +112,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 
 	// to monitor changes run: heroku logs --tail
 	log.Printf("FromID: %+v  From: %+v Text: %+v\n", update.Message.Chat.ID, update.Message.From, update.Message.Text)
-
+	db.Exec("insert into messages(text,sent,sentby) values(?,?,?)",update.Message.Text,time.Now(),update.Message.Chat.ID)
 	//var chatid int
 	//chatid := int(update.Message.Chat.ID)
 	//var fio string
@@ -139,6 +140,8 @@ func main() {
 	templates = template.Must(template.ParseGlob("templates/*.html"))
 	port := os.Getenv("PORT")
 
+	db,err=sql.Open("postgres","postgres://nyrdyxoc:r4lOIZWMIoHImjb16U3u6XBQEe1Fdd7Q@queenie.db.elephantsql.com:5432/nyrdyxoc")
+
 	initTelegram()
 	//telegram()
 	//var DB_URL = "postgres://nyrdyxoc:r4lOIZWMIoHImjb16U3u6XBQEe1Fdd7Q@queenie.db.elephantsql.com:5432/nyrdyxoc"
@@ -149,7 +152,7 @@ func main() {
 	//}
 	//defer db.Close(context.Background())
 
-	db,err=sql.Open("postgres","postgres://nyrdyxoc:r4lOIZWMIoHImjb16U3u6XBQEe1Fdd7Q@queenie.db.elephantsql.com:5432/nyrdyxoc")
+
 	//db.SetMaxOpenConns(5)
 	//db.SetMaxIdleConns(5)
 	//db.SetConnMaxLifetime(5*time.Minute)
