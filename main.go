@@ -126,7 +126,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 	//logFatal(err)
 	//b := urc != 0
 	//if b {
-
+	log.Printf("[%s]", "01")
 	var msg tgbotapi.Chattable
 	chatID:=update.Message.Chat.ID
 	switch  {
@@ -142,8 +142,9 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 
 	//msg: = tgbotapi.NewMessage(update.Message.Chat.ID, "Salam")
 	//msg.ReplyToMessageID = update.Message.MessageID
-
+	log.Printf("[%s]", "02")
 	bot.Send(msg)
+	log.Printf("[%s]", "03")
 	//}
 }
 
