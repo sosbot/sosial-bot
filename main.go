@@ -12,6 +12,7 @@ import (
 	"os"
 	"strconv"
 	"time"
+	"github.com/go-sql-driver/mysql"
 )
 
 var (
@@ -22,7 +23,7 @@ var (
 )
 //https://api.telegram.org/bot1563958753:AAFNwjzp_Kvgqw0SIzHeJlxXjZnOYp2rNz8/setWebhook?url=https://sosialbot.herokuapp.com/1563958753:AAFNwjzp_Kvgqw0SIzHeJlxXjZnOYp2rNz8
 
-//var db *sql.DB
+var db *sql.DB
 var err error
 func telegram() {
 	/*
@@ -112,8 +113,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 
 	// to monitor changes run: heroku logs --tail
 	log.Printf("FromID: %+v  From: %+v Text: %+v\n", update.Message.Chat.ID, update.Message.From, update.Message.Text)
-	db,err:=sql.Open("postgres","postgres://nyrdyxoc:r4lOIZWMIoHImjb16U3u6XBQEe1Fdd7Q@queenie.db.elephantsql.com:5432/nyrdyxoc")
-	db.Exec("insert into messages(text,sent,sentby) values(?,?,?)",update.Message.Text,time.Now(),update.Message.Chat.ID)
+
 	//var chatid int
 	//chatid := int(update.Message.Chat.ID)
 	//var fio string
@@ -141,8 +141,10 @@ func main() {
 	templates = template.Must(template.ParseGlob("templates/*.html"))
 	port := os.Getenv("PORT")
 
-	//db,err=sql.Open("postgres","postgres://nyrdyxoc:r4lOIZWMIoHImjb16U3u6XBQEe1Fdd7Q@queenie.db.elephantsql.com:5432/nyrdyxoc")
-
+	db, err = sql.Open("mysql", "b011cd73aa3ca4:93802dc3@tcp(us-cdbr-east-05.cleardb.net:3306)/heroku_f1ad9d35b768867")
+	db.SetMaxOpenConns(5)
+	db.SetMaxIdleConns(5)
+	db.SetConnMaxLifetime(5*time.Minute)
 	initTelegram()
 	//telegram()
 	//var DB_URL = "postgres://nyrdyxoc:r4lOIZWMIoHImjb16U3u6XBQEe1Fdd7Q@queenie.db.elephantsql.com:5432/nyrdyxoc"
@@ -154,9 +156,7 @@ func main() {
 	//defer db.Close(context.Background())
 
 
-	//db.SetMaxOpenConns(5)
-	//db.SetMaxIdleConns(5)
-	//db.SetConnMaxLifetime(5*time.Minute)
+
 
 
 	router := mux.NewRouter()
