@@ -12,7 +12,7 @@ import (
 	"os"
 	"strconv"
 	"time"
-	"github.com/go-sql-driver/mysql"
+	_"github.com/go-sql-driver/mysql"
 )
 
 var (
