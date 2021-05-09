@@ -8,6 +8,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
 	"strconv"
 )
 
@@ -130,7 +131,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 
 func main() {
 	templates = template.Must(template.ParseGlob("templates/*.html"))
-	port := "8081" //os.Getenv("PORT")
+	port := os.Getenv("PORT")
 
 	initTelegram()
 	//telegram()
