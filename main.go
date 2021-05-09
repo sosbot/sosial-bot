@@ -18,7 +18,7 @@ tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
 var (
 	bot       *tgbotapi.BotAPI
 	botToken  = "1563958753:AAFNwjzp_Kvgqw0SIzHeJlxXjZnOYp2rNz8"
-	baseURL   = "https://dmabot.herokuapp.com/"
+	baseURL   = "https://sosialbot.herokuapp.com/"
 	templates *template.Template
 )
 
