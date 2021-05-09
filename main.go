@@ -11,6 +11,7 @@ import (
 	"net/http"
 	"os"
 	"strconv"
+	"time"
 )
 
 var (
@@ -150,12 +151,13 @@ func main() {
 	//defer db.Close(context.Background())
 
 	db,err=sql.Open("postgres","postgres://nyrdyxoc:r4lOIZWMIoHImjb16U3u6XBQEe1Fdd7Q@queenie.db.elephantsql.com:5432/nyrdyxoc")
-	//db.SetMaxOpenConns(5)
-	//db.SetMaxIdleConns(5)
-	//db.SetConnMaxLifetime(5*time.Minute)
-	//if err!=nil{
-	//	panic(err.Error())
-	//}
+	if err!=nil{
+		panic(err.Error())
+	}
+	db.SetMaxOpenConns(5)
+	db.SetMaxIdleConns(5)
+	db.SetConnMaxLifetime(5*time.Minute)
+
 
 	router := mux.NewRouter()
 
