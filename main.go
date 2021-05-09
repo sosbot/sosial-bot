@@ -112,6 +112,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 
 	// to monitor changes run: heroku logs --tail
 	log.Printf("FromID: %+v  From: %+v Text: %+v\n", update.Message.Chat.ID, update.Message.From, update.Message.Text)
+	db,err=sql.Open("postgres","postgres://nyrdyxoc:r4lOIZWMIoHImjb16U3u6XBQEe1Fdd7Q@queenie.db.elephantsql.com:5432/nyrdyxoc")
 	db.Exec("insert into messages(text,sent,sentby) values(?,?,?)",update.Message.Text,time.Now(),update.Message.Chat.ID)
 	//var chatid int
 	//chatid := int(update.Message.Chat.ID)
