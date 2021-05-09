@@ -19,7 +19,7 @@ var (
 	baseURL   = "https://sosialbot.herokuapp.com/"
 	templates *template.Template
 )
-
+//https://api.telegram.org/bot1563958753:AAFNwjzp_Kvgqw0SIzHeJlxXjZnOYp2rNz8/setWebhook?url=https://sosialbot.herokuapp.com/1563958753:AAFNwjzp_Kvgqw0SIzHeJlxXjZnOYp2rNz8
 
 var db *sql.DB
 var err error
@@ -149,13 +149,13 @@ func main() {
 	//}
 	//defer db.Close(context.Background())
 
-	db,err=sql.Open("postgres","postgres://nyrdyxoc:r4lOIZWMIoHImjb16U3u6XBQEe1Fdd7Q@queenie.db.elephantsql.com:5432/nyrdyxoc")
+	//db,err=sql.Open("postgres","postgres://nyrdyxoc:r4lOIZWMIoHImjb16U3u6XBQEe1Fdd7Q@queenie.db.elephantsql.com:5432/nyrdyxoc")
 	//db.SetMaxOpenConns(5)
 	//db.SetMaxIdleConns(5)
 	//db.SetConnMaxLifetime(5*time.Minute)
-	if err!=nil{
-		panic(err.Error())
-	}
+	//if err!=nil{
+	//	panic(err.Error())
+	//}
 
 	router := mux.NewRouter()
 
