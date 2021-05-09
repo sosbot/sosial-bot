@@ -11,7 +11,6 @@ import (
 	"net/http"
 	"os"
 	"strconv"
-	"time"
 )
 
 var (
@@ -152,8 +151,8 @@ func main() {
 
 	db,err=sql.Open("postgres","postgres://nyrdyxoc:r4lOIZWMIoHImjb16U3u6XBQEe1Fdd7Q@queenie.db.elephantsql.com:5432/nyrdyxoc")
 	//db.SetMaxOpenConns(5)
-	db.SetMaxIdleConns(5)
-	db.SetConnMaxLifetime(5*time.Minute)
+	//db.SetMaxIdleConns(5)
+	//db.SetConnMaxLifetime(5*time.Minute)
 	if err!=nil{
 		panic(err.Error())
 	}
