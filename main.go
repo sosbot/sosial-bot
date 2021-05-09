@@ -1,18 +1,14 @@
 package main
 
 import (
-"context"
-"encoding/json"
-"fmt"
-tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
-"github.com/gorilla/mux"
-"github.com/jackc/pgx/v4"
-"html/template"
-"io/ioutil"
-"log"
-"net/http"
-"os"
-"strconv"
+	"encoding/json"
+	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
+	"github.com/gorilla/mux"
+	"html/template"
+	"io/ioutil"
+	"log"
+	"net/http"
+	"strconv"
 )
 
 var (
@@ -138,13 +134,13 @@ func main() {
 
 	initTelegram()
 	//telegram()
-	var DB_URL = "postgres://nyrdyxoc:r4lOIZWMIoHImjb16U3u6XBQEe1Fdd7Q@queenie.db.elephantsql.com:5432/nyrdyxoc"
-	db, err := pgx.Connect(context.Background(), DB_URL)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Unable to connect to database: %v\n", err)
-		os.Exit(1)
-	}
-	defer db.Close(context.Background())
+	//var DB_URL = "postgres://nyrdyxoc:r4lOIZWMIoHImjb16U3u6XBQEe1Fdd7Q@queenie.db.elephantsql.com:5432/nyrdyxoc"
+	//db, err := pgx.Connect(context.Background(), DB_URL)
+	//if err != nil {
+	//	fmt.Fprintf(os.Stderr, "Unable to connect to database: %v\n", err)
+	//	os.Exit(1)
+	//}
+	//defer db.Close(context.Background())
 	router := mux.NewRouter()
 
 	fs := http.FileServer(http.Dir("./static/"))
