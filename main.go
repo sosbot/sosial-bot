@@ -12,6 +12,8 @@ import (
 	"os"
 	"strconv"
 	_ "github.com/lib/pq"
+	"time"
+
 	//_"github.com/go-sql-driver/mysql"
 )
 
@@ -30,6 +32,9 @@ Remove the vendor directory and commit the removal.
 
 
  */
+
+var db *sql.DB
+var err error
 func telegram() {
 	/*
 		   heroku consoleda icra run etmak lazimdir
@@ -118,6 +123,8 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 
 	// to monitor changes run: heroku logs --tail
 	log.Printf("FromID: %+v  From: %+v Text: %+v\n", update.Message.Chat.ID, update.Message.From, update.Message.Text)
+	var id int
+	err=db.QueryRow("insert into public.messages(text,sent,sentby) values($1,$2,$3) returning id;",update.Message.Text,time.Now(),update.Message.From).Scan(&id)
 
 	//var chatid int
 	//chatid := int(update.Message.Chat.ID)
@@ -147,13 +154,11 @@ func main() {
 	port := os.Getenv("PORT")
 
 
-	db, err := sql.Open("postgres", "postgres://nyrdyxoc:r4lOIZWMIoHImjb16U3u6XBQEe1Fdd7Q@queenie.db.elephantsql.com:5432/nyrdyxoc")
+	db, err = sql.Open("postgres", "postgres://nyrdyxoc:r4lOIZWMIoHImjb16U3u6XBQEe1Fdd7Q@queenie.db.elephantsql.com:5432/nyrdyxoc")
 	if err!=nil{
 		panic(err)
 	}
 	defer db.Close()
-	var id int
-	err=db.QueryRow("insert into public.messages(text) values($1) returning id;","test").Scan(&id)
 
 
 	//db.SetMaxOpenConns(5)
