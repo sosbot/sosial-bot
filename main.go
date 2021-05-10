@@ -11,6 +11,7 @@ import (
 	"net/http"
 	"os"
 	"strconv"
+	_ "github.com/lib/pq"
 	//_"github.com/go-sql-driver/mysql"
 )
 
@@ -22,8 +23,7 @@ var (
 )
 //https://api.telegram.org/bot1563958753:AAFNwjzp_Kvgqw0SIzHeJlxXjZnOYp2rNz8/setWebhook?url=https://sosialbot.herokuapp.com/1563958753:AAFNwjzp_Kvgqw0SIzHeJlxXjZnOYp2rNz8
 
-var db *sql.DB
-var err error
+
 func telegram() {
 	/*
 		   heroku consoleda icra run etmak lazimdir
@@ -140,7 +140,11 @@ func main() {
 	templates = template.Must(template.ParseGlob("templates/*.html"))
 	port := os.Getenv("PORT")
 
-	db, err = sql.Open("postgres", "postgres://nyrdyxoc:r4lOIZWMIoHImjb16U3u6XBQEe1Fdd7Q@queenie.db.elephantsql.com:5432/nyrdyxoc")
+
+	db, err := sql.Open("postgres", "postgres://nyrdyxoc:r4lOIZWMIoHImjb16U3u6XBQEe1Fdd7Q@queenie.db.elephantsql.com:5432/nyrdyxoc")
+	if err!=nil{
+		panic(err)
+	}
 	db.Exec("insert into messages(text) values(?)","test")
 
 	//db.SetMaxOpenConns(5)
