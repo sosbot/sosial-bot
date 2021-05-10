@@ -158,15 +158,16 @@ func main() {
 
 
 	db, err = sql.Open("postgres", "postgres://nyrdyxoc:r4lOIZWMIoHImjb16U3u6XBQEe1Fdd7Q@queenie.db.elephantsql.com:5432/nyrdyxoc")
+	db.SetMaxOpenConns(5)
+	db.SetMaxIdleConns(5)
+	db.SetConnMaxLifetime(5*time.Minute)
 	if err!=nil{
 		panic(err)
 	}
 	defer db.Close()
 
 
-	//db.SetMaxOpenConns(5)
-	//db.SetMaxIdleConns(5)
-	//db.SetConnMaxLifetime(5*time.Minute)
+
 	initTelegram()
 	//telegram()
 	//var DB_URL = "postgres://nyrdyxoc:r4lOIZWMIoHImjb16U3u6XBQEe1Fdd7Q@queenie.db.elephantsql.com:5432/nyrdyxoc"
