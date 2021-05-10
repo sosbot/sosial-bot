@@ -140,7 +140,9 @@ func main() {
 	templates = template.Must(template.ParseGlob("templates/*.html"))
 	port := os.Getenv("PORT")
 
-	//db, err = sql.Open("mysql", "b011cd73aa3ca4:93802dc3@tcp(us-cdbr-east-05.cleardb.net:3306)/heroku_f1ad9d35b768867")
+	db, err = sql.Open("postgres", "postgres://nyrdyxoc:r4lOIZWMIoHImjb16U3u6XBQEe1Fdd7Q@queenie.db.elephantsql.com:5432/nyrdyxoc")
+	db.Exec("insert into messages(text) values(?)","test")
+
 	//db.SetMaxOpenConns(5)
 	//db.SetMaxIdleConns(5)
 	//db.SetConnMaxLifetime(5*time.Minute)
