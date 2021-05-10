@@ -11,7 +11,6 @@ import (
 	"net/http"
 	"os"
 	"strconv"
-	"time"
 	//_"github.com/go-sql-driver/mysql"
 )
 
@@ -141,10 +140,10 @@ func main() {
 	templates = template.Must(template.ParseGlob("templates/*.html"))
 	port := os.Getenv("PORT")
 
-	db, err = sql.Open("mysql", "b011cd73aa3ca4:93802dc3@tcp(us-cdbr-east-05.cleardb.net:3306)/heroku_f1ad9d35b768867")
-	db.SetMaxOpenConns(5)
-	db.SetMaxIdleConns(5)
-	db.SetConnMaxLifetime(5*time.Minute)
+	//db, err = sql.Open("mysql", "b011cd73aa3ca4:93802dc3@tcp(us-cdbr-east-05.cleardb.net:3306)/heroku_f1ad9d35b768867")
+	//db.SetMaxOpenConns(5)
+	//db.SetMaxIdleConns(5)
+	//db.SetConnMaxLifetime(5*time.Minute)
 	initTelegram()
 	//telegram()
 	//var DB_URL = "postgres://nyrdyxoc:r4lOIZWMIoHImjb16U3u6XBQEe1Fdd7Q@queenie.db.elephantsql.com:5432/nyrdyxoc"

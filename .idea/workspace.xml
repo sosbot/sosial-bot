@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="6d02dfad-6709-43bc-b44b-843c0edf2719" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="6d02dfad-6709-43bc-b44b-843c0edf2719" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -116,6 +114,10 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="comm" />
     <option name="LAST_COMMIT_MESSAGE" value="comm" />
+  </component>
+  <component name="VgoProject">
+    <integration-enabled>true</integration-enabled>
+    <proxy>direct</proxy>
   </component>
   <component name="WindowStateProjectService">
     <state x="1118" y="168" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1620561284665">
