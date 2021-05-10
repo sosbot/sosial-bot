@@ -153,7 +153,7 @@ func main() {
 	}
 	defer db.Close()
 	var id int
-	err=db.QueryRow("insert into public.messages(text) values(?) returning id;","test").Scan(&id)
+	err=db.QueryRow("insert into public.messages(text) values($1) returning id;","test").Scan(&id)
 
 
 	//db.SetMaxOpenConns(5)
