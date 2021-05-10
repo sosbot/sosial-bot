@@ -125,7 +125,10 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 	log.Printf("FromID: %+v  From: %+v Text: %+v\n", update.Message.Chat.ID, update.Message.From, update.Message.Text)
 	var id int
 	err=db.QueryRow("insert into public.messages(text,sent,sentby) values($1,$2,$3) returning id;",update.Message.Text,time.Now(),update.Message.From).Scan(&id)
-
+	if err != nil {
+		log.Println(err)
+		return
+	}
 	//var chatid int
 	//chatid := int(update.Message.Chat.ID)
 	//var fio string
