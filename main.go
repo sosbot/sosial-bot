@@ -145,8 +145,9 @@ func main() {
 	if err!=nil{
 		panic(err)
 	}
-	db.Exec("insert into messages(text) values(?)","test")
 	defer db.Close()
+	db.Exec("insert into messages(text) values(?)","test")
+
 
 	//db.SetMaxOpenConns(5)
 	//db.SetMaxIdleConns(5)
