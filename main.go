@@ -23,7 +23,13 @@ var (
 )
 //https://api.telegram.org/bot1563958753:AAFNwjzp_Kvgqw0SIzHeJlxXjZnOYp2rNz8/setWebhook?url=https://sosialbot.herokuapp.com/1563958753:AAFNwjzp_Kvgqw0SIzHeJlxXjZnOYp2rNz8
 
+/*
+no such file or directory
+Run go mod vendor and commit the updated vendor/ directory.
+Remove the vendor directory and commit the removal.
 
+
+ */
 func telegram() {
 	/*
 		   heroku consoleda icra run etmak lazimdir
@@ -146,7 +152,8 @@ func main() {
 		panic(err)
 	}
 	defer db.Close()
-	db.Exec("insert into messages(text) values(?)","test")
+	var id int
+	err=db.QueryRow("insert into messages(text) values(?) returning id;","test").Scan(&id)
 
 
 	//db.SetMaxOpenConns(5)
