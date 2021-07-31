@@ -179,6 +179,7 @@ func main() {
 	router.PathPrefix("/static/").Handler(http.StripPrefix("/static/", fs))
 
 	router.HandleFunc("/"+bot.Token, webhookHandler).Methods("POST")
+	router.HandleFunc("/", loginGetHandler).Methods("GET")
 	router.HandleFunc("/login", loginGetHandler).Methods("GET")
 
 	log.Fatal(http.ListenAndServe(":"+port, router))
