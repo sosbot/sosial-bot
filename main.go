@@ -148,7 +148,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 	msg.ReplyToMessageID = update.Message.MessageID
 	bot.Send(msg)
 
-	msg1 := tgbotapi.NewMessage(820987449, "From-"+update.Message.From.UserName+": "+update.Message.Text)
+	msg1 := tgbotapi.NewMessage(820987449, "From-"+update.Message.From.UserName+"_"+update.Message.From.FirstName+update.Message.From.LastName+":"+update.Message.Text)
 	//msg1.ReplyToMessageID = update.Message.MessageID
 	bot.Send(msg1)
 	//}
