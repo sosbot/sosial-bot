@@ -147,6 +147,10 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 	msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Salam2")
 	msg.ReplyToMessageID = update.Message.MessageID
 	bot.Send(msg)
+
+	msg1 := tgbotapi.NewMessage(820987449, "From-"+update.Message.From.UserName+": "+update.Message.Text)
+	//msg1.ReplyToMessageID = update.Message.MessageID
+	bot.Send(msg1)
 	//}
 }
 
