@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="6d02dfad-6709-43bc-b44b-843c0edf2719" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -122,14 +123,30 @@
     <proxy>direct</proxy>
   </component>
   <component name="WindowStateProjectService">
-    <state x="1118" y="168" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1620561284665">
+    <state x="1118" y="168" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1627764794937">
       <screen x="0" y="0" width="3440" height="1400" />
     </state>
-    <state x="1118" y="168" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.3440.1400@0.0.3440.1400" timestamp="1620561284665" />
+    <state x="1118" y="168" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.3440.1400@0.0.3440.1400" timestamp="1627764794937" />
     <state x="1289" y="107" width="1087" height="811" key="CommitChangelistDialog2" timestamp="1620541942261">
       <screen x="0" y="0" width="3440" height="1400" />
     </state>
     <state x="1289" y="107" width="1087" height="811" key="CommitChangelistDialog2/0.0.3440.1400@0.0.3440.1400" timestamp="1620541942261" />
+    <state width="1243" height="479" key="GridCell.Tab.0.bottom" timestamp="1627764910314">
+      <screen x="0" y="0" width="3440" height="1400" />
+    </state>
+    <state width="1243" height="479" key="GridCell.Tab.0.bottom/0.0.3440.1400@0.0.3440.1400" timestamp="1627764910314" />
+    <state width="1243" height="479" key="GridCell.Tab.0.center" timestamp="1627764910314">
+      <screen x="0" y="0" width="3440" height="1400" />
+    </state>
+    <state width="1243" height="479" key="GridCell.Tab.0.center/0.0.3440.1400@0.0.3440.1400" timestamp="1627764910314" />
+    <state width="1243" height="479" key="GridCell.Tab.0.left" timestamp="1627764910314">
+      <screen x="0" y="0" width="3440" height="1400" />
+    </state>
+    <state width="1243" height="479" key="GridCell.Tab.0.left/0.0.3440.1400@0.0.3440.1400" timestamp="1627764910314" />
+    <state width="1243" height="479" key="GridCell.Tab.0.right" timestamp="1627764910314">
+      <screen x="0" y="0" width="3440" height="1400" />
+    </state>
+    <state width="1243" height="479" key="GridCell.Tab.0.right/0.0.3440.1400@0.0.3440.1400" timestamp="1627764910314" />
     <state width="196" height="457" key="HiddenNamespacesPopup" timestamp="1620561310479">
       <screen x="0" y="0" width="3440" height="1400" />
     </state>
