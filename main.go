@@ -144,7 +144,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 	//b := urc != 0
 	//if b {
 
-	msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Salam1")
+	msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Salam2")
 	msg.ReplyToMessageID = update.Message.MessageID
 	bot.Send(msg)
 	//}
