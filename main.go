@@ -30,7 +30,7 @@ var mainMenu = tgbotapi.NewReplyKeyboard(
 		tgbotapi.NewKeyboardButton("🏠 Müraciət et"),
 		tgbotapi.NewKeyboardButton("🗒 DMA haqqında"),
 	),
-	tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("🏡 Müraciət ünvanımı paylaş")),
+	tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("📌 Müraciət ünvanımı paylaş")),
 )
 
 var reqMenu = tgbotapi.NewReplyKeyboard(
@@ -194,7 +194,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 			cmdText := update.Message.Command()
 			if cmdText == "start" {
 				//message := "Xoş gəlmişsiniz!"
-				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Dövlət Məşğulluq Agentliyinin telegram kanalına,xoş gəlmişsiniz!")
+				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "🇦🇿 Dövlət Məşğulluq Agentliyinin telegram kanalına,xoş gəlmişsiniz!")
 				msg.ReplyMarkup = mainMenu
 				bot.Send(msg)
 			}
