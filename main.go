@@ -29,6 +29,7 @@ var mainMenu = tgbotapi.NewReplyKeyboard(
 		tgbotapi.NewKeyboardButton("🏠 Müraciət et"),
 		tgbotapi.NewKeyboardButton("🗒 DMA haqqında"),
 	),
+	tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("🏠 Müraciət ünvanı")),
 )
 
 var reqMenu = tgbotapi.NewReplyKeyboard(
@@ -172,13 +173,14 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 	////msg1.ReplyToMessageID = update.Message.MessageID
 	//msg1.ReplyMarkup = mainMenu
 	//bot.Send(msg1)
-
+	////u:=tgbotapi.NewUpdate(0)
+	////msg,err:=bot.GetUpdatesChan(u)
 	if update.Message != nil {
 		if update.Message.IsCommand() {
 			cmdText := update.Message.Command()
 			if cmdText == "start" {
-				message := "Xoş gəlmişsiniz!"
-				msg := tgbotapi.NewMessage(update.Message.Chat.ID, message)
+				//message := "Xoş gəlmişsiniz!"
+				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Xoş gəlmişsiniz!")
 				msg.ReplyMarkup = mainMenu
 				bot.Send(msg)
 			}
