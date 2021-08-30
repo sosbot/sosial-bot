@@ -28,8 +28,8 @@ var (
 var mainMenu = tgbotapi.NewReplyKeyboard(
 	tgbotapi.NewKeyboardButtonRow(
 		tgbotapi.NewKeyboardButton("🏠 Müraciət et"),
-		tgbotapi.NewKeyboardButton("📧 Müraciətlərim"),
-	),
+		tgbotapi.NewKeyboardButton("📧 Müraciətlərim")),
+
 	tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("📌 Ünvanımı paylaş"), tgbotapi.NewKeyboardButton("☑ Agentlik haqda")),
 	tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("🔘 Rəhbərlik")),
 )
