@@ -261,6 +261,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 						msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Müraciətiniz qəbul olundu. Müraciət nömrəsi: "+strconv.Itoa(rand.Intn(1000000)))
 						msg.ReplyMarkup = mainMenu
 						bot.Send(msg)
+						cs.State = -1
 
 					}
 
