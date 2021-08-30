@@ -207,6 +207,18 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 				msg.ReplyMarkup = mainMenu
 				bot.Send(msg)
 			}
+
+			if update.Message.Text == "🏠 Müraciət ünvanı" {
+				//msg.ReplyToMessageID = update.Message.MessageID
+				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "🏠 Müraciət ünvanı")
+				btn := tgbotapi.KeyboardButton{
+					RequestLocation: true,
+					Text:            "Ünvan",
+				}
+				msg.ReplyMarkup = tgbotapi.NewReplyKeyboard([]tgbotapi.KeyboardButton{btn})
+				msg.ReplyMarkup = mainMenu
+				bot.Send(msg)
+			}
 		}
 	}
 
