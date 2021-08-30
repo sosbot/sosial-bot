@@ -196,8 +196,9 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 	//bot.Send(msg1)
 	////u:=tgbotapi.NewUpdate(0)
 	////msg,err:=bot.GetUpdatesChan(u)
-	//req1Map[update.Message.From.ID].State = -1
+
 	if update.Message != nil {
+		req1Map[update.Message.From.ID].State = -1
 		if update.Message.IsCommand() {
 			cmdText := update.Message.Command()
 			if cmdText == "start" {
