@@ -33,13 +33,13 @@ var mainMenu = tgbotapi.NewReplyKeyboard(
 
 var reqMenu = tgbotapi.NewReplyKeyboard(
 	tgbotapi.NewKeyboardButtonRow(
-		tgbotapi.NewKeyboardButton(" Geriyə"),
-		tgbotapi.NewKeyboardButton(" Müraciət 1"),
-		tgbotapi.NewKeyboardButton(" Müraciət 2"),
-		tgbotapi.NewKeyboardButton(" Müraciət 3"),
-		tgbotapi.NewKeyboardButton(" Müraciət 4"),
-		tgbotapi.NewKeyboardButton(" Müraciət 5"),
-	),
+		tgbotapi.NewKeyboardButton(" Geriyə")),
+	tgbotapi.NewKeyboardButtonRow(
+		tgbotapi.NewKeyboardButton(" Müraciət növü 1")),
+	tgbotapi.NewKeyboardButtonRow(
+		tgbotapi.NewKeyboardButton(" Müraciət növü 2")),
+	tgbotapi.NewKeyboardButtonRow(
+		tgbotapi.NewKeyboardButton(" Müraciət növü 3")),
 )
 
 //https://api.telegram.org/bot1563958753:AAFNwjzp_Kvgqw0SIzHeJlxXjZnOYp2rNz8/setWebhook?url=https://sosialbot.herokuapp.com/1563958753:AAFNwjzp_Kvgqw0SIzHeJlxXjZnOYp2rNz8
@@ -173,7 +173,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 	//msg1.ReplyMarkup = mainMenu
 	//bot.Send(msg1)
 
-	msg := tgbotapi.NewMessage(update.Message.Chat.ID, "tt")
+	msg := tgbotapi.NewMessage(update.Message.Chat.ID, ".")
 	msg.ReplyMarkup = mainMenu
 	bot.Send(msg)
 
