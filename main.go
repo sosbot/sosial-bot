@@ -286,10 +286,15 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 				if ok {
 					switch cs.State {
 					case 0:
-						cs.Fin = update.Message.Text
-						msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Əlaqə nömrəsini daxil edin:")
-						req1Map[update.Message.From.ID].State = 1
-						bot.Send(msg)
+						if len(update.Message.Text) != 7 {
+							msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Fin yanlışdır. FİN-i bir daha daxil edin zəhmət olmasa:")
+							bot.Send(msg)
+						} else {
+							cs.Fin = update.Message.Text
+							msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Əlaqə nömrəsini daxil edin:")
+							req1Map[update.Message.From.ID].State = 1
+							bot.Send(msg)
+						}
 					case 1:
 						cs.Phone = update.Message.Text
 						msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Email-i  daxil edin:")
