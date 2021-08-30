@@ -26,8 +26,19 @@ var (
 
 var mainMenu = tgbotapi.NewReplyKeyboard(
 	tgbotapi.NewKeyboardButtonRow(
-		tgbotapi.NewKeyboardButton("🏠 Главная"),
-		tgbotapi.NewKeyboardButton("🗒 Запись"),
+		tgbotapi.NewKeyboardButton("🏠 Müraciət et"),
+		tgbotapi.NewKeyboardButton("🗒 DMA haqqında"),
+	),
+)
+
+var reqMenu = tgbotapi.NewReplyKeyboard(
+	tgbotapi.NewKeyboardButtonRow(
+		tgbotapi.NewKeyboardButton(" Geriyə"),
+		tgbotapi.NewKeyboardButton(" Müraciət 1"),
+		tgbotapi.NewKeyboardButton(" Müraciət 2"),
+		tgbotapi.NewKeyboardButton(" Müraciət 3"),
+		tgbotapi.NewKeyboardButton(" Müraciət 4"),
+		tgbotapi.NewKeyboardButton(" Müraciət 5"),
 	),
 )
 
@@ -162,9 +173,24 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 	//msg1.ReplyMarkup = mainMenu
 	//bot.Send(msg1)
 
-	msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Xoş gəlmişsiniz")
+	msg := tgbotapi.NewMessage(update.Message.Chat.ID, "")
 	msg.ReplyMarkup = mainMenu
 	bot.Send(msg)
+
+	if update.Message.Text == mainMenu.Keyboard[0][0].Text {
+		msg.ReplyMarkup = reqMenu
+		bot.Send(msg)
+	}
+	if update.Message.Text == mainMenu.Keyboard[0][1].Text {
+		msg = tgbotapi.NewMessage(update.Message.Chat.ID, "https://dma.gov.az/agentlik/haqqimizda")
+		msg.ReplyMarkup = mainMenu
+		bot.Send(msg)
+	}
+	if update.Message.Text == reqMenu.Keyboard[0][0].Text {
+		msg.ReplyMarkup = mainMenu
+		bot.Send(msg)
+	}
+
 	//}
 }
 
