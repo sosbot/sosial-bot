@@ -213,10 +213,15 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "🏠 Müraciət ünvanı")
 				btn := tgbotapi.KeyboardButton{
 					RequestLocation: true,
-					Text:            "Ünvan",
+					Text:            "Ünvanı paylaş",
 				}
 				msg.ReplyMarkup = tgbotapi.NewReplyKeyboard([]tgbotapi.KeyboardButton{btn})
 				//msg.ReplyMarkup = mainMenu
+				bot.Send(msg)
+			}
+			if update.Message.Text == "Ünvanı paylaş" {
+				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "🏠 Əsas menyu")
+				msg.ReplyMarkup = mainMenu
 				bot.Send(msg)
 			}
 		}
