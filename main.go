@@ -35,7 +35,7 @@ var mainMenu = tgbotapi.NewReplyKeyboard(
 
 var reqMenu = tgbotapi.NewReplyKeyboard(
 	tgbotapi.NewKeyboardButtonRow(
-		tgbotapi.NewKeyboardButton("Geriyə")),
+		tgbotapi.NewKeyboardButton("Geriyə⤴")),
 	tgbotapi.NewKeyboardButtonRow(
 		tgbotapi.NewKeyboardButton("Müraciət növü 1")),
 	tgbotapi.NewKeyboardButtonRow(
