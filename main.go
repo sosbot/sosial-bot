@@ -198,7 +198,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 	////msg,err:=bot.GetUpdatesChan(u)
 
 	if update.Message != nil {
-		req1Map[update.Message.From.ID].State = -1
+
 		if update.Message.IsCommand() {
 			cmdText := update.Message.Command()
 			if cmdText == "start" {
