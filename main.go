@@ -190,7 +190,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 			}
 		} else {
 			if update.Message.Text == mainMenu.Keyboard[0][0].Text {
-				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "")
+				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "🏠 Müraciət et")
 				msg.ReplyMarkup = reqMenu
 				bot.Send(msg)
 			}
@@ -201,7 +201,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 			}
 			if update.Message.Text == "Geriyə" {
 				//msg.ReplyToMessageID = update.Message.MessageID
-				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "")
+				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Geriyə")
 				msg.ReplyMarkup = mainMenu
 				bot.Send(msg)
 			}
