@@ -191,6 +191,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 				bot.Send(msg)
 			}
 			if update.Message.Text == reqMenu.Keyboard[0][0].Text {
+				msg.ReplyToMessageID = update.Message.MessageID
 				msg.ReplyMarkup = mainMenu
 				bot.Send(msg)
 			}
