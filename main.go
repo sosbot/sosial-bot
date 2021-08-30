@@ -205,7 +205,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 				bot.Send(msg)
 			}
 			if cmdText == "menu" {
-				message := "Əsas səhifə"
+				message := "Əsas səhifəyə keçid edildi"
 				msg := tgbotapi.NewMessage(update.Message.Chat.ID, message)
 				msg.ReplyMarkup = mainMenu
 				bot.Send(msg)
