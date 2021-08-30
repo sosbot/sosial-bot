@@ -259,27 +259,27 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 			case reqMenu.Keyboard[2][0].Text:
 				//msg.ReplyToMessageID = update.Message.MessageID
 				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Hörmətli Vətəndaş, Bu bölmə üzrə hal-hazırda texniki işlər aparılır. Qısa zamanda aktivləşəcək")
-				msg.ReplyMarkup = mainMenu
+				msg.ReplyMarkup = reqMenu
 				bot.Send(msg)
 			case reqMenu.Keyboard[3][0].Text:
 				//msg.ReplyToMessageID = update.Message.MessageID
 				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Hörmətli Vətəndaş, Bu bölmə üzrə hal-hazırda texniki işlər aparılır. Qısa zamanda aktivləşəcək")
-				msg.ReplyMarkup = mainMenu
+				msg.ReplyMarkup = reqMenu
 				bot.Send(msg)
 			case reqMenu.Keyboard[4][0].Text:
 				//msg.ReplyToMessageID = update.Message.MessageID
 				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Hörmətli Vətəndaş, Bu bölmə üzrə hal-hazırda texniki işlər aparılır. Qısa zamanda aktivləşəcək")
-				msg.ReplyMarkup = mainMenu
+				msg.ReplyMarkup = reqMenu
 				bot.Send(msg)
 			case reqMenu.Keyboard[5][0].Text:
 				//msg.ReplyToMessageID = update.Message.MessageID
 				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Hörmətli Vətəndaş, Bu bölmə üzrə hal-hazırda texniki işlər aparılır. Qısa zamanda aktivləşəcək")
-				msg.ReplyMarkup = mainMenu
+				msg.ReplyMarkup = reqMenu
 				bot.Send(msg)
 			case reqMenu.Keyboard[6][0].Text:
 				//msg.ReplyToMessageID = update.Message.MessageID
 				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Hörmətli Vətəndaş, Bu bölmə üzrə hal-hazırda texniki işlər aparılır. Qısa zamanda aktivləşəcək")
-				msg.ReplyMarkup = mainMenu
+				msg.ReplyMarkup = reqMenu
 				bot.Send(msg)
 			default:
 				cs, ok := req1Map[update.Message.From.ID]
