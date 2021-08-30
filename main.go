@@ -220,7 +220,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "https://dma.gov.az/agentlik/haqqimizda")
 				msg.ReplyMarkup = mainMenu
 				bot.Send(msg)
-			case mainMenu.Keyboard[0][0].Text: //"⤴Geriyə":
+			case reqMenu.Keyboard[0][0].Text: //"⤴Geriyə":
 				//msg.ReplyToMessageID = update.Message.MessageID
 				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "⤴Geriyə")
 				msg.ReplyMarkup = mainMenu
