@@ -178,19 +178,19 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 			cmdText := update.Message.Command()
 			if cmdText == "start" {
 				message := "Xoş gəlmişsiniz!"
-				msg := tgbotapi.New(update.Message.Chat.ID, message)
+				msg := tgbotapi.NewMessage(update.Message.Chat.ID, message)
 				msg.ReplyMarkup = mainMenu
 				bot.Send(msg)
 			}
 			if cmdText == "stop" {
 				message := "Uğurlar!"
-				msg := tgbotapi.New(update.Message.Chat.ID, message)
+				msg := tgbotapi.NewMessage(update.Message.Chat.ID, message)
 				msg.ReplyMarkup = mainMenu
 				bot.Send(msg)
 			}
 		} else {
 			if update.Message.Text == mainMenu.Keyboard[0][0].Text {
-				msg := tgbotapi.New(update.Message.Chat.ID, "")
+				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "")
 				msg.ReplyMarkup = reqMenu
 				bot.Send(msg)
 			}
@@ -201,7 +201,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 			}
 			if update.Message.Text == "Geriyə" {
 				//msg.ReplyToMessageID = update.Message.MessageID
-				msg := tgbotapi.New(update.Message.Chat.ID, "")
+				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "")
 				msg.ReplyMarkup = mainMenu
 				bot.Send(msg)
 			}
