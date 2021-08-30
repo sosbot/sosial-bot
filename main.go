@@ -225,7 +225,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "⤴Geriyə")
 				msg.ReplyMarkup = mainMenu
 				bot.Send(msg)
-			case "🏠 Müraciət ünvanı":
+			case mainMenu.Keyboard[0][1].Text: //"🏠 Müraciət ünvanı":
 				//msg.ReplyToMessageID = update.Message.MessageID
 				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "🏠 Müraciət ünvanı")
 				btn := tgbotapi.KeyboardButton{
@@ -235,7 +235,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 				msg.ReplyMarkup = tgbotapi.NewReplyKeyboard([]tgbotapi.KeyboardButton{btn})
 				//msg.ReplyMarkup = mainMenu
 				bot.Send(msg)
-			case "Müraciət növü 1":
+			case reqMenu.Keyboard[1][0].Text: //"Müraciət növü 1":
 				req1Map[update.Message.From.ID] = new(req1)
 				req1Map[update.Message.From.ID].State = 0
 				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Fin-i daxil edin:")
