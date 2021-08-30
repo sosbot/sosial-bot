@@ -194,12 +194,12 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 			cmdText := update.Message.Command()
 			if cmdText == "start" {
 				//message := "Xoş gəlmişsiniz!"
-				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Xoş gəlmişsiniz!")
+				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Dövlət Məşğulluq Agentliyinin telegram kanalına,xoş gəlmişsiniz!")
 				msg.ReplyMarkup = mainMenu
 				bot.Send(msg)
 			}
 			if cmdText == "stop" {
-				message := "Uğurlar!"
+				message := "Müraciət etdiyiniz üçün, təşəkkür edirik!"
 				msg := tgbotapi.NewMessage(update.Message.Chat.ID, message)
 				msg.ReplyMarkup = tgbotapi.NewRemoveKeyboard(true)
 				bot.Send(msg)
