@@ -216,7 +216,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 					Text:            "Ünvan",
 				}
 				msg.ReplyMarkup = tgbotapi.NewReplyKeyboard([]tgbotapi.KeyboardButton{btn})
-				msg.ReplyMarkup = mainMenu
+				//msg.ReplyMarkup = mainMenu
 				bot.Send(msg)
 			}
 		}
