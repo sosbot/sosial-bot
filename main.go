@@ -28,9 +28,9 @@ var (
 var mainMenu = tgbotapi.NewReplyKeyboard(
 	tgbotapi.NewKeyboardButtonRow(
 		tgbotapi.NewKeyboardButton("🏠 Müraciət et"),
-		tgbotapi.NewKeyboardButton("🗒 DMA haqqında"),
+		tgbotapi.NewKeyboardButton("📧 Müraciətlərim"),
 	),
-	tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("📌 Müraciət ünvanımı paylaş")),
+	tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("📌 Müraciət ünvanımı paylaş"), tgbotapi.NewKeyboardButton("📌 Agentlik haqqında")),
 )
 
 var reqMenu = tgbotapi.NewReplyKeyboard(
@@ -222,7 +222,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Müraciət növünü seçiniz")
 				msg.ReplyMarkup = reqMenu
 				bot.Send(msg)
-			case mainMenu.Keyboard[0][1].Text:
+			case mainMenu.Keyboard[1][1].Text:
 				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "https://dma.gov.az/agentlik/haqqimizda")
 				msg.ReplyMarkup = mainMenu
 				bot.Send(msg)
