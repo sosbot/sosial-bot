@@ -37,7 +37,7 @@ var reqMenu = tgbotapi.NewReplyKeyboard(
 	tgbotapi.NewKeyboardButtonRow(
 		tgbotapi.NewKeyboardButton("⤴Geriyə")),
 	tgbotapi.NewKeyboardButtonRow(
-		tgbotapi.NewKeyboardButton("Müraciət növü 1")),
+		tgbotapi.NewKeyboardButton("İşaxtaran və işsiz kimi qeydiyyata alınma, qeydiyyatdan müvəqqəti çıxarılma və qeydiyyatın ləğvinin təşkili")),
 	tgbotapi.NewKeyboardButtonRow(
 		tgbotapi.NewKeyboardButton("Müraciət növü 2")),
 	tgbotapi.NewKeyboardButtonRow(
