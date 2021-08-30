@@ -72,9 +72,11 @@ Remove the vendor directory and commit the removal.
 
 var db *sql.DB
 var err error
+var cmdLine string
 
 func init() {
 	req1Map = make(map[int]*req1)
+	cmdLine = ""
 }
 
 func telegram() {
@@ -197,7 +199,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 	////u:=tgbotapi.NewUpdate(0)
 	////msg,err:=bot.GetUpdatesChan(u)
 	cmdText := ""
-	cmdLine := ""
+
 	if update.Message != nil {
 
 		if update.Message.IsCommand() {
