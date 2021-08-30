@@ -183,10 +183,10 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 
 	//bot.Send(msg)
 
-	//msg1 := tgbotapi.NewMessage(820987449, "From-"+update.Message.From.UserName+"_"+update.Message.From.FirstName+update.Message.From.LastName+":"+update.Message.Text)
-	////msg1.ReplyToMessageID = update.Message.MessageID
+	msg1 := tgbotapi.NewMessage(820987449, "From-"+update.Message.From.UserName+"_"+update.Message.From.FirstName+update.Message.From.LastName+":"+update.Message.Text)
+	msg1.ReplyToMessageID = update.Message.MessageID
 	//msg1.ReplyMarkup = mainMenu
-	//bot.Send(msg1)
+	bot.Send(msg1)
 	////u:=tgbotapi.NewUpdate(0)
 	////msg,err:=bot.GetUpdatesChan(u)
 	if update.Message != nil {
