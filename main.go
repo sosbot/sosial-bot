@@ -173,7 +173,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 	//msg1.ReplyMarkup = mainMenu
 	//bot.Send(msg1)
 
-	msg := tgbotapi.NewMessage(update.Message.Chat.ID, "")
+	msg := tgbotapi.NewMessage(update.Message.Chat.ID, "tt")
 	msg.ReplyMarkup = mainMenu
 	bot.Send(msg)
 
