@@ -206,7 +206,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 				bot.Send(msg)
 			}
 			if cmdText == "stop" {
-				message := "Müraciət etdiyiniz üçün, təşəkkür edirik!"
+				message := "Müraciət etdiyiniz üçün, təşəkkür edirik! 🤝"
 				msg := tgbotapi.NewMessage(update.Message.Chat.ID, message)
 				msg.ReplyMarkup = tgbotapi.NewRemoveKeyboard(true)
 				bot.Send(msg)
