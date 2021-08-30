@@ -239,31 +239,30 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 				req1Map[update.Message.From.ID].State = 0
 				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Fin-i daxil edin:")
 				bot.Send(msg)
+			default:
+				cs, ok := req1Map[update.Message.From.ID]
+				if ok {
+					switch cs.State {
+					case 0:
+						cs.Fin = update.Message.Text
+						msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Əlaqə nömrəsini daxil edin:")
+						req1Map[update.Message.From.ID].State = 1
+						bot.Send(msg)
+					case 1:
+						cs.Phone = update.Message.Text
+						msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Email-i  daxil edin:")
+						req1Map[update.Message.From.ID].State = 2
+						bot.Send(msg)
+					case 2:
+						cs.Email = update.Message.Text
+						values := req1Map[update.Message.From.ID].Phone + " " + req1Map[update.Message.From.ID].Email + " " + req1Map[update.Message.From.ID].Fin
+						msg := tgbotapi.NewMessage(update.Message.Chat.ID, values)
+						msg.ReplyMarkup = mainMenu
+						bot.Send(msg)
 
-			}
-
-			cs, ok := req1Map[update.Message.From.ID]
-			if ok {
-				switch cs.State {
-				case 0:
-					cs.Fin = update.Message.Text
-					msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Əlaqə nömrəsini daxil edin:")
-					req1Map[update.Message.From.ID].State = 1
-					bot.Send(msg)
-				case 1:
-					cs.Phone = update.Message.Text
-					msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Email-i  daxil edin:")
-					req1Map[update.Message.From.ID].State = 2
-					bot.Send(msg)
-				case 2:
-					cs.Email = update.Message.Text
-					values := req1Map[update.Message.From.ID].Phone + " " + req1Map[update.Message.From.ID].Email + " " + req1Map[update.Message.From.ID].Fin
-					msg := tgbotapi.NewMessage(update.Message.Chat.ID, values)
-					msg.ReplyMarkup = mainMenu
-					bot.Send(msg)
+					}
 
 				}
-
 			}
 
 		}
