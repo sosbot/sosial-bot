@@ -172,23 +172,29 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 	////msg1.ReplyToMessageID = update.Message.MessageID
 	//msg1.ReplyMarkup = mainMenu
 	//bot.Send(msg1)
-
-	msg := tgbotapi.NewMessage(update.Message.Chat.ID, "")
-	msg.ReplyMarkup = mainMenu
-	bot.Send(msg)
-
-	if update.Message.Text == mainMenu.Keyboard[0][0].Text {
-		msg.ReplyMarkup = reqMenu
-		bot.Send(msg)
-	}
-	if update.Message.Text == mainMenu.Keyboard[0][1].Text {
-		msg = tgbotapi.NewMessage(update.Message.Chat.ID, "https://dma.gov.az/agentlik/haqqimizda")
-		msg.ReplyMarkup = mainMenu
-		bot.Send(msg)
-	}
-	if update.Message.Text == reqMenu.Keyboard[0][0].Text {
-		msg.ReplyMarkup = mainMenu
-		bot.Send(msg)
+	msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Welcome")
+	if update.Message != nil {
+		if update.Message.IsCommand() {
+			cmdText := update.Message.Command()
+			if cmdText == "start" {
+				msg.ReplyMarkup = mainMenu
+				bot.Send(msg)
+			}
+		} else {
+			if update.Message.Text == mainMenu.Keyboard[0][0].Text {
+				msg.ReplyMarkup = reqMenu
+				bot.Send(msg)
+			}
+			if update.Message.Text == mainMenu.Keyboard[0][1].Text {
+				msg = tgbotapi.NewMessage(update.Message.Chat.ID, "https://dma.gov.az/agentlik/haqqimizda")
+				msg.ReplyMarkup = mainMenu
+				bot.Send(msg)
+			}
+			if update.Message.Text == reqMenu.Keyboard[0][0].Text {
+				msg.ReplyMarkup = mainMenu
+				bot.Send(msg)
+			}
+		}
 	}
 
 	//}
