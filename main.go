@@ -193,7 +193,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 			if cmdText == "menu" {
 				message := "Əsas səhifə"
 				msg := tgbotapi.NewMessage(update.Message.Chat.ID, message)
-				msg.ReplyMarkup = tgbotapi.NewRemoveKeyboard(true)
+				msg.ReplyMarkup = mainMenu
 				bot.Send(msg)
 			}
 		} else {
