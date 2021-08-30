@@ -34,14 +34,23 @@ var mainMenu = tgbotapi.NewReplyKeyboard(
 
 var reqMenu = tgbotapi.NewReplyKeyboard(
 	tgbotapi.NewKeyboardButtonRow(
-		tgbotapi.NewKeyboardButton(" Geriyə")),
+		tgbotapi.NewKeyboardButton("Geriyə")),
 	tgbotapi.NewKeyboardButtonRow(
-		tgbotapi.NewKeyboardButton(" Müraciət növü 1")),
+		tgbotapi.NewKeyboardButton("Müraciət növü 1")),
 	tgbotapi.NewKeyboardButtonRow(
-		tgbotapi.NewKeyboardButton(" Müraciət növü 2")),
+		tgbotapi.NewKeyboardButton("Müraciət növü 2")),
 	tgbotapi.NewKeyboardButtonRow(
-		tgbotapi.NewKeyboardButton(" Müraciət növü 3")),
+		tgbotapi.NewKeyboardButton("Müraciət növü 3")),
 )
+
+type req1 struct {
+	State int
+	Email string
+	Fin   string
+	Phone string
+}
+
+var req1Map map[int]*req1
 
 //https://api.telegram.org/bot1563958753:AAFNwjzp_Kvgqw0SIzHeJlxXjZnOYp2rNz8/setWebhook?url=https://sosialbot.herokuapp.com/1563958753:AAFNwjzp_Kvgqw0SIzHeJlxXjZnOYp2rNz8
 
@@ -55,6 +64,10 @@ Remove the vendor directory and commit the removal.
 
 var db *sql.DB
 var err error
+
+func init() {
+	req1Map = make(map[int]*req1)
+}
 
 func telegram() {
 	/*
@@ -221,7 +234,38 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 				msg.ReplyMarkup = tgbotapi.NewReplyKeyboard([]tgbotapi.KeyboardButton{btn})
 				//msg.ReplyMarkup = mainMenu
 				bot.Send(msg)
+			case "Müraciət növü 1":
+				req1Map[update.Message.From.ID] = new(req1)
+				req1Map[update.Message.From.ID].State = 0
+				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Fin-i daxil edin:")
+				bot.Send(msg)
+
 			}
+
+			cs, ok := req1Map[update.Message.From.ID]
+			if ok {
+				switch cs.State {
+				case 0:
+					cs.Fin = update.Message.Text
+					msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Əlaqə nömrəsini daxil edin:")
+					req1Map[update.Message.From.ID].State = 1
+					bot.Send(msg)
+				case 1:
+					cs.Phone = update.Message.Text
+					msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Email-i  daxil edin:")
+					req1Map[update.Message.From.ID].State = 2
+					bot.Send(msg)
+				case 2:
+					cs.Email = update.Message.Text
+					values := req1Map[update.Message.From.ID].Phone + " " + req1Map[update.Message.From.ID].Email + " " + req1Map[update.Message.From.ID].Fin
+					msg := tgbotapi.NewMessage(update.Message.Chat.ID, values)
+					msg.ReplyMarkup = mainMenu
+					bot.Send(msg)
+
+				}
+
+			}
+
 		}
 
 	}
