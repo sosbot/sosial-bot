@@ -30,7 +30,7 @@ var mainMenu = tgbotapi.NewReplyKeyboard(
 		tgbotapi.NewKeyboardButton("🏠 Müraciət et"),
 		tgbotapi.NewKeyboardButton("🗒 DMA haqqında"),
 	),
-	tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("🏡 Müraciət ünvanı")),
+	tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("🏡 Müraciət ünvanımı paylaş")),
 )
 
 var reqMenu = tgbotapi.NewReplyKeyboard(
@@ -230,7 +230,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "ㅤ")
 				btn := tgbotapi.KeyboardButton{
 					RequestLocation: true,
-					Text:            "🗺Ünvanı paylaş",
+					Text:            "🗺Paylaşmağa razılıq verirəm",
 				}
 				msg.ReplyMarkup = tgbotapi.NewReplyKeyboard([]tgbotapi.KeyboardButton{btn})
 				//msg.ReplyMarkup = mainMenu
