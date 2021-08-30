@@ -238,6 +238,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 				req1Map[update.Message.From.ID] = new(req1)
 				req1Map[update.Message.From.ID].State = 0
 				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Fin-i daxil edin:")
+				msg.ReplyMarkup = tgbotapi.NewHideKeyboard(true)
 				bot.Send(msg)
 			default:
 				cs, ok := req1Map[update.Message.From.ID]
