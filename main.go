@@ -30,7 +30,7 @@ var mainMenu = tgbotapi.NewReplyKeyboard(
 		tgbotapi.NewKeyboardButton("🏠 Müraciət et"),
 		tgbotapi.NewKeyboardButton("🗒 DMA haqqında"),
 	),
-	tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("🏠 Müraciət ünvanı")),
+	tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("🏡 Müraciət ünvanı")),
 )
 
 var reqMenu = tgbotapi.NewReplyKeyboard(
