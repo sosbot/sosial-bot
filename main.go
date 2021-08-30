@@ -24,6 +24,13 @@ var (
 	templates *template.Template
 )
 
+var mainMenu = tgbotapi.NewReplyKeyboard(
+	tgbotapi.NewKeyboardButtonRow(
+		tgbotapi.NewKeyboardButton("🏠 Главная"),
+		tgbotapi.NewKeyboardButton("🗒 Запись"),
+	),
+)
+
 //https://api.telegram.org/bot1563958753:AAFNwjzp_Kvgqw0SIzHeJlxXjZnOYp2rNz8/setWebhook?url=https://sosialbot.herokuapp.com/1563958753:AAFNwjzp_Kvgqw0SIzHeJlxXjZnOYp2rNz8
 
 /*
@@ -147,10 +154,12 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 
 	msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Salam3")
 	msg.ReplyToMessageID = update.Message.MessageID
+
 	bot.Send(msg)
 
 	msg1 := tgbotapi.NewMessage(820987449, "From-"+update.Message.From.UserName+"_"+update.Message.From.FirstName+update.Message.From.LastName+":"+update.Message.Text)
 	//msg1.ReplyToMessageID = update.Message.MessageID
+	msg1.ReplyMarkup = mainMenu
 	bot.Send(msg1)
 
 	//}
