@@ -3,9 +3,6 @@ package main
 import (
 	"database/sql"
 	"encoding/json"
-	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
-	"github.com/gorilla/mux"
-	_ "github.com/lib/pq"
 	"html/template"
 	"io/ioutil"
 	"log"
@@ -13,6 +10,10 @@ import (
 	"os"
 	"strconv"
 	"time"
+
+	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
+	"github.com/gorilla/mux"
+	_ "github.com/lib/pq"
 	//_"github.com/go-sql-driver/mysql"
 )
 
@@ -144,13 +145,14 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 	//b := urc != 0
 	//if b {
 
-	msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Salam2")
+	msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Salam3")
 	msg.ReplyToMessageID = update.Message.MessageID
 	bot.Send(msg)
 
 	msg1 := tgbotapi.NewMessage(820987449, "From-"+update.Message.From.UserName+"_"+update.Message.From.FirstName+update.Message.From.LastName+":"+update.Message.Text)
 	//msg1.ReplyToMessageID = update.Message.MessageID
 	bot.Send(msg1)
+
 	//}
 }
 
