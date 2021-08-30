@@ -232,7 +232,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 					RequestLocation: true,
 					Text:            "Ünvanı paylaş",
 				}
-				msg.ReplyMarkup = tgbotapi.NewReplyKeyboard([]tgbotapi.KeyboardButton{btn})
+				msg.ReplyMarkup = btn //tgbotapi.NewReplyKeyboard([]tgbotapi.KeyboardButton{btn})
 				//msg.ReplyMarkup = mainMenu
 				bot.Send(msg)
 			case reqMenu.Keyboard[1][0].Text: //"Müraciət növü 1":
