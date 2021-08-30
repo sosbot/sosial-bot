@@ -190,25 +190,28 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 				msg.ReplyMarkup = tgbotapi.NewRemoveKeyboard(true)
 				bot.Send(msg)
 			}
+			if cmdText == "menu" {
+				message := "Əsas səhifə"
+				msg := tgbotapi.NewMessage(update.Message.Chat.ID, message)
+				msg.ReplyMarkup = tgbotapi.NewRemoveKeyboard(true)
+				bot.Send(msg)
+			}
 		} else {
-			if update.Message.Text == mainMenu.Keyboard[0][0].Text {
+			switch update.Message.Text {
+			case mainMenu.Keyboard[0][0].Text:
 				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "🏠 Müraciət et")
 				msg.ReplyMarkup = reqMenu
 				bot.Send(msg)
-			}
-			if update.Message.Text == mainMenu.Keyboard[0][1].Text {
+			case mainMenu.Keyboard[0][1].Text:
 				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "https://dma.gov.az/agentlik/haqqimizda")
 				msg.ReplyMarkup = mainMenu
 				bot.Send(msg)
-			}
-			if update.Message.Text == "Geriyə" {
+			case "Geriyə":
 				//msg.ReplyToMessageID = update.Message.MessageID
 				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Geriyə")
 				msg.ReplyMarkup = mainMenu
 				bot.Send(msg)
-			}
-
-			if update.Message.Text == "🏠 Müraciət ünvanı" {
+			case "🏠 Müraciət ünvanı":
 				//msg.ReplyToMessageID = update.Message.MessageID
 				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "🏠 Müraciət ünvanı")
 				btn := tgbotapi.KeyboardButton{
@@ -219,12 +222,8 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 				//msg.ReplyMarkup = mainMenu
 				bot.Send(msg)
 			}
-			if update.Message.Text == "Ünvanı paylaş" {
-				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "🏠 Əsas menyu")
-				msg.ReplyMarkup = mainMenu
-				bot.Send(msg)
-			}
 		}
+
 	}
 
 	//}
