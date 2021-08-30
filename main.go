@@ -37,11 +37,17 @@ var reqMenu = tgbotapi.NewReplyKeyboard(
 	tgbotapi.NewKeyboardButtonRow(
 		tgbotapi.NewKeyboardButton("⤴Geriyə")),
 	tgbotapi.NewKeyboardButtonRow(
-		tgbotapi.NewKeyboardButton("İşaxtaran və işsiz kimi qeydiyyata alınma, qeydiyyatdan müvəqqəti çıxarılma və qeydiyyatın ləğvinin təşkili")),
+		tgbotapi.NewKeyboardButton("Haqqı ödənilən ictimai işlərə cəlb olunma")),
 	tgbotapi.NewKeyboardButtonRow(
-		tgbotapi.NewKeyboardButton("Müraciət növü 2")),
+		tgbotapi.NewKeyboardButton("İşsizlikdən sığorta ödənişinin təyin edilməsi")),
 	tgbotapi.NewKeyboardButtonRow(
-		tgbotapi.NewKeyboardButton("Müraciət növü 3")),
+		tgbotapi.NewKeyboardButton("Peşə hazırlığına cəlb olunma")),
+	tgbotapi.NewKeyboardButtonRow(
+		tgbotapi.NewKeyboardButton("Peşə hazırlığına cəlb olunma")),
+	tgbotapi.NewKeyboardButtonRow(
+		tgbotapi.NewKeyboardButton("Özünüməşğulluğun təşkili")),
+	tgbotapi.NewKeyboardButtonRow(
+		tgbotapi.NewKeyboardButton("İşə düzəltmə")),
 )
 
 type req1 struct {
