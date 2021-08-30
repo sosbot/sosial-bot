@@ -190,7 +190,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 				msg.ReplyMarkup = mainMenu
 				bot.Send(msg)
 			}
-			if update.Message.Text == " Geriyə" {
+			if update.Message.Text == "Geriyə" {
 				//msg.ReplyToMessageID = update.Message.MessageID
 				msg.ReplyMarkup = mainMenu
 				bot.Send(msg)
