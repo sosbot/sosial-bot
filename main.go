@@ -213,7 +213,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 		} else {
 			switch update.Message.Text {
 			case mainMenu.Keyboard[0][0].Text:
-				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "🏠 Müraciət et")
+				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "ㅤ")
 				msg.ReplyMarkup = reqMenu
 				bot.Send(msg)
 			case mainMenu.Keyboard[0][1].Text:
@@ -227,7 +227,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 				bot.Send(msg)
 			case mainMenu.Keyboard[1][0].Text: //"🏠 Müraciət ünvanı":
 				//msg.ReplyToMessageID = update.Message.MessageID
-				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "🏠 Müraciət ünvanı")
+				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "ㅤ")
 				btn := tgbotapi.KeyboardButton{
 					RequestLocation: true,
 					Text:            "🗺Ünvanı paylaş",
