@@ -228,7 +228,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 			switch update.Message.Text {
 			case mainMenu.Keyboard[0][0].Text:
 				cmdLine = mainMenu.Keyboard[0][0].Text
-				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Müraciət növünü seçiniz")
+				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Müraciət növünü seçiniz:")
 				msg.ReplyMarkup = reqMenu
 				bot.Send(msg)
 			case mainMenu.Keyboard[0][1].Text:
