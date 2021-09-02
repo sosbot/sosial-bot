@@ -9,6 +9,7 @@ import (
 	"math/rand"
 	"net/http"
 	"os"
+	"regexp"
 	"strconv"
 	"time"
 
@@ -304,7 +305,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 					switch cs.State {
 					case 0:
 						if checkFin(update.Message.Text) == false {
-							msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Fin yanlışdır. FİN-i bir daha daxil edin zəhmət olmasa:")
+							msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Fin yanlışdır. Xahiş edirik, doğru FİN-i daxil edin:")
 							bot.Send(msg)
 						} else {
 							cs.Fin = update.Message.Text
@@ -313,17 +314,27 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 							bot.Send(msg)
 						}
 					case 1:
-						cs.Phone = update.Message.Text
-						msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Email-i  daxil edin:")
-						req1Map[update.Message.From.ID].State = 2
-						bot.Send(msg)
+						if validPhoneFormat(update.Message.Text) == false {
+							msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Nömrə düzgün qaydada yığılmayıbdır.Misal olaraq, 9940551010101 olaraq yığılmalıdır.")
+							bot.Send(msg)
+						} else {
+							cs.Phone = update.Message.Text
+							msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Email-i  daxil edin:")
+							req1Map[update.Message.From.ID].State = 2
+							bot.Send(msg)
+						}
 					case 2:
-						cs.Email = update.Message.Text
-						//values := req1Map[update.Message.From.ID].Phone + " " + req1Map[update.Message.From.ID].Email + " " + req1Map[update.Message.From.ID].Fin
-						msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Müraciətiniz qəbul olundu. Müraciət nömrəsi: "+strconv.Itoa(rand.Intn(1000000)))
-						msg.ReplyMarkup = mainMenu
-						bot.Send(msg)
-						cs.State = -1
+						if validEmail(update.Message.Text) == false {
+							msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Email yanlışdır.Xahiş edirik, doğru Email-i daxil edin:")
+							bot.Send(msg)
+						} else {
+							cs.Email = update.Message.Text
+							//values := req1Map[update.Message.From.ID].Phone + " " + req1Map[update.Message.From.ID].Email + " " + req1Map[update.Message.From.ID].Fin
+							msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Müraciətiniz qəbul olundu. Müraciət nömrəsi: "+strconv.Itoa(rand.Intn(1000000)))
+							msg.ReplyMarkup = mainMenu
+							bot.Send(msg)
+							cs.State = -1
+						}
 
 					}
 
@@ -342,6 +353,24 @@ func checkFin(value string) bool {
 		return false
 	}
 	return true
+}
+
+func validPhoneFormat(value string) bool {
+	re := regexp.MustCompile(`^[0-9]+$`)
+	if re.MatchString(value) == true {
+		return true
+	} else {
+		return false
+	}
+}
+
+func validEmail(value string) bool {
+	re := regexp.MustCompile("^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$")
+	if re.MatchString(value) == true {
+		return true
+	} else {
+		return false
+	}
 }
 
 func main() {
