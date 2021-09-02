@@ -349,7 +349,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 }
 
 func checkFin(value string) bool {
-	if len(value) != 5 {
+	if len(value) != 7 {
 		return false
 	}
 	return true
