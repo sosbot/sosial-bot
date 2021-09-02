@@ -12,6 +12,7 @@ import (
 	"regexp"
 	"strconv"
 	"time"
+	"unicode/utf8"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
 	"github.com/gorilla/mux"
@@ -349,7 +350,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 }
 
 func checkFin(value string) bool {
-	if len(value) != 7 {
+	if utf8.RuneCountInString(value) != 7 {
 		return false
 	}
 	return true
