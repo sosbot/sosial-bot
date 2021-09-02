@@ -303,7 +303,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 				if ok && cmdLine == reqMenu.Keyboard[1][0].Text {
 					switch cs.State {
 					case 0:
-						if len(update.Message.Text) != 7 {
+						if checkFin(update.Message.Text) == true {
 							msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Fin yanlışdır. FİN-i bir daha daxil edin zəhmət olmasa:")
 							bot.Send(msg)
 						} else {
@@ -335,6 +335,13 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 	}
 
 	//}
+}
+
+func checkFin(value string) bool {
+	if len(value) != 5 {
+		return false
+	}
+	return true
 }
 
 func main() {
