@@ -326,7 +326,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 				bot.Send(msg)
 
 			}
-			if update.Message.Text == reqMenu.Keyboard[0][0].Text && cmdLineMenu == "mainMenu" { //"⤴Geriyə":
+			if update.Message.Text == reqMenu.Keyboard[0][0].Text && (cmdLineMenu == "mainMenu" || cmdLineMenu == "regionBranchesMenu" || cmdLineMenu == "capitalBranchesMenu") { //"⤴Geriyə":
 				cmdLine = reqMenu.Keyboard[0][0].Text
 				cmdLineMenu = "reqMenu"
 				//msg.ReplyToMessageID = update.Message.MessageID
