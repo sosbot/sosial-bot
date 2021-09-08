@@ -311,7 +311,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 				msg.ReplyMarkup = capitalBranchesMenu
 				bot.Send(msg)
 			}
-			if update.Message.Text == capitalBranchesMenu.Keyboard[0][0].Text && cmdLine == branchesMenu.Keyboard[1][0].Text { //"⤴Geriyə":
+			if update.Message.Text == capitalBranchesMenu.Keyboard[0][0].Text && (cmdLine == branchesMenu.Keyboard[1][0].Text || cmdLineMenu == "capitalBranchesMenu") { //"⤴Geriyə":
 				back_clicked_once = true
 				cmdLine = capitalBranchesMenu.Keyboard[0][0].Text
 				cmdLineMenu = "capitalBranchesMenu"
@@ -320,7 +320,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 				bot.Send(msg)
 
 			}
-			if update.Message.Text == capitalBranchesMenu.Keyboard[1][0].Text { //"⤴Geriyə":
+			if update.Message.Text == capitalBranchesMenu.Keyboard[1][0].Text {
 				cmdLine = capitalBranchesMenu.Keyboard[1][0].Text
 				cmdLineMenu = "capitalBranchesMenu"
 				pnt := tgbotapi.NewLocation(update.Message.Chat.ID, 40.420349239282245, 49.996552114612854)
@@ -330,7 +330,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 				bot.Send(msg)
 
 			}
-			if update.Message.Text == regionBranchesMenu.Keyboard[0][0].Text && cmdLine == branchesMenu.Keyboard[1][1].Text { //"⤴Geriyə":
+			if update.Message.Text == regionBranchesMenu.Keyboard[0][0].Text && (cmdLine == branchesMenu.Keyboard[1][1].Text || cmdLineMenu == "regionBranchesMenu") { //"⤴Geriyə":
 				back_clicked_once = true
 				cmdLine = regionBranchesMenu.Keyboard[0][0].Text
 				cmdLineMenu = "regionBranchesMenu"
