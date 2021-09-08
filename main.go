@@ -337,7 +337,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 				msg.ReplyMarkup = mainMenu
 				bot.Send(msg)
 			}
-			back_clicked_once = true
+			back_clicked_once = false
 			if update.Message.Text == mainMenu.Keyboard[1][0].Text { //"🏠 Müraciət ünvanı":
 				cmdLine = mainMenu.Keyboard[1][0].Text
 				cmdLineMenu = "mainMenu"
