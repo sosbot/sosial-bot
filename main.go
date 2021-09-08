@@ -377,7 +377,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 				cmdLine = reqMenu.Keyboard[1][0].Text
 				cmdLineMenu = "reqMenu"
 				req1Map[update.Message.From.ID] = new(req1)
-				req1Map[update.Message.From.ID].State = 0
+				req1Map[update.Message.From.ID].State = 999
 				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Fin-i daxil edin:")
 				msg.ReplyMarkup = tgbotapi.NewHideKeyboard(true)
 				bot.Send(msg)
@@ -424,10 +424,8 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 			} else {
 
 				cs, ok := req1Map[update.Message.From.ID]
-				if cmdLine == reqMenu.Keyboard[1][0].Text {
-					cmdLine = "neseolsunbosolmasin"
-				}
-				if ok && cmdLine != reqMenu.Keyboard[1][0].Text {
+
+				if ok && cmdLine == reqMenu.Keyboard[1][0].Text {
 
 					switch cs.State {
 					case 0:
@@ -462,6 +460,8 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 							bot.Send(msg)
 							cs.State = -1
 						}
+					case 999:
+						cs.State = 0
 
 					}
 
