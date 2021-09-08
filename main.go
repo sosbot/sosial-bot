@@ -249,33 +249,38 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 			}
 		} else {
 			cmdLine = ""
-			switch update.Message.Text {
-			case mainMenu.Keyboard[0][0].Text:
+
+			if update.Message.Text == mainMenu.Keyboard[0][0].Text {
 				cmdLine = mainMenu.Keyboard[0][0].Text
 				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Müraciət növünü seçiniz:")
 				msg.ReplyMarkup = reqMenu
 				bot.Send(msg)
-			case mainMenu.Keyboard[0][1].Text:
+			}
+			if update.Message.Text == mainMenu.Keyboard[0][1].Text {
 				cmdLine = mainMenu.Keyboard[0][1].Text
 				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Hörmətli Vətəndaş, Bu bölmə üzrə hal-hazırda texniki işlər aparılır. Qısa zamanda aktivləşəcək")
 				msg.ReplyMarkup = mainMenu
 				bot.Send(msg)
-			case mainMenu.Keyboard[1][1].Text:
+			}
+			if update.Message.Text == mainMenu.Keyboard[1][1].Text {
 				cmdLine = mainMenu.Keyboard[1][1].Text
 				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "https://dma.gov.az/agentlik/haqqimizda")
 				msg.ReplyMarkup = mainMenu
 				bot.Send(msg)
-			case mainMenu.Keyboard[2][0].Text:
+			}
+			if update.Message.Text == mainMenu.Keyboard[2][0].Text {
 				cmdLine = mainMenu.Keyboard[2][0].Text
 				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "https://dma.gov.az/agentlik/idare-heyeti/idare-heyetinin-sedri/abbasbeyli-mustafa-aslan-oglu")
 				msg.ReplyMarkup = mainMenu
 				bot.Send(msg)
-			case mainMenu.Keyboard[3][0].Text: //📌 Filiallar
+			}
+			if update.Message.Text == mainMenu.Keyboard[3][0].Text { //📌 Filiallar
 				cmdLine = mainMenu.Keyboard[3][0].Text
 				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Filial növünü seçiniz")
 				msg.ReplyMarkup = branchesMenu
 				bot.Send(msg)
-			case branchesMenu.Keyboard[0][0].Text: //"⤴Geriyə":
+			}
+			if update.Message.Text == branchesMenu.Keyboard[0][0].Text { //"⤴Geriyə":
 				if cmdLine == "" {
 
 					cmdLine = branchesMenu.Keyboard[0][0].Text
@@ -283,23 +288,27 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 					msg.ReplyMarkup = mainMenu
 					bot.Send(msg)
 				}
-			case branchesMenu.Keyboard[1][0].Text: //🔘 Rayonlar üzrə
+			}
+			if update.Message.Text == branchesMenu.Keyboard[1][0].Text { //🔘 Rayonlar üzrə
 				cmdLine = branchesMenu.Keyboard[1][0].Text
 				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Filialı seçiniz")
 				msg.ReplyMarkup = regionBranchesMenu
 				bot.Send(msg)
-			case branchesMenu.Keyboard[1][1].Text: //🔘 Bakı üzrə
+			}
+			if update.Message.Text == branchesMenu.Keyboard[1][1].Text { //🔘 Bakı üzrə
 				cmdLine = branchesMenu.Keyboard[1][1].Text
 				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Filialı seçiniz")
 				msg.ReplyMarkup = capitalBranchesMenu
-			case capitalBranchesMenu.Keyboard[0][0].Text: //"⤴Geriyə":
+			}
+			if update.Message.Text == capitalBranchesMenu.Keyboard[0][0].Text { //"⤴Geriyə":
 				if cmdLine == branchesMenu.Keyboard[1][0].Text {
 
 					cmdLine = capitalBranchesMenu.Keyboard[0][0].Text
 					msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Filial növünü seçiniz")
 					msg.ReplyMarkup = branchesMenu
 				}
-			case regionBranchesMenu.Keyboard[0][0].Text: //"⤴Geriyə":
+			}
+			if update.Message.Text == regionBranchesMenu.Keyboard[0][0].Text { //"⤴Geriyə":
 				if cmdLine == branchesMenu.Keyboard[1][1].Text {
 
 					cmdLine = regionBranchesMenu.Keyboard[0][0].Text
@@ -307,13 +316,15 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 					msg.ReplyMarkup = branchesMenu
 					bot.Send(msg)
 				}
-			case reqMenu.Keyboard[0][0].Text: //"⤴Geriyə":
+			}
+			if update.Message.Text == reqMenu.Keyboard[0][0].Text { //"⤴Geriyə":
 				cmdLine = reqMenu.Keyboard[0][0].Text
 				//msg.ReplyToMessageID = update.Message.MessageID
 				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Əsas menyuya keçid edildi")
 				msg.ReplyMarkup = mainMenu
 				bot.Send(msg)
-			case mainMenu.Keyboard[1][0].Text: //"🏠 Müraciət ünvanı":
+			}
+			if update.Message.Text == mainMenu.Keyboard[1][0].Text { //"🏠 Müraciət ünvanı":
 				cmdLine = mainMenu.Keyboard[1][0].Text
 				//msg.ReplyToMessageID = update.Message.MessageID
 				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Zəhmət olmasa, paylaşmağa razılıq verin")
@@ -324,45 +335,51 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 				msg.ReplyMarkup = tgbotapi.NewReplyKeyboard([]tgbotapi.KeyboardButton{btn})
 				//msg.ReplyMarkup = mainMenu
 				bot.Send(msg)
-			case reqMenu.Keyboard[1][0].Text: //"Müraciət növü 1":
+			}
+			if update.Message.Text == reqMenu.Keyboard[1][0].Text { //"Müraciət növü 1":
 				cmdLine = reqMenu.Keyboard[1][0].Text
 				req1Map[update.Message.From.ID] = new(req1)
 				req1Map[update.Message.From.ID].State = 0
 				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Fin-i daxil edin:")
 				msg.ReplyMarkup = tgbotapi.NewHideKeyboard(true)
 				bot.Send(msg)
-			case reqMenu.Keyboard[2][0].Text:
+			}
+			if update.Message.Text == reqMenu.Keyboard[2][0].Text {
 				cmdLine = reqMenu.Keyboard[2][0].Text
 				//msg.ReplyToMessageID = update.Message.MessageID
 				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Hörmətli Vətəndaş, Bu bölmə üzrə hal-hazırda texniki işlər aparılır. Qısa zamanda aktivləşəcək")
 				msg.ReplyMarkup = reqMenu
 				bot.Send(msg)
-			case reqMenu.Keyboard[3][0].Text:
+			}
+			if update.Message.Text == reqMenu.Keyboard[3][0].Text {
 				cmdLine = reqMenu.Keyboard[3][0].Text
 				//msg.ReplyToMessageID = update.Message.MessageID
 				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Hörmətli Vətəndaş, Bu bölmə üzrə hal-hazırda texniki işlər aparılır. Qısa zamanda aktivləşəcək")
 				msg.ReplyMarkup = reqMenu
 				bot.Send(msg)
-			case reqMenu.Keyboard[4][0].Text:
+			}
+			if update.Message.Text == reqMenu.Keyboard[4][0].Text {
 				cmdLine = reqMenu.Keyboard[4][0].Text
 				//msg.ReplyToMessageID = update.Message.MessageID
 				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Hörmətli Vətəndaş, Bu bölmə üzrə hal-hazırda texniki işlər aparılır. Qısa zamanda aktivləşəcək")
 				msg.ReplyMarkup = reqMenu
 				bot.Send(msg)
-			case reqMenu.Keyboard[5][0].Text:
+			}
+			if update.Message.Text == reqMenu.Keyboard[5][0].Text {
 				cmdLine = reqMenu.Keyboard[5][0].Text
 				//msg.ReplyToMessageID = update.Message.MessageID
 				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Hörmətli Vətəndaş, Bu bölmə üzrə hal-hazırda texniki işlər aparılır. Qısa zamanda aktivləşəcək")
 				msg.ReplyMarkup = reqMenu
 				bot.Send(msg)
-			case reqMenu.Keyboard[6][0].Text:
+			}
+			if update.Message.Text == reqMenu.Keyboard[6][0].Text {
 				cmdLine = reqMenu.Keyboard[6][0].Text
 				//msg.ReplyToMessageID = update.Message.MessageID
 				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Hörmətli Vətəndaş, Bu bölmə üzrə hal-hazırda texniki işlər aparılır. Qısa zamanda aktivləşəcək")
 				msg.ReplyMarkup = reqMenu
 				bot.Send(msg)
-			case reqMenu.Keyboard[6][0].Text:
-			default:
+			} else {
+
 				cs, ok := req1Map[update.Message.From.ID]
 				if ok && cmdLine == reqMenu.Keyboard[1][0].Text {
 					switch cs.State {
