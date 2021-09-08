@@ -320,8 +320,8 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 				bot.Send(msg)
 
 			}
-			if update.Message.Text == capitalBranchesMenu.Keyboard[0][1].Text { //"⤴Geriyə":
-				cmdLine = capitalBranchesMenu.Keyboard[0][1].Text
+			if update.Message.Text == capitalBranchesMenu.Keyboard[1][0].Text { //"⤴Geriyə":
+				cmdLine = capitalBranchesMenu.Keyboard[1][0].Text
 				cmdLineMenu = "capitalBranchesMenu"
 				pnt := tgbotapi.NewLocation(update.Message.Chat.ID, 40.420349239282245, 49.996552114612854)
 				bot.Send(pnt)
