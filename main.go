@@ -425,7 +425,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 
 				cs, ok := req1Map[update.Message.From.ID]
 				if ok && cmdLine != reqMenu.Keyboard[1][0].Text {
-					cmdLine = ""
+					cmdLine = "neseolsunbosolmasin"
 					switch cs.State {
 					case 0:
 						if checkFin(update.Message.Text) == false {
