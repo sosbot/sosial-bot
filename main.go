@@ -307,12 +307,14 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 				cmdLineMenu = "branchesMenu"
 				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Filialı seçiniz")
 				msg.ReplyMarkup = capitalBranchesMenu
+				bot.Send(msg)
 			}
 			if update.Message.Text == capitalBranchesMenu.Keyboard[0][0].Text && cmdLine == branchesMenu.Keyboard[1][0].Text { //"⤴Geriyə":
 				cmdLine = capitalBranchesMenu.Keyboard[0][0].Text
 				cmdLineMenu = "capitalBranchesMenu"
 				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Filial növünü seçiniz")
 				msg.ReplyMarkup = branchesMenu
+				bot.Send(msg)
 
 			}
 			if update.Message.Text == regionBranchesMenu.Keyboard[0][0].Text && cmdLine == branchesMenu.Keyboard[1][1].Text { //"⤴Geriyə":
