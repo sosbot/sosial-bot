@@ -98,10 +98,12 @@ Remove the vendor directory and commit the removal.
 var db *sql.DB
 var err error
 var cmdLine string
+var cmdLineMenu string
 
 func init() {
 	req1Map = make(map[int]*req1)
 	cmdLine = ""
+	cmdLineMenu = ""
 }
 
 func telegram() {
@@ -251,30 +253,35 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 
 			if update.Message.Text == mainMenu.Keyboard[0][0].Text {
 				cmdLine = mainMenu.Keyboard[0][0].Text
+				cmdLineMenu = "mainMenu"
 				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Müraciət növünü seçiniz:")
 				msg.ReplyMarkup = reqMenu
 				bot.Send(msg)
 			}
 			if update.Message.Text == mainMenu.Keyboard[0][1].Text {
 				cmdLine = mainMenu.Keyboard[0][1].Text
+				cmdLineMenu = "mainMenu"
 				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Hörmətli Vətəndaş, Bu bölmə üzrə hal-hazırda texniki işlər aparılır. Qısa zamanda aktivləşəcək")
 				msg.ReplyMarkup = mainMenu
 				bot.Send(msg)
 			}
 			if update.Message.Text == mainMenu.Keyboard[1][1].Text {
 				cmdLine = mainMenu.Keyboard[1][1].Text
+				cmdLineMenu = "mainMenu"
 				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "https://dma.gov.az/agentlik/haqqimizda")
 				msg.ReplyMarkup = mainMenu
 				bot.Send(msg)
 			}
 			if update.Message.Text == mainMenu.Keyboard[2][0].Text {
 				cmdLine = mainMenu.Keyboard[2][0].Text
+				cmdLineMenu = "mainMenu"
 				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "https://dma.gov.az/agentlik/idare-heyeti/idare-heyetinin-sedri/abbasbeyli-mustafa-aslan-oglu")
 				msg.ReplyMarkup = mainMenu
 				bot.Send(msg)
 			}
 			if update.Message.Text == mainMenu.Keyboard[3][0].Text { //📌 Filiallar
 				cmdLine = mainMenu.Keyboard[3][0].Text
+				cmdLineMenu = "mainMenu"
 				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Filial növünü seçiniz")
 				msg.ReplyMarkup = branchesMenu
 				bot.Send(msg)
@@ -282,6 +289,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 			if update.Message.Text == branchesMenu.Keyboard[0][0].Text && cmdLine == "" { //"⤴Geriyə":
 
 				cmdLine = branchesMenu.Keyboard[0][0].Text
+				cmdLineMenu = "branchesMenu"
 				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Əsas səhifəyə keçid edildi")
 				msg.ReplyMarkup = mainMenu
 				bot.Send(msg)
@@ -289,18 +297,20 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 			}
 			if update.Message.Text == branchesMenu.Keyboard[1][0].Text { //🔘 Rayonlar üzrə
 				cmdLine = branchesMenu.Keyboard[1][0].Text
+				cmdLineMenu = "branchesMenu"
 				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Filialı seçiniz")
 				msg.ReplyMarkup = regionBranchesMenu
 				bot.Send(msg)
 			}
 			if update.Message.Text == branchesMenu.Keyboard[1][1].Text { //🔘 Bakı üzrə
 				cmdLine = branchesMenu.Keyboard[1][1].Text
+				cmdLineMenu = "branchesMenu"
 				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Filialı seçiniz")
 				msg.ReplyMarkup = capitalBranchesMenu
 			}
 			if update.Message.Text == capitalBranchesMenu.Keyboard[0][0].Text && cmdLine == branchesMenu.Keyboard[1][0].Text { //"⤴Geriyə":
-
 				cmdLine = capitalBranchesMenu.Keyboard[0][0].Text
+				cmdLineMenu = "capitalBranchesMenu"
 				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Filial növünü seçiniz")
 				msg.ReplyMarkup = branchesMenu
 
@@ -308,13 +318,15 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 			if update.Message.Text == regionBranchesMenu.Keyboard[0][0].Text && cmdLine == branchesMenu.Keyboard[1][1].Text { //"⤴Geriyə":
 
 				cmdLine = regionBranchesMenu.Keyboard[0][0].Text
+				cmdLineMenu = "regionBranchesMenu"
 				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Filial növünü seçiniz")
 				msg.ReplyMarkup = branchesMenu
 				bot.Send(msg)
 
 			}
-			if update.Message.Text == reqMenu.Keyboard[0][0].Text { //"⤴Geriyə":
+			if update.Message.Text == reqMenu.Keyboard[0][0].Text && cmdLineMenu == "mainMenu" { //"⤴Geriyə":
 				cmdLine = reqMenu.Keyboard[0][0].Text
+				cmdLineMenu = "reqMenu"
 				//msg.ReplyToMessageID = update.Message.MessageID
 				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Əsas menyuya keçid edildi")
 				msg.ReplyMarkup = mainMenu
@@ -322,6 +334,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 			}
 			if update.Message.Text == mainMenu.Keyboard[1][0].Text { //"🏠 Müraciət ünvanı":
 				cmdLine = mainMenu.Keyboard[1][0].Text
+				cmdLineMenu = "mainMenu"
 				//msg.ReplyToMessageID = update.Message.MessageID
 				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Zəhmət olmasa, paylaşmağa razılıq verin")
 				btn := tgbotapi.KeyboardButton{
@@ -334,6 +347,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 			}
 			if update.Message.Text == reqMenu.Keyboard[1][0].Text { //"Müraciət növü 1":
 				cmdLine = reqMenu.Keyboard[1][0].Text
+				cmdLineMenu = "reqMenu"
 				req1Map[update.Message.From.ID] = new(req1)
 				req1Map[update.Message.From.ID].State = 0
 				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Fin-i daxil edin:")
@@ -342,6 +356,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 			}
 			if update.Message.Text == reqMenu.Keyboard[2][0].Text {
 				cmdLine = reqMenu.Keyboard[2][0].Text
+				cmdLineMenu = "reqMenu"
 				//msg.ReplyToMessageID = update.Message.MessageID
 				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Hörmətli Vətəndaş, Bu bölmə üzrə hal-hazırda texniki işlər aparılır. Qısa zamanda aktivləşəcək")
 				msg.ReplyMarkup = reqMenu
@@ -349,6 +364,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 			}
 			if update.Message.Text == reqMenu.Keyboard[3][0].Text {
 				cmdLine = reqMenu.Keyboard[3][0].Text
+				cmdLineMenu = "reqMenu"
 				//msg.ReplyToMessageID = update.Message.MessageID
 				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Hörmətli Vətəndaş, Bu bölmə üzrə hal-hazırda texniki işlər aparılır. Qısa zamanda aktivləşəcək")
 				msg.ReplyMarkup = reqMenu
@@ -356,6 +372,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 			}
 			if update.Message.Text == reqMenu.Keyboard[4][0].Text {
 				cmdLine = reqMenu.Keyboard[4][0].Text
+				cmdLineMenu = "reqMenu"
 				//msg.ReplyToMessageID = update.Message.MessageID
 				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Hörmətli Vətəndaş, Bu bölmə üzrə hal-hazırda texniki işlər aparılır. Qısa zamanda aktivləşəcək")
 				msg.ReplyMarkup = reqMenu
@@ -363,6 +380,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 			}
 			if update.Message.Text == reqMenu.Keyboard[5][0].Text {
 				cmdLine = reqMenu.Keyboard[5][0].Text
+				cmdLineMenu = "reqMenu"
 				//msg.ReplyToMessageID = update.Message.MessageID
 				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Hörmətli Vətəndaş, Bu bölmə üzrə hal-hazırda texniki işlər aparılır. Qısa zamanda aktivləşəcək")
 				msg.ReplyMarkup = reqMenu
@@ -370,6 +388,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 			}
 			if update.Message.Text == reqMenu.Keyboard[6][0].Text {
 				cmdLine = reqMenu.Keyboard[6][0].Text
+				cmdLineMenu = "reqMenu"
 				//msg.ReplyToMessageID = update.Message.MessageID
 				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Hörmətli Vətəndaş, Bu bölmə üzrə hal-hazırda texniki işlər aparılır. Qısa zamanda aktivləşəcək")
 				msg.ReplyMarkup = reqMenu
