@@ -248,7 +248,6 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 				bot.Send(msg)
 			}
 		} else {
-			cmdLine = ""
 
 			if update.Message.Text == mainMenu.Keyboard[0][0].Text {
 				cmdLine = mainMenu.Keyboard[0][0].Text
@@ -280,14 +279,13 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 				msg.ReplyMarkup = branchesMenu
 				bot.Send(msg)
 			}
-			if update.Message.Text == branchesMenu.Keyboard[0][0].Text { //"⤴Geriyə":
-				if cmdLine == "" {
+			if update.Message.Text == branchesMenu.Keyboard[0][0].Text && cmdLine == "" { //"⤴Geriyə":
 
-					cmdLine = branchesMenu.Keyboard[0][0].Text
-					msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Əsas səhifəyə keçid edildi")
-					msg.ReplyMarkup = mainMenu
-					bot.Send(msg)
-				}
+				cmdLine = branchesMenu.Keyboard[0][0].Text
+				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Əsas səhifəyə keçid edildi")
+				msg.ReplyMarkup = mainMenu
+				bot.Send(msg)
+
 			}
 			if update.Message.Text == branchesMenu.Keyboard[1][0].Text { //🔘 Rayonlar üzrə
 				cmdLine = branchesMenu.Keyboard[1][0].Text
@@ -300,22 +298,20 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Filialı seçiniz")
 				msg.ReplyMarkup = capitalBranchesMenu
 			}
-			if update.Message.Text == capitalBranchesMenu.Keyboard[0][0].Text { //"⤴Geriyə":
-				if cmdLine == branchesMenu.Keyboard[1][0].Text {
+			if update.Message.Text == capitalBranchesMenu.Keyboard[0][0].Text && cmdLine == branchesMenu.Keyboard[1][0].Text { //"⤴Geriyə":
 
-					cmdLine = capitalBranchesMenu.Keyboard[0][0].Text
-					msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Filial növünü seçiniz")
-					msg.ReplyMarkup = branchesMenu
-				}
+				cmdLine = capitalBranchesMenu.Keyboard[0][0].Text
+				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Filial növünü seçiniz")
+				msg.ReplyMarkup = branchesMenu
+
 			}
-			if update.Message.Text == regionBranchesMenu.Keyboard[0][0].Text { //"⤴Geriyə":
-				if cmdLine == branchesMenu.Keyboard[1][1].Text {
+			if update.Message.Text == regionBranchesMenu.Keyboard[0][0].Text && cmdLine == branchesMenu.Keyboard[1][1].Text { //"⤴Geriyə":
 
-					cmdLine = regionBranchesMenu.Keyboard[0][0].Text
-					msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Filial növünü seçiniz")
-					msg.ReplyMarkup = branchesMenu
-					bot.Send(msg)
-				}
+				cmdLine = regionBranchesMenu.Keyboard[0][0].Text
+				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Filial növünü seçiniz")
+				msg.ReplyMarkup = branchesMenu
+				bot.Send(msg)
+
 			}
 			if update.Message.Text == reqMenu.Keyboard[0][0].Text { //"⤴Geriyə":
 				cmdLine = reqMenu.Keyboard[0][0].Text
