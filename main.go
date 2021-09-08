@@ -73,7 +73,7 @@ var regionBranchesMenu = tgbotapi.NewReplyKeyboard(
 	tgbotapi.NewKeyboardButtonRow(
 		tgbotapi.NewKeyboardButton("⤴Geriyə")),
 	tgbotapi.NewKeyboardButtonRow(
-		tgbotapi.NewKeyboardButton("X Rayon Məşğulluq mərkəzi")),
+		tgbotapi.NewKeyboardButton("Sumqayıt Məşğulluq Mərkəzi")),
 )
 
 type req1 struct {
