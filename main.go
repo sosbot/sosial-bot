@@ -314,9 +314,10 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 			if update.Message.Text == capitalBranchesMenu.Keyboard[0][0].Text && back_clicked_once == false && (cmdLine == branchesMenu.Keyboard[1][0].Text || cmdLineMenu == "capitalBranchesMenu") { //"⤴Geriyə":
 				back_clicked_once = true
 				cmdLine = capitalBranchesMenu.Keyboard[0][0].Text
-				cmdLineMenu = "capitalBranchesMenu"
+
 				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Filial növünü seçiniz")
 				msg.ReplyMarkup = branchesMenu
+				cmdLineMenu = "branchesMenu"
 				bot.Send(msg)
 
 			}
@@ -333,13 +334,14 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 			if update.Message.Text == regionBranchesMenu.Keyboard[0][0].Text && back_clicked_once == false && (cmdLine == branchesMenu.Keyboard[1][1].Text || cmdLineMenu == "regionBranchesMenu") { //"⤴Geriyə":
 				back_clicked_once = true
 				cmdLine = regionBranchesMenu.Keyboard[0][0].Text
-				cmdLineMenu = "regionBranchesMenu"
+
 				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Filial növünü seçiniz")
 				msg.ReplyMarkup = branchesMenu
+				cmdLineMenu = "branchesMenu"
 				bot.Send(msg)
 
 			}
-			if update.Message.Text == reqMenu.Keyboard[0][0].Text && back_clicked_once == false && (cmdLineMenu == "mainMenu" || cmdLineMenu == "regionBranchesMenu" || cmdLineMenu == "capitalBranchesMenu") { //"⤴Geriyə":
+			if update.Message.Text == reqMenu.Keyboard[0][0].Text && back_clicked_once == false && (cmdLineMenu == "mainMenu" || cmdLineMenu == "branchesMenu") { //"⤴Geriyə":
 				cmdLine = reqMenu.Keyboard[0][0].Text
 				cmdLineMenu = "reqMenu"
 				//msg.ReplyToMessageID = update.Message.MessageID
