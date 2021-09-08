@@ -248,6 +248,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 				bot.Send(msg)
 			}
 		} else {
+			cmdLine = ""
 			switch update.Message.Text {
 			case mainMenu.Keyboard[0][0].Text:
 				cmdLine = mainMenu.Keyboard[0][0].Text
@@ -275,6 +276,9 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 				msg.ReplyMarkup = branchesMenu
 				bot.Send(msg)
 			case branchesMenu.Keyboard[0][0].Text: //"⤴Geriyə":
+				if cmdLine != "" {
+					break
+				}
 				cmdLine = branchesMenu.Keyboard[0][0].Text
 				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Əsas səhifəyə keçid edildi")
 				msg.ReplyMarkup = mainMenu
@@ -289,10 +293,16 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Filialı seçiniz")
 				msg.ReplyMarkup = capitalBranchesMenu
 			case capitalBranchesMenu.Keyboard[0][0].Text: //"⤴Geriyə":
+				if cmdLine != branchesMenu.Keyboard[1][0].Text {
+					break
+				}
 				cmdLine = capitalBranchesMenu.Keyboard[0][0].Text
 				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Filial növünü seçiniz")
 				msg.ReplyMarkup = branchesMenu
 			case regionBranchesMenu.Keyboard[0][0].Text: //"⤴Geriyə":
+				if cmdLine != branchesMenu.Keyboard[1][1].Text {
+					break
+				}
 				cmdLine = regionBranchesMenu.Keyboard[0][0].Text
 				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Filial növünü seçiniz")
 				msg.ReplyMarkup = branchesMenu
