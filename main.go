@@ -341,6 +341,16 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 				bot.Send(msg)
 
 			}
+			if update.Message.Text == regionBranchesMenu.Keyboard[1][0].Text {
+				cmdLine = regionBranchesMenu.Keyboard[1][0].Text
+				cmdLineMenu = "regionBranchesMenu"
+				pnt := tgbotapi.NewLocation(update.Message.Chat.ID, 40.575157484113916, 49.687489343855006)
+				bot.Send(pnt)
+				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Sumqayıt Məşğulluq Mərkəzi \n Tel:+994186420257 \n Iş saatları:  09:00–13:00,14:00–18:00 \n 71 Z. Hajiyev, Sumqayit 5001, Азербайджан")
+				msg.ReplyMarkup = regionBranchesMenu
+				bot.Send(msg)
+
+			}
 			if update.Message.Text == reqMenu.Keyboard[0][0].Text && back_clicked_once == false && (cmdLineMenu == "mainMenu" || cmdLineMenu == "branchesMenu") { //"⤴Geriyə":
 				cmdLine = reqMenu.Keyboard[0][0].Text
 				cmdLineMenu = "reqMenu"
