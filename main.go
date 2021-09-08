@@ -285,15 +285,15 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 				msg.ReplyMarkup = regionBranchesMenu
 				bot.Send(msg)
 			case branchesMenu.Keyboard[1][1].Text: //🔘 Bakı üzrə
-				cmdLine = regionBranchesMenu.Keyboard[1][1].Text
+				cmdLine = branchesMenu.Keyboard[1][1].Text
 				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Filialı seçiniz")
-				msg.ReplyMarkup = branchesMenu
+				msg.ReplyMarkup = capitalBranchesMenu
 			case capitalBranchesMenu.Keyboard[0][0].Text: //"⤴Geriyə":
 				cmdLine = capitalBranchesMenu.Keyboard[0][0].Text
 				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Filial növünü seçiniz")
 				msg.ReplyMarkup = branchesMenu
 			case regionBranchesMenu.Keyboard[0][0].Text: //"⤴Geriyə":
-				cmdLine = branchesMenu.Keyboard[0][2].Text
+				cmdLine = regionBranchesMenu.Keyboard[0][0].Text
 				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Filial növünü seçiniz")
 				msg.ReplyMarkup = capitalBranchesMenu
 				bot.Send(msg)
