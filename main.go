@@ -320,6 +320,16 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 				bot.Send(msg)
 
 			}
+			if update.Message.Text == capitalBranchesMenu.Keyboard[0][1].Text { //"⤴Geriyə":
+				cmdLine = capitalBranchesMenu.Keyboard[0][1].Text
+				cmdLineMenu = "capitalBranchesMenu"
+				pnt := tgbotapi.NewLocation(update.Message.Chat.ID, 40.420349239282245, 49.996552114612854)
+				bot.Send(pnt)
+				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "3 saylı Ərazi Məşğulluq Mərkəzi \n Tel:+994124525134 \n Iş saatları:  09:00–13:00,14:00–18:00")
+				msg.ReplyMarkup = branchesMenu
+				bot.Send(msg)
+
+			}
 			if update.Message.Text == regionBranchesMenu.Keyboard[0][0].Text && cmdLine == branchesMenu.Keyboard[1][1].Text { //"⤴Geriyə":
 				back_clicked_once = true
 				cmdLine = regionBranchesMenu.Keyboard[0][0].Text
