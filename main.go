@@ -276,13 +276,13 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 				msg.ReplyMarkup = branchesMenu
 				bot.Send(msg)
 			case branchesMenu.Keyboard[0][0].Text: //"⤴Geriyə":
-				if cmdLine != "" {
-					break
+				if cmdLine == "" {
+
+					cmdLine = branchesMenu.Keyboard[0][0].Text
+					msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Əsas səhifəyə keçid edildi")
+					msg.ReplyMarkup = mainMenu
+					bot.Send(msg)
 				}
-				cmdLine = branchesMenu.Keyboard[0][0].Text
-				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Əsas səhifəyə keçid edildi")
-				msg.ReplyMarkup = mainMenu
-				bot.Send(msg)
 			case branchesMenu.Keyboard[1][0].Text: //🔘 Rayonlar üzrə
 				cmdLine = branchesMenu.Keyboard[1][0].Text
 				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Filialı seçiniz")
@@ -293,20 +293,20 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Filialı seçiniz")
 				msg.ReplyMarkup = capitalBranchesMenu
 			case capitalBranchesMenu.Keyboard[0][0].Text: //"⤴Geriyə":
-				if cmdLine != branchesMenu.Keyboard[1][0].Text {
-					break
+				if cmdLine == branchesMenu.Keyboard[1][0].Text {
+
+					cmdLine = capitalBranchesMenu.Keyboard[0][0].Text
+					msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Filial növünü seçiniz")
+					msg.ReplyMarkup = branchesMenu
 				}
-				cmdLine = capitalBranchesMenu.Keyboard[0][0].Text
-				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Filial növünü seçiniz")
-				msg.ReplyMarkup = branchesMenu
 			case regionBranchesMenu.Keyboard[0][0].Text: //"⤴Geriyə":
-				if cmdLine != branchesMenu.Keyboard[1][1].Text {
-					break
+				if cmdLine == branchesMenu.Keyboard[1][1].Text {
+
+					cmdLine = regionBranchesMenu.Keyboard[0][0].Text
+					msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Filial növünü seçiniz")
+					msg.ReplyMarkup = branchesMenu
+					bot.Send(msg)
 				}
-				cmdLine = regionBranchesMenu.Keyboard[0][0].Text
-				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Filial növünü seçiniz")
-				msg.ReplyMarkup = branchesMenu
-				bot.Send(msg)
 			case reqMenu.Keyboard[0][0].Text: //"⤴Geriyə":
 				cmdLine = reqMenu.Keyboard[0][0].Text
 				//msg.ReplyToMessageID = update.Message.MessageID
