@@ -326,7 +326,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 				pnt := tgbotapi.NewLocation(update.Message.Chat.ID, 40.420349239282245, 49.996552114612854)
 				bot.Send(pnt)
 				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "3 saylı Ərazi Məşğulluq Mərkəzi \n Tel:+994124525134 \n Iş saatları:  09:00–13:00,14:00–18:00")
-				msg.ReplyMarkup = branchesMenu
+				msg.ReplyMarkup = capitalBranchesMenu
 				bot.Send(msg)
 
 			}
