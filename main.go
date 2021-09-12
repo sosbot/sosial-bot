@@ -264,9 +264,21 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 			if update.Message.Text == mainMenu.Keyboard[0][1].Text {
 				cmdLine = mainMenu.Keyboard[0][1].Text
 				cmdLineMenu = "mainMenu"
-				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Hörmətli Vətəndaş, Bu bölmə üzrə hal-hazırda texniki işlər aparılır. Qısa zamanda aktivləşəcək")
-				msg.ReplyMarkup = mainMenu
-				bot.Send(msg)
+				rows, err := db.Query("SELECT reqtype,reqtext FROM public.requests WHERE reqfrom = ?", update.Message.From.ID)
+				if err != nil {
+					log.Println(err)
+				}
+				for rows.Next() {
+					var reqType string
+					var reqText string
+
+					_ = rows.Scan(&reqType, &reqText)
+					msg := tgbotapi.NewMessage(update.Message.Chat.ID, reqType+"\n"+reqText+"\n"+"Status: Baxılmaqdadır")
+					msg.ReplyMarkup = mainMenu
+					bot.Send(msg)
+
+				}
+
 			}
 			if update.Message.Text == mainMenu.Keyboard[1][1].Text {
 				cmdLine = mainMenu.Keyboard[1][1].Text
