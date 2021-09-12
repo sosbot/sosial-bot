@@ -434,7 +434,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 							msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Fin yanlışdır. Xahiş edirik, doğru FİN-i daxil edin:")
 							bot.Send(msg)
 						} else {
-							cs.Fin = update.Message.Text
+							cs.Fin = "Fin-i daxil edin:" + update.Message.Text
 							msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Əlaqə nömrəsini daxil edin:")
 							req1Map[update.Message.From.ID].State = 1
 							bot.Send(msg)
@@ -444,7 +444,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 							msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Nömrə düzgün qaydada yığılmayıbdır.Misal olaraq, 9940551010101 olaraq yığılmalıdır.")
 							bot.Send(msg)
 						} else {
-							cs.Phone = update.Message.Text
+							cs.Phone = "Əlaqə nömrəsini daxil edin:" + update.Message.Text
 							msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Email-i  daxil edin:")
 							req1Map[update.Message.From.ID].State = 2
 							bot.Send(msg)
@@ -454,8 +454,8 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 							msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Email yanlışdır.Xahiş edirik, doğru Email-i daxil edin:")
 							bot.Send(msg)
 						} else {
-							cs.Email = update.Message.Text
-							reqText := req1Map[update.Message.From.ID].Phone + " " + req1Map[update.Message.From.ID].Email + " " + req1Map[update.Message.From.ID].Fin
+							cs.Email = "Email-i  daxil edin:" + update.Message.Text
+							reqText := req1Map[update.Message.From.ID].Phone + "\n" + req1Map[update.Message.From.ID].Email + "\n" + req1Map[update.Message.From.ID].Fin
 							reqNumber = rand.Intn(10000000)
 
 							err = db.QueryRow("insert into public.requests(reqnumber,reqfrom,reqtype,reqtext) values($1,$2,$3,$4) returning reqnumber;", reqNumber, update.Message.From.ID, cmdLine, reqText).Scan(&id)
