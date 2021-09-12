@@ -268,6 +268,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 				if err != nil {
 					log.Println(err)
 				}
+				defer rows.Close()
 				for rows.Next() {
 					var reqType string
 					var reqText string
