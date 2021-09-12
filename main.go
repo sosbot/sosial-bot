@@ -264,21 +264,21 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 			if update.Message.Text == mainMenu.Keyboard[0][1].Text {
 				cmdLine = mainMenu.Keyboard[0][1].Text
 				cmdLineMenu = "mainMenu"
-				_, err := db.Query("SELECT reqnumber,reqtype,reqtext FROM public.requests WHERE reqfrom = ?", update.Message.From.ID)
+				rows, err := db.Query("SELECT reqnumber,reqtype,reqtext FROM public.requests WHERE reqfrom = ?", update.Message.From.ID)
 				if err != nil {
 					log.Println(err)
 				}
-				// for rows.Next() {
-				// 	var reqType string
-				// 	var reqText string
-				// 	var reqNumber int
+				for rows.Next() {
+					var reqType string
+					var reqText string
+					var reqNumber int
 
-				// 	_ = rows.Scan(&reqNumber, &reqType, &reqText)
-				// 	msg := tgbotapi.NewMessage(update.Message.Chat.ID, reqType+"\n"+"Müraciət nömrəsi:"+strconv.Itoa(reqNumber)+"\n"+reqText+"\n"+"Status: Baxılmaqdadır")
-				// 	msg.ReplyMarkup = mainMenu
-				// 	bot.Send(msg)
+					_ = rows.Scan(&reqNumber, &reqType, &reqText)
+					//msg := tgbotapi.NewMessage(update.Message.Chat.ID, reqType+"\n"+"Müraciət nömrəsi:"+strconv.Itoa(reqNumber)+"\n"+reqText+"\n"+"Status: Baxılmaqdadır")
+					//msg.ReplyMarkup = mainMenu
+					//bot.Send(msg)
 
-				// }
+				}
 
 			}
 			if update.Message.Text == mainMenu.Keyboard[1][1].Text {
