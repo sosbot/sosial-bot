@@ -58,7 +58,7 @@ var branchesMenu = tgbotapi.NewReplyKeyboard(
 	tgbotapi.NewKeyboardButtonRow(
 		tgbotapi.NewKeyboardButton("⤴Geriyə")),
 	tgbotapi.NewKeyboardButtonRow(
-		tgbotapi.NewKeyboardButton("🔘 Rayonlar üzrə"),
+		tgbotapi.NewKeyboardButton("🔘 Respublika üzrə"),
 		tgbotapi.NewKeyboardButton("🔘 Bakı üzrə")),
 )
 
@@ -100,6 +100,7 @@ var err error
 var cmdLine string
 var cmdLineMenu string
 var back_clicked_once bool
+var reqNumber int
 
 func init() {
 	req1Map = make(map[int]*req1)
@@ -455,6 +456,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 						} else {
 							cs.Email = update.Message.Text
 							//values := req1Map[update.Message.From.ID].Phone + " " + req1Map[update.Message.From.ID].Email + " " + req1Map[update.Message.From.ID].Fin
+							reqNumber = rand.Intn(10000000)
 							msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Müraciətiniz qəbul olundu. Müraciət nömrəsi: "+strconv.Itoa(rand.Intn(1000000)))
 							msg.ReplyMarkup = mainMenu
 							bot.Send(msg)
