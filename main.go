@@ -34,7 +34,7 @@ var mainMenu = tgbotapi.NewReplyKeyboard(
 
 	tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("📌 Ünvanımı paylaş"), tgbotapi.NewKeyboardButton("☑ Agentlik haqda")),
 	tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("🔘 Rəhbərlik")),
-	tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("📌 Filiallar")),
+	tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("📌 Məşğulluq Mərkəzləri")),
 )
 
 var reqMenu = tgbotapi.NewReplyKeyboard(
@@ -284,7 +284,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 			if update.Message.Text == mainMenu.Keyboard[3][0].Text { //📌 Filiallar
 				cmdLine = mainMenu.Keyboard[3][0].Text
 				cmdLineMenu = "mainMenu"
-				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Filial növünü seçiniz")
+				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Ərazi növünü seçiniz")
 				msg.ReplyMarkup = branchesMenu
 				bot.Send(msg)
 			}
@@ -300,14 +300,14 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 			if update.Message.Text == branchesMenu.Keyboard[1][0].Text { //🔘 Rayonlar üzrə
 				cmdLine = branchesMenu.Keyboard[1][0].Text
 				cmdLineMenu = "branchesMenu"
-				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Filialı seçiniz")
+				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Məşğulluq mərkəzini seçiniz")
 				msg.ReplyMarkup = regionBranchesMenu
 				bot.Send(msg)
 			}
 			if update.Message.Text == branchesMenu.Keyboard[1][1].Text { //🔘 Bakı üzrə
 				cmdLine = branchesMenu.Keyboard[1][1].Text
 				cmdLineMenu = "branchesMenu"
-				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Filialı seçiniz")
+				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Məşğulluq mərkəzini seçiniz")
 				msg.ReplyMarkup = capitalBranchesMenu
 				bot.Send(msg)
 			}
@@ -315,7 +315,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 				back_clicked_once = true
 				cmdLine = capitalBranchesMenu.Keyboard[0][0].Text
 
-				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Filial növünü seçiniz")
+				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Ərazi növünü seçiniz")
 				msg.ReplyMarkup = branchesMenu
 				cmdLineMenu = "branchesMenu"
 				bot.Send(msg)
@@ -335,7 +335,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 				back_clicked_once = true
 				cmdLine = regionBranchesMenu.Keyboard[0][0].Text
 
-				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Filial növünü seçiniz")
+				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Ərazi növünü seçiniz")
 				msg.ReplyMarkup = branchesMenu
 				cmdLineMenu = "branchesMenu"
 				bot.Send(msg)
