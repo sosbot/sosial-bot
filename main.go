@@ -270,11 +270,11 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 				}
 
 				for rows.Next() {
-					var reqType string
-					var reqText string
-					var reqNumber int
+					//var reqType string
+					//var reqText string
+					//var reqNumber int
 
-					_ = rows.Scan(&reqNumber, &reqType, &reqText)
+					//_ = rows.Scan(&reqNumber, &reqType, &reqText)
 					//msg := tgbotapi.NewMessage(update.Message.Chat.ID, reqType+"\n"+"Müraciət nömrəsi:"+strconv.Itoa(reqNumber)+"\n"+reqText+"\n"+"Status: Baxılmaqdadır")
 					//msg.ReplyMarkup = mainMenu
 					//bot.Send(msg)
