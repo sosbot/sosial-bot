@@ -264,7 +264,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 			if update.Message.Text == mainMenu.Keyboard[0][1].Text {
 				cmdLine = mainMenu.Keyboard[0][1].Text
 				cmdLineMenu = "mainMenu"
-				rows, err := db.Query("SELECT reqnumber,reqtype,reqtext FROM public.requests WHERE reqfrom = ?", update.Message.From.ID)
+				_, err := db.Query("SELECT reqnumber,reqtype,reqtext FROM public.requests WHERE reqfrom = ?", update.Message.From.ID)
 				if err != nil {
 					log.Println(err)
 				}
