@@ -58,8 +58,8 @@ var branchesMenu = tgbotapi.NewReplyKeyboard(
 	tgbotapi.NewKeyboardButtonRow(
 		tgbotapi.NewKeyboardButton("⤴Geriyə")),
 	tgbotapi.NewKeyboardButtonRow(
-		tgbotapi.NewKeyboardButton("🔘 Respublika üzrə"),
-		tgbotapi.NewKeyboardButton("🔘 Bakı üzrə")),
+		tgbotapi.NewKeyboardButton("🔘 Digər şəhərlər"),
+		tgbotapi.NewKeyboardButton("🔘 Bakı")),
 )
 
 var capitalBranchesMenu = tgbotapi.NewReplyKeyboard(
