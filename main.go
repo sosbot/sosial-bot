@@ -269,8 +269,9 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 					log.Println(err)
 				}
 				defer rows.Close()
-
+				var reqFound bool = false
 				for rows.Next() {
+					reqFound = true
 					var reqType string
 					var reqText string
 					var reqNumber int
@@ -280,6 +281,11 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 					msg.ReplyMarkup = mainMenu
 					bot.Send(msg)
 
+				}
+				if reqFound == false {
+					msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Müraciət tapılmadı.")
+					msg.ReplyMarkup = mainMenu
+					bot.Send(msg)
 				}
 
 			}
