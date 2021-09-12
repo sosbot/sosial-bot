@@ -458,7 +458,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 							reqText := req1Map[update.Message.From.ID].Phone + " " + req1Map[update.Message.From.ID].Email + " " + req1Map[update.Message.From.ID].Fin
 							reqNumber = rand.Intn(10000000)
 
-							err = db.QueryRow("insert into public.requests(reqnumber,reqfrom,reqtype,reqtexr) values($1,$2,$3,$4,$5);", reqNumber, update.Message.From.ID, cmdLine, reqText).Scan(&id)
+							err = db.QueryRow("insert into public.requests(reqnumber,reqfrom,reqtype,reqtext) values($1,$2,$3,$4) returning reqnumber;", reqNumber, update.Message.From.ID, cmdLine, reqText).Scan(&id)
 							if err != nil {
 								log.Println(err)
 								return
