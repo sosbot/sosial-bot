@@ -264,7 +264,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 			if update.Message.Text == mainMenu.Keyboard[0][1].Text {
 				cmdLine = mainMenu.Keyboard[0][1].Text
 				cmdLineMenu = "mainMenu"
-				rows, err := db.Query("SELECT reqtype,reqtext FROM public.requests WHERE reqfrom = ?", update.Message.From.ID)
+				rows, err := db.Query("SELECT reqnumber,reqtype,reqtext FROM public.requests WHERE reqfrom = ?", update.Message.From.ID)
 				if err != nil {
 					log.Println(err)
 				}
@@ -272,9 +272,10 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 				for rows.Next() {
 					var reqType string
 					var reqText string
+					var reqNumber string
 
 					_ = rows.Scan(&reqType, &reqText)
-					msg := tgbotapi.NewMessage(update.Message.Chat.ID, reqType+"\n"+reqText+"\n"+"Status: Baxılmaqdadır")
+					msg := tgbotapi.NewMessage(update.Message.Chat.ID, reqType+"\n"+"Müraciət nömrəsi:"+reqNumber+"\n"+reqText+"\n"+"Status: Baxılmaqdadır")
 					msg.ReplyMarkup = mainMenu
 					bot.Send(msg)
 
