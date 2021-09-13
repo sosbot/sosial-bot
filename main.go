@@ -232,7 +232,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 
 	if update.Message != nil {
 		if update.Message.From.ID != 820987449 {
-			msg := tgbotapi.NewMessage(update.Message.Chat.ID, "texniki işlər səbəbiylə sistem müvəqqəti olaraq dayandırılır")
+			msg := tgbotapi.NewMessage(update.Message.Chat.ID, "texniki işlər səbəbiylə sistem müvəqqəti olaraq dayandırılıb")
 			bot.Send(msg)
 		}
 		if update.Message.IsCommand() {
