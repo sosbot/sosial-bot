@@ -234,6 +234,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 		if update.Message.From.ID != 820987449 {
 			msg := tgbotapi.NewMessage(update.Message.Chat.ID, "texniki işlər səbəbiylə sistem müvəqqəti olaraq dayandırılıb")
 			bot.Send(msg)
+			return
 		}
 		if update.Message.IsCommand() {
 			cmdText = update.Message.Command()
