@@ -481,7 +481,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 						} else {
 							cs.Email = "Email-i  daxil edin:" + update.Message.Text
 							reqText := req1Map[update.Message.From.ID].Phone + "\n" + req1Map[update.Message.From.ID].Email + "\n" + req1Map[update.Message.From.ID].Fin
-							rand.Seed(10000000)
+							rand.Seed(time.Now().UTC().UnixNano())
 							reqNumber = rand.Intn(10000000)
 
 							err = db.QueryRow("insert into public.requests(reqnumber,reqfrom,reqtype,reqtext) values($1,$2,$3,$4) returning reqnumber;", reqNumber, update.Message.From.ID, cmdLine, reqText).Scan(&id)
