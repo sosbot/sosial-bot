@@ -238,7 +238,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 		// }
 
 		if 1 == 1 {
-			msg := tgbotapi.NewMessage(update.Message.Chat.ID, "SosialBot-un funksionallığını daha dayaxşılaşdırmaq məqsədilə komanda olaraq, gecə-gündüz işləyirik. Hal-hazırda yeni dəyişikliklərimizi tətbiq etməyə çalışırıq. Bu səbəbdən botun funksionallığını müvəqqəti olaraq dayandırmışıq. Az sonra, son yeniliklərlə bot, fəaliyyətini davam etidərəcək. Anlayışınız üçün təşəkkür edirik.")
+			msg := tgbotapi.NewMessage(update.Message.Chat.ID, "SosialBot-un funksionallığını daha da yaxşılaşdırmaq məqsədilə komanda olaraq, gecə-gündüz işləyirik. Hal-hazırda yeni dəyişikliklərimizi tətbiq etməyə çalışırıq. Bu səbəbdən botun funksionallığını müvəqqəti olaraq dayandırmışıq. Az sonra, son yeniliklərlə, bot fəaliyyətini davam etidərəcək. Anlayışınız üçün təşəkkür edirik.")
 			bot.Send(msg)
 			return
 		}
