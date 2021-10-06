@@ -469,7 +469,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 							msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Mobil nömrə yanlışdır. Düzgün qayda: +9940XXXXXXXXX")
 							bot.Send(msg)
 						} else {
-							cs.Phone = "Əlaqə nömrəsini daxil edin:" + update.Message.Text
+							cs.Phone = "Mobil nömrəni daxil edin:" + update.Message.Text
 							msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Email-i  daxil edin:")
 							req1Map[update.Message.From.ID].State = 2
 							bot.Send(msg)
