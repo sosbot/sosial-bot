@@ -460,7 +460,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 							bot.Send(msg)
 						} else {
 							cs.Fin = "Fin-i daxil edin:" + update.Message.Text
-							msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Əlaqə nömrəsini daxil edin:")
+							msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Mobil nömrəni daxil edin:")
 							req1Map[update.Message.From.ID].State = 1
 							bot.Send(msg)
 						}
