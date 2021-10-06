@@ -466,7 +466,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 						}
 					case 1:
 						if validPhoneFormat(update.Message.Text) == false {
-							msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Nömrə düzgün qaydada yığılmayıbdır.Misal olaraq, 9940551010101 olaraq yığılmalıdır.")
+							msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Mobil nömrə yanlışdır. Düzgün qayda: +9940XXXXXXXXX")
 							bot.Send(msg)
 						} else {
 							cs.Phone = "Əlaqə nömrəsini daxil edin:" + update.Message.Text
@@ -518,7 +518,7 @@ func checkFin(value string) bool {
 }
 
 func validPhoneFormat(value string) bool {
-	re := regexp.MustCompile(`^[0-9]+$`)
+	re := regexp.MustCompile("^[\\+]{1}[0-9]{3}[0]{1}[1-9]{2}[0-9]{7}$")
 	if re.MatchString(value) == true {
 		return true
 	} else {
