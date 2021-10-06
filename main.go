@@ -468,13 +468,13 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 							bot.Send(msg)
 						} else {
 							cs.Fin = "Fin-i daxil edin:" + update.Message.Text
-							msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Mobil nömrəni daxil edin:")
+							msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Mobil nömrəni(+9940XXXXXXXXX) daxil edin:")
 							req1Map[update.Message.From.ID].State = 1
 							bot.Send(msg)
 						}
 					case 1:
 						if validPhoneFormat(update.Message.Text) == false {
-							msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Mobil nömrə yanlışdır. Düzgün qayda: +9940XXXXXXXXX")
+							msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Mobil nömrə yanlışdır. Düzgün format: +9940XXXXXXXXX")
 							bot.Send(msg)
 						} else {
 							cs.Phone = "Mobil nömrəni daxil edin:" + update.Message.Text
