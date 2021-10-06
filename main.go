@@ -237,7 +237,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 		// 	return
 		// }
 
-		if 1 == 1 {
+		if update.Message.From.ID != 820987449 {
 			msg := tgbotapi.NewMessage(update.Message.Chat.ID, "SosialBot-un funksionallığını daha da yaxşılaşdırmaq məqsədilə komanda olaraq, gecə-gündüz işləyirik. Hal-hazırda yeni dəyişikliklərimizi tətbiq etməyə çalışırıq. Bu səbəbdən botun funksionallığını müvəqqəti olaraq dayandırmışıq. Az sonra, son yeniliklərlə, bot fəaliyyətini davam etidərəcək. Anlayışınız üçün təşəkkür edirik.")
 			bot.Send(msg)
 			msg1 := tgbotapi.NewPhotoShare(update.Message.Chat.ID, `https://fins.az/file/articles/2021/04/30/1619774456_dovlet-mesgulluq-agentliyi.jpg`)
