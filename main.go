@@ -555,11 +555,11 @@ func execQuestions(QuestionTypeName string, chat_id int64) {
 		err = rows.Scan(&questionTypeName, &state, &requestText, &requestErrorText, &responseValidationType)
 		checkErr(err)
 
-		questionsArrMap[chat_id].QuestionTypeName = questionTypeName
-		questionsArrMap[chat_id].State = state
-		questionsArrMap[chat_id].RequestText = requestText
-		questionsArrMap[chat_id].RequestErrorText = requestErrorText
-		questionsArrMap[chat_id].ResponseValidationType = responseValidationType
+		// questionsArrMap[chat_id].QuestionTypeName = questionTypeName
+		// questionsArrMap[chat_id].State = state
+		// questionsArrMap[chat_id].RequestText = requestText
+		// questionsArrMap[chat_id].RequestErrorText = requestErrorText
+		// questionsArrMap[chat_id].ResponseValidationType = responseValidationType
 
 	}
 	logger(123, "ok2", LogAppInfo)
