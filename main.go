@@ -6,7 +6,6 @@ import (
 	"html/template"
 	"io/ioutil"
 	"log"
-	"math/rand"
 	"net/http"
 	"os"
 	"regexp"
@@ -21,9 +20,12 @@ import (
 )
 
 const (
-	LogError   = "Error"
-	LogInfo    = "Info"
-	LogWarning = "Warning"
+	LogError      = "Error"
+	LogInfo       = "Info"
+	LogWarning    = "Warning"
+	LogAppError   = "AppError"
+	LogAppInfo    = "AppInfo"
+	LogAppWarning = "AppWarning"
 )
 
 var (
@@ -98,7 +100,7 @@ type questionsArr struct {
 }
 
 var questionsArrMap map[int]*questionsArr
-
+var questionArrMapCurrentState int
 var req1Map map[int]*req1
 
 //https://api.telegram.org/bot1563958753:AAFNwjzp_Kvgqw0SIzHeJlxXjZnOYp2rNz8/setWebhook?url=https://sosialbot.herokuapp.com/1563958753:AAFNwjzp_Kvgqw0SIzHeJlxXjZnOYp2rNz8
@@ -424,6 +426,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 				req1Map[update.Message.From.ID] = new(req1)
 				req1Map[update.Message.From.ID].State = 999
 				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Fin-i daxil edin:")
+				execQuestions(reqMenu.Keyboard[1][0].Text)
 				msg.ReplyMarkup = tgbotapi.NewHideKeyboard(true)
 				bot.Send(msg)
 			}
@@ -468,57 +471,57 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 				bot.Send(msg)
 			} else {
 
-				cs, ok := req1Map[update.Message.From.ID]
+				//cs, ok := req1Map[update.Message.From.ID]
+				//ok && cmdLine == reqMenu.Keyboard[1][0].Text
+				if 1 == 3 {
 
-				if ok && cmdLine == reqMenu.Keyboard[1][0].Text {
+					// switch cs.State {
+					// case 0:
+					// 	if checkFin(update.Message.Text) == false {
+					// 		msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Fin yanlışdır. Xahiş edirik, doğru FİN-i daxil edin:")
+					// 		logger(update.Message.Chat.ID, "Fin yanlışdır. Xahiş edirik, doğru FİN-i daxil edin:", LogError)
+					// 		bot.Send(msg)
+					// 	} else {
+					// 		cs.Fin = "Fin-i daxil edin:" + update.Message.Text
+					// 		msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Mobil nömrəni(+9940XXXXXXXXX) daxil edin:")
+					// 		req1Map[update.Message.From.ID].State = 1
+					// 		bot.Send(msg)
+					// 	}
+					// case 1:
+					// 	if validPhoneFormat(update.Message.Text) == false {
+					// 		msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Mobil nömrə yanlışdır. Düzgün format: +9940XXXXXXXXX")
+					// 		bot.Send(msg)
+					// 	} else {
+					// 		cs.Phone = "Mobil nömrəni daxil edin:" + update.Message.Text
+					// 		msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Email-i  daxil edin:")
+					// 		req1Map[update.Message.From.ID].State = 2
+					// 		bot.Send(msg)
+					// 	}
+					// case 2:
+					// 	if validEmail(update.Message.Text) == false {
+					// 		msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Email yanlışdır.Xahiş edirik, doğru Email-i daxil edin:")
+					// 		bot.Send(msg)
+					// 	} else {
+					// 		cs.Email = "Email-i  daxil edin:" + update.Message.Text
+					// 		reqText := req1Map[update.Message.From.ID].Phone + "\n" + req1Map[update.Message.From.ID].Email + "\n" + req1Map[update.Message.From.ID].Fin
+					// 		rand.Seed(time.Now().UTC().UnixNano())
+					// 		reqNumber = rand.Intn(10000000)
 
-					switch cs.State {
-					case 0:
-						if checkFin(update.Message.Text) == false {
-							msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Fin yanlışdır. Xahiş edirik, doğru FİN-i daxil edin:")
-							logger(update.Message.Chat.ID, "Fin yanlışdır. Xahiş edirik, doğru FİN-i daxil edin:", LogError)
-							bot.Send(msg)
-						} else {
-							cs.Fin = "Fin-i daxil edin:" + update.Message.Text
-							msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Mobil nömrəni(+9940XXXXXXXXX) daxil edin:")
-							req1Map[update.Message.From.ID].State = 1
-							bot.Send(msg)
-						}
-					case 1:
-						if validPhoneFormat(update.Message.Text) == false {
-							msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Mobil nömrə yanlışdır. Düzgün format: +9940XXXXXXXXX")
-							bot.Send(msg)
-						} else {
-							cs.Phone = "Mobil nömrəni daxil edin:" + update.Message.Text
-							msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Email-i  daxil edin:")
-							req1Map[update.Message.From.ID].State = 2
-							bot.Send(msg)
-						}
-					case 2:
-						if validEmail(update.Message.Text) == false {
-							msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Email yanlışdır.Xahiş edirik, doğru Email-i daxil edin:")
-							bot.Send(msg)
-						} else {
-							cs.Email = "Email-i  daxil edin:" + update.Message.Text
-							reqText := req1Map[update.Message.From.ID].Phone + "\n" + req1Map[update.Message.From.ID].Email + "\n" + req1Map[update.Message.From.ID].Fin
-							rand.Seed(time.Now().UTC().UnixNano())
-							reqNumber = rand.Intn(10000000)
+					// 		err = db.QueryRow("insert into public.requests(reqnumber,reqfrom,reqtype,reqtext) values($1,$2,$3,$4) returning reqnumber;", reqNumber, update.Message.From.ID, cmdLine, reqText).Scan(&id)
+					// 		if err != nil {
+					// 			log.Println(err)
+					// 			return
+					// 		}
 
-							err = db.QueryRow("insert into public.requests(reqnumber,reqfrom,reqtype,reqtext) values($1,$2,$3,$4) returning reqnumber;", reqNumber, update.Message.From.ID, cmdLine, reqText).Scan(&id)
-							if err != nil {
-								log.Println(err)
-								return
-							}
+					// 		msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Müraciətiniz qəbul olundu. Müraciət nömrəsi: "+strconv.Itoa(reqNumber))
+					// 		msg.ReplyMarkup = mainMenu
+					// 		bot.Send(msg)
+					// 		cs.State = -1
+					// 	}
+					// case 999:
+					// 	cs.State = 0
 
-							msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Müraciətiniz qəbul olundu. Müraciət nömrəsi: "+strconv.Itoa(reqNumber))
-							msg.ReplyMarkup = mainMenu
-							bot.Send(msg)
-							cs.State = -1
-						}
-					case 999:
-						cs.State = 0
-
-					}
+					// }
 
 				}
 			}
@@ -528,6 +531,34 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 	}
 
 	//}
+}
+
+func execQuestions(QuestionTypeName string) {
+	rows, err := db.Query("SELECT qt.name,q.state,q.request_text,q.request_error_text,q.response_validation_type from public.questions q,public.question_type qt  where qt.id=q.question_type_id and qt.name= " + QuestionTypeName)
+	if err != nil {
+		log.Println(err)
+	}
+	defer rows.Close()
+	var sequence int = 0
+	var questionTypeName string
+	var state int
+	var requestText string
+	var requestErrorText string
+	var responseValidationType string
+	for rows.Next() {
+
+		sequence++
+
+		_ = rows.Scan(&questionTypeName, &state, &requestText, &requestErrorText, &responseValidationType)
+		questionsArrMap[sequence].QuestionTypeName = questionTypeName
+		questionsArrMap[sequence].State = state
+		questionsArrMap[sequence].RequestText = requestText
+		questionsArrMap[sequence].RequestErrorText = requestErrorText
+		questionsArrMap[sequence].ResponseValidationType = responseValidationType
+
+	}
+	logger(123, strconv.Itoa(sequence), LogAppInfo)
+
 }
 
 func logger(chatid int64, text string, logType string) {
