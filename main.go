@@ -549,7 +549,7 @@ func execQuestions(QuestionTypeName string) {
 	var responseValidationType string
 	logger(123, "ok1", LogAppInfo)
 	for rows.Next() {
-
+		logger(123, "seq_"+strconv.Itoa(sequence), LogAppInfo)
 		sequence++
 
 		_ = rows.Scan(&questionTypeName, &state, &requestText, &requestErrorText, &responseValidationType)
