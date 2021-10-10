@@ -428,10 +428,12 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 				cmdLineMenu = "reqMenu"
 				req1Map[update.Message.From.ID] = new(req1)
 				req1Map[update.Message.From.ID].State = 999
-				msg := tgbotapi.NewMessage(update.Message.Chat.ID, execQuestions(reqMenu.Keyboard[1][0].Text, update.Message.Chat.ID, CurrentState))
 
-				msg.ReplyMarkup = tgbotapi.NewHideKeyboard(true)
-				bot.Send(msg)
+				execQuestions(cmdLine, update.Message.Chat.ID, CurrentState)
+				//msg := tgbotapi.NewMessage(update.Message.Chat.ID, execQuestions(cmdLine, update.Message.Chat.ID, CurrentState))
+
+				//msg.ReplyMarkup = tgbotapi.NewHideKeyboard(true)
+				//bot.Send(msg)
 			}
 			if update.Message.Text == reqMenu.Keyboard[2][0].Text {
 				cmdLine = reqMenu.Keyboard[2][0].Text
@@ -536,7 +538,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 	//}
 }
 
-func execQuestions(QuestionTypeName string, chat_id int64, currentState int) string {
+func execQuestions(QuestionTypeName string, chat_id int64, currentState int) {
 	logger(123, QuestionTypeName, LogAppInfo)
 	cs := currentState + 1
 	rows, err := db.Query(`SELECT qt.name,q.state,q.request_text,q.request_error_text,q.response_validation_type from public.questions q,public.question_type qt  where qt.id=q.question_type_id and qt.name=$1 and q.state=$2;`, QuestionTypeName, cs)
@@ -567,7 +569,11 @@ func execQuestions(QuestionTypeName string, chat_id int64, currentState int) str
 	}
 	logger(123, "ok2", LogAppInfo)
 	logger(123, strconv.Itoa(sequence), LogAppInfo)
-	return requestText
+	CurrentState = cs
+
+	msg := tgbotapi.NewMessage(chat_id, requestText)
+	msg.ReplyMarkup = tgbotapi.NewHideKeyboard(true)
+	bot.Send(msg)
 }
 
 func checkErr(err error) {
