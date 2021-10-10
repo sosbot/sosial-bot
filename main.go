@@ -548,7 +548,7 @@ func execQuestions(QuestionTypeName string) {
 	logger(123, "ok1", LogAppInfo)
 	for rows.Next() {
 		logger(123, "seq_"+strconv.Itoa(sequence), LogAppInfo)
-		sequence++
+		sequence = sequence + 1
 
 		//err = rows.Scan(&questionTypeName, &state, &requestText, &requestErrorText, &responseValidationType)
 		checkErr(err)
