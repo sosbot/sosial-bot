@@ -577,7 +577,7 @@ func logger(chatid int64, text string, logType string) {
 		log.Println(err)
 		return
 	}
-	defer db.Close()
+
 }
 
 func checkFin(value string) bool {
