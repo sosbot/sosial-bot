@@ -99,7 +99,7 @@ type questionsArr struct {
 	ResponseValidationType string
 }
 
-var questionsArrMap map[int]*questionsArr
+var questionsArrMap map[int64]*questionsArr
 var questionArrMapCurrentState int
 var req1Map map[int]*req1
 
@@ -426,7 +426,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 				req1Map[update.Message.From.ID] = new(req1)
 				req1Map[update.Message.From.ID].State = 999
 				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Fin-i daxil edin:")
-				execQuestions(reqMenu.Keyboard[1][0].Text)
+				execQuestions(reqMenu.Keyboard[1][0].Text, update.Message.Chat.ID)
 				msg.ReplyMarkup = tgbotapi.NewHideKeyboard(true)
 				bot.Send(msg)
 			}
@@ -533,7 +533,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 	//}
 }
 
-func execQuestions(QuestionTypeName string) {
+func execQuestions(QuestionTypeName string, chat_id int64) {
 	logger(123, QuestionTypeName, LogAppInfo)
 
 	rows, err := db.Query(`SELECT qt.name,q.state,q.request_text,q.request_error_text,q.response_validation_type from public.questions q,public.question_type qt  where qt.id=q.question_type_id ;`)
@@ -553,11 +553,11 @@ func execQuestions(QuestionTypeName string) {
 		err = rows.Scan(&questionTypeName, &state, &requestText, &requestErrorText, &responseValidationType)
 		checkErr(err)
 
-		questionsArrMap[sequence].QuestionTypeName = questionTypeName
-		questionsArrMap[sequence].State = state
-		questionsArrMap[sequence].RequestText = requestText
-		questionsArrMap[sequence].RequestErrorText = requestErrorText
-		questionsArrMap[sequence].ResponseValidationType = responseValidationType
+		questionsArrMap[chat_id].QuestionTypeName = questionTypeName
+		questionsArrMap[chat_id].State = state
+		questionsArrMap[chat_id].RequestText = requestText
+		questionsArrMap[chat_id].RequestErrorText = requestErrorText
+		questionsArrMap[chat_id].ResponseValidationType = responseValidationType
 
 	}
 	logger(123, "ok2", LogAppInfo)
