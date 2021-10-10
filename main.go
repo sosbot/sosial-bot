@@ -644,7 +644,7 @@ func execQuestions(QuestionTypeName string, chat_id int64, currentState int) {
 	}
 	logger(123, "ok2", LogAppInfo)
 	logger(123, strconv.Itoa(sequence), LogAppInfo)
-	if cs != 0 {
+	if sequence != 0 {
 		CurrentState = cs
 		msg := tgbotapi.NewMessage(chat_id, requestText)
 		msg.ReplyMarkup = tgbotapi.NewHideKeyboard(true)
