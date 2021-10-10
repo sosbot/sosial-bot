@@ -572,12 +572,12 @@ func checkErr(err error) {
 }
 
 func logger(chatid int64, text string, logType string) {
-	err := db.QueryRow("insert into public.logs(chat_id,text,type) values($1,$2,$3);", chatid, text, logType)
-	if err != nil {
-		log.Println(err)
-		return
-	}
-	defer db.Close()
+	// err := db.QueryRow("insert into public.logs(chat_id,text,type) values($1,$2,$3);", chatid, text, logType)
+	// if err != nil {
+	// 	log.Println(err)
+	// 	return
+	// }
+	// defer db.Close()
 }
 
 func checkFin(value string) bool {
