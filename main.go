@@ -531,7 +531,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 }
 
 func logger(chatid int64, text string, logType string) {
-	err := db.QueryRow("insert into public.logs(chat_id,text) values($1,$2);", chatid, text)
+	err := db.QueryRow("insert into public.logs(chat_id,text,type) values($1,$2,$3);", chatid, text, logType)
 	if err != nil {
 		log.Println(err)
 		return
