@@ -553,11 +553,11 @@ func execQuestions(QuestionTypeName string) {
 		sequence++
 
 		_ = rows.Scan(&questionTypeName, &state, &requestText, &requestErrorText, &responseValidationType)
-		questionsArrMap[sequence].QuestionTypeName = questionTypeName
-		questionsArrMap[sequence].State = state
-		questionsArrMap[sequence].RequestText = requestText
-		questionsArrMap[sequence].RequestErrorText = requestErrorText
-		questionsArrMap[sequence].ResponseValidationType = responseValidationType
+		//questionsArrMap[sequence].QuestionTypeName = questionTypeName
+		//questionsArrMap[sequence].State = state
+		//questionsArrMap[sequence].RequestText = requestText
+		//questionsArrMap[sequence].RequestErrorText = requestErrorText
+		//questionsArrMap[sequence].ResponseValidationType = responseValidationType
 
 	}
 	logger(123, "ok2", LogAppInfo)
