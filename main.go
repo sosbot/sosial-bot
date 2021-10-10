@@ -117,6 +117,7 @@ Remove the vendor directory and commit the removal.
 var db *sql.DB
 var err error
 var cmdLine string
+var cmdLineArch string
 var cmdLineMenu string
 var back_clicked_once bool
 var reqNumber int
@@ -125,6 +126,7 @@ func init() {
 	req1Map = make(map[int]*req1)
 	questionsArrMap = make(map[int64]*questionsArr)
 	cmdLine = ""
+	cmdLineArch = ""
 	cmdLineMenu = ""
 	back_clicked_once = false
 	CurrentState = 0
@@ -425,6 +427,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 			}
 			if update.Message.Text == reqMenu.Keyboard[1][0].Text { //"Müraciət növü 1":
 				cmdLine = reqMenu.Keyboard[1][0].Text
+				cmdLineArch = cmdLine
 				cmdLineMenu = "reqMenu"
 				req1Map[update.Message.From.ID] = new(req1)
 				req1Map[update.Message.From.ID].State = 999
@@ -475,7 +478,9 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 				msg.ReplyMarkup = reqMenu
 				bot.Send(msg)
 			} else {
-
+				if cmdLine != cmdLineArch {
+					CurrentState = 0
+				}
 				//cs, ok := req1Map[update.Message.From.ID]
 				//ok && cmdLine == reqMenu.Keyboard[1][0].Text
 				if 1 == 3 {
