@@ -433,6 +433,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 				req1Map[update.Message.From.ID].State = 999
 
 				execQuestions(cmdLine, update.Message.Chat.ID, CurrentState)
+				CurrentState = 999
 				//msg := tgbotapi.NewMessage(update.Message.Chat.ID, execQuestions(cmdLine, update.Message.Chat.ID, CurrentState))
 
 				//msg.ReplyMarkup = tgbotapi.NewHideKeyboard(true)
@@ -481,7 +482,12 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 				if cmdLine != cmdLineArch {
 					CurrentState = 0
 				} else {
-					execQuestionsAnswer(cmdLine, update.Message.Chat.ID, CurrentState, update.Message.Text)
+
+					if CurrentState == 999 {
+						CurrentState = 0
+					} else {
+						execQuestionsAnswer(cmdLine, update.Message.Chat.ID, CurrentState, update.Message.Text)
+					}
 				}
 				//cs, ok := req1Map[update.Message.From.ID]
 				//ok && cmdLine == reqMenu.Keyboard[1][0].Text
