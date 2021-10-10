@@ -102,6 +102,7 @@ type questionsArr struct {
 var questionsArrMap map[int64]*questionsArr
 var questionArrMapCurrentState int
 var req1Map map[int]*req1
+var CurrentState int
 
 //https://api.telegram.org/bot1563958753:AAFNwjzp_Kvgqw0SIzHeJlxXjZnOYp2rNz8/setWebhook?url=https://sosialbot.herokuapp.com/1563958753:AAFNwjzp_Kvgqw0SIzHeJlxXjZnOYp2rNz8
 
@@ -126,6 +127,7 @@ func init() {
 	cmdLine = ""
 	cmdLineMenu = ""
 	back_clicked_once = false
+	CurrentState = 0
 }
 
 func telegram() {
@@ -427,7 +429,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 				req1Map[update.Message.From.ID] = new(req1)
 				req1Map[update.Message.From.ID].State = 999
 				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Fin-i daxil edin:")
-				execQuestions(reqMenu.Keyboard[1][0].Text, update.Message.Chat.ID)
+				execQuestions(reqMenu.Keyboard[1][0].Text, update.Message.Chat.ID, CurrentState)
 				msg.ReplyMarkup = tgbotapi.NewHideKeyboard(true)
 				bot.Send(msg)
 			}
@@ -534,10 +536,10 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 	//}
 }
 
-func execQuestions(QuestionTypeName string, chat_id int64) {
+func execQuestions(QuestionTypeName string, chat_id int64, currentState int) {
 	logger(123, QuestionTypeName, LogAppInfo)
-
-	rows, err := db.Query(`SELECT qt.name,q.state,q.request_text,q.request_error_text,q.response_validation_type from public.questions q,public.question_type qt  where qt.id=q.question_type_id and qt.name=$1 ;`, QuestionTypeName)
+	cs := currentState + 1
+	rows, err := db.Query(`SELECT qt.name,q.state,q.request_text,q.request_error_text,q.response_validation_type from public.questions q,public.question_type qt  where qt.id=q.question_type_id and qt.name=$1 and q.state=$2;`, QuestionTypeName, cs)
 	checkErr(err)
 	defer rows.Close()
 	var sequence int = 0
