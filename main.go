@@ -550,7 +550,7 @@ func execQuestions(QuestionTypeName string) {
 		logger(123, "seq_"+strconv.Itoa(sequence), LogAppInfo)
 		sequence++
 
-		err = rows.Scan(&questionTypeName, &state, &requestText, &requestErrorText, &responseValidationType)
+		//err = rows.Scan(&questionTypeName, &state, &requestText, &requestErrorText, &responseValidationType)
 		checkErr(err)
 
 		//questionsArrMap[sequence].QuestionTypeName = questionTypeName
