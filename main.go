@@ -99,7 +99,7 @@ type questionsArr struct {
 	ResponseValidationType string
 }
 
-var questionsArrMap map[int64]*questionsArr
+var questionsArrMap map[int]*questionsArr
 var questionArrMapCurrentState int
 var req1Map map[int]*req1
 
@@ -122,6 +122,7 @@ var reqNumber int
 
 func init() {
 	req1Map = make(map[int]*req1)
+	questionsArrMap = make(map[int]*questionsArr)
 	cmdLine = ""
 	cmdLineMenu = ""
 	back_clicked_once = false
@@ -553,11 +554,11 @@ func execQuestions(QuestionTypeName string, chat_id int64) {
 		err = rows.Scan(&questionTypeName, &state, &requestText, &requestErrorText, &responseValidationType)
 		checkErr(err)
 
-		questionsArrMap[chat_id].QuestionTypeName = questionTypeName
-		questionsArrMap[chat_id].State = state
-		questionsArrMap[chat_id].RequestText = requestText
-		questionsArrMap[chat_id].RequestErrorText = requestErrorText
-		questionsArrMap[chat_id].ResponseValidationType = responseValidationType
+		questionsArrMap[sequence].QuestionTypeName = questionTypeName
+		questionsArrMap[sequence].State = state
+		questionsArrMap[sequence].RequestText = requestText
+		questionsArrMap[sequence].RequestErrorText = requestErrorText
+		questionsArrMap[sequence].ResponseValidationType = responseValidationType
 
 	}
 	logger(123, "ok2", LogAppInfo)
