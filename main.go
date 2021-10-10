@@ -480,6 +480,8 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 			} else {
 				if cmdLine != cmdLineArch {
 					CurrentState = 0
+				} else {
+					execQuestions(cmdLine, update.Message.Chat.ID, CurrentState)
 				}
 				//cs, ok := req1Map[update.Message.From.ID]
 				//ok && cmdLine == reqMenu.Keyboard[1][0].Text
