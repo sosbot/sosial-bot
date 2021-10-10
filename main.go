@@ -6,6 +6,7 @@ import (
 	"html/template"
 	"io/ioutil"
 	"log"
+	"math/rand"
 	"net/http"
 	"os"
 	"regexp"
@@ -626,6 +627,7 @@ func execQuestions(QuestionTypeName string, chat_id int64, currentState int) {
 	var requestText string
 	var requestErrorText string
 	var responseValidationType string
+
 	for rows.Next() {
 		logger(123, "seq_"+strconv.Itoa(sequence), LogAppInfo)
 		sequence = sequence + 1
@@ -642,11 +644,19 @@ func execQuestions(QuestionTypeName string, chat_id int64, currentState int) {
 	}
 	logger(123, "ok2", LogAppInfo)
 	logger(123, strconv.Itoa(sequence), LogAppInfo)
-	CurrentState = cs
+	if cs != 0 {
+		CurrentState = cs
+		msg := tgbotapi.NewMessage(chat_id, requestText)
+		msg.ReplyMarkup = tgbotapi.NewHideKeyboard(true)
+		bot.Send(msg)
+	} else {
+		rand.Seed(time.Now().UTC().UnixNano())
+		reqNumber = rand.Intn(10000000)
+		msg := tgbotapi.NewMessage(chat_id, "Müraciətiniz qəbul olundu. Müraciət nömrəsi: "+strconv.Itoa(reqNumber))
+		msg.ReplyMarkup = mainMenu
+		bot.Send(msg)
+	}
 
-	msg := tgbotapi.NewMessage(chat_id, requestText)
-	msg.ReplyMarkup = tgbotapi.NewHideKeyboard(true)
-	bot.Send(msg)
 }
 
 func checkErr(err error) {
