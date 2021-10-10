@@ -481,7 +481,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 				if cmdLine != cmdLineArch {
 					CurrentState = 0
 				} else {
-					execQuestions(cmdLine, update.Message.Chat.ID, CurrentState)
+					execQuestionsAnswer(cmdLine, update.Message.Chat.ID, CurrentState, update.Message.Text)
 				}
 				//cs, ok := req1Map[update.Message.From.ID]
 				//ok && cmdLine == reqMenu.Keyboard[1][0].Text
@@ -543,6 +543,66 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 	}
 
 	//}
+}
+
+func execQuestionsAnswer(QuestionTypeName string, chat_id int64, currentState int, answer string) {
+	logger(123, QuestionTypeName, LogAppInfo)
+
+	rows, err := db.Query(`SELECT qt.name,q.state,q.request_text,q.request_error_text,q.response_validation_type from public.questions q,public.question_type qt  where qt.id=q.question_type_id and qt.name=$1 and q.state=$2;`, QuestionTypeName, cs)
+	checkErr(err)
+	defer rows.Close()
+	var sequence int = 0
+	var cs int
+	logger(123, "ok1", LogAppInfo)
+	//_, _ = questionsArrMap[chat_id]
+	var questionTypeName string
+	var state int
+	var requestText string
+	var requestErrorText string
+	var responseValidationType string = ""
+	var responseErrorText string
+	for rows.Next() {
+		logger(123, "seq_"+strconv.Itoa(sequence), LogAppInfo)
+		sequence = sequence + 1
+
+		err = rows.Scan(&questionTypeName, &state, &requestText, &requestErrorText, &responseValidationType)
+		checkErr(err)
+
+		// questionsArrMap[chat_id].QuestionTypeName = questionTypeName
+		// questionsArrMap[chat_id].State = state
+		// questionsArrMap[chat_id].RequestText = requestText
+		// questionsArrMap[chat_id].RequestErrorText = requestErrorText
+		// questionsArrMap[chat_id].ResponseValidationType = responseValidationType
+
+	}
+
+	switch responseValidationType {
+	case "FIN":
+		if checkFin(answer) == false {
+			responseErrorText = requestErrorText
+		}
+	case "MOBIL":
+		if validPhoneFormat(answer) == false {
+			responseErrorText = requestErrorText
+		}
+	case "EMAIL":
+		if validEmail(answer) == false {
+			responseErrorText = requestErrorText
+		}
+	}
+	logger(123, "ok2", LogAppInfo)
+	logger(123, strconv.Itoa(sequence), LogAppInfo)
+
+	if responseErrorText == "" {
+		cs = currentState + 1
+		CurrentState = cs
+		execQuestions(QuestionTypeName, chat_id, CurrentState)
+	} else {
+
+		msg := tgbotapi.NewMessage(chat_id, responseErrorText)
+		msg.ReplyMarkup = tgbotapi.NewHideKeyboard(true)
+		bot.Send(msg)
+	}
 }
 
 func execQuestions(QuestionTypeName string, chat_id int64, currentState int) {
