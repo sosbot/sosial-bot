@@ -554,7 +554,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 func execQuestionsAnswer(QuestionTypeName string, chat_id int64, currentState int, answer string) {
 	logger(123, QuestionTypeName, LogAppInfo)
 
-	rows, err := db.Query(`SELECT qt.name,q.state,q.request_text,q.request_error_text,q.response_validation_type from public.questions q,public.question_type qt  where qt.id=q.question_type_id and qt.name=$1 and q.state=$2;`, QuestionTypeName, currentState)
+	rows, err := db.Query(`SELECT qt.name,q.state,q.request_text,q.request_error_text,q.response_validation_type from public.questions q,public.question_type qt  where qt.id=q.question_type_id and qt.name=$1 and q.state=$2;`, QuestionTypeName, currentState-1)
 	checkErr(err)
 	defer rows.Close()
 	var sequence int = 0
