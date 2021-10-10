@@ -600,7 +600,7 @@ func execQuestionsAnswer(QuestionTypeName string, chat_id int64, currentState in
 	logger(123, strconv.Itoa(sequence), LogAppInfo)
 
 	if responseErrorText == "" {
-		cs = currentState + 1
+		cs = currentState
 		CurrentState = cs
 		execQuestions(QuestionTypeName, chat_id, CurrentState)
 	} else {
