@@ -536,7 +536,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 	//}
 }
 
-func execQuestions(QuestionTypeName string, chat_id int64, currentState int) {
+func execQuestions(QuestionTypeName string, chat_id int64, currentState int) string {
 	logger(123, QuestionTypeName, LogAppInfo)
 	cs := currentState + 1
 	rows, err := db.Query(`SELECT qt.name,q.state,q.request_text,q.request_error_text,q.response_validation_type from public.questions q,public.question_type qt  where qt.id=q.question_type_id and qt.name=$1 and q.state=$2;`, QuestionTypeName, cs)
@@ -545,15 +545,16 @@ func execQuestions(QuestionTypeName string, chat_id int64, currentState int) {
 	var sequence int = 0
 
 	logger(123, "ok1", LogAppInfo)
-	_, _ = questionsArrMap[chat_id]
+	//_, _ = questionsArrMap[chat_id]
+	var questionTypeName string
+	var state int
+	var requestText string
+	var requestErrorText string
+	var responseValidationType string
 	for rows.Next() {
 		logger(123, "seq_"+strconv.Itoa(sequence), LogAppInfo)
 		sequence = sequence + 1
-		var questionTypeName string
-		var state int
-		var requestText string
-		var requestErrorText string
-		var responseValidationType string
+
 		err = rows.Scan(&questionTypeName, &state, &requestText, &requestErrorText, &responseValidationType)
 		checkErr(err)
 
@@ -566,7 +567,7 @@ func execQuestions(QuestionTypeName string, chat_id int64, currentState int) {
 	}
 	logger(123, "ok2", LogAppInfo)
 	logger(123, strconv.Itoa(sequence), LogAppInfo)
-
+	return requestText
 }
 
 func checkErr(err error) {
