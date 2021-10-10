@@ -484,7 +484,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 				} else {
 
 					if CurrentState == 999 {
-						CurrentState = 0
+						CurrentState = 1
 					} else {
 						execQuestionsAnswer(cmdLine, update.Message.Chat.ID, CurrentState, update.Message.Text)
 					}
