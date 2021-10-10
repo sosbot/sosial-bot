@@ -540,11 +540,11 @@ func execQuestions(QuestionTypeName string) {
 	checkErr(err)
 	defer rows.Close()
 	var sequence int = 0
-	var questionTypeName string
-	var state int
-	var requestText string
-	var requestErrorText string
-	var responseValidationType string
+	// var questionTypeName string
+	// var state int
+	// var requestText string
+	// var requestErrorText string
+	// var responseValidationType string
 	logger(123, "ok1", LogAppInfo)
 	for rows.Next() {
 		logger(123, "seq_"+strconv.Itoa(sequence), LogAppInfo)
