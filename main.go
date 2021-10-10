@@ -83,6 +83,16 @@ type req1 struct {
 	Phone string
 }
 
+type questionsArr struct {
+	QuestionTypeName       string
+	State                  int
+	RequestText            string
+	RequestErrorText       string
+	ResponseValidationType string
+}
+
+var questionsArrMap map[int]*questionsArr
+
 var req1Map map[int]*req1
 
 //https://api.telegram.org/bot1563958753:AAFNwjzp_Kvgqw0SIzHeJlxXjZnOYp2rNz8/setWebhook?url=https://sosialbot.herokuapp.com/1563958753:AAFNwjzp_Kvgqw0SIzHeJlxXjZnOYp2rNz8
@@ -460,6 +470,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 					case 0:
 						if checkFin(update.Message.Text) == false {
 							msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Fin yanlışdır. Xahiş edirik, doğru FİN-i daxil edin:")
+							logger(update.Message.Chat.ID, "Fin yanlışdır. Xahiş edirik, doğru FİN-i daxil edin:")
 							bot.Send(msg)
 						} else {
 							cs.Fin = "Fin-i daxil edin:" + update.Message.Text
@@ -511,6 +522,14 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 	}
 
 	//}
+}
+
+func logger(chatid int64, text string) {
+	err := db.QueryRow("insert into public.logs(chat_id,text) values($1,$2);", chatid, text)
+	if err != nil {
+		log.Println(err)
+		return
+	}
 }
 
 func checkFin(value string) bool {
