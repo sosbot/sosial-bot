@@ -428,8 +428,8 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 				cmdLineMenu = "reqMenu"
 				req1Map[update.Message.From.ID] = new(req1)
 				req1Map[update.Message.From.ID].State = 999
-				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Fin-i daxil edin:")
-				execQuestions(reqMenu.Keyboard[1][0].Text, update.Message.Chat.ID, CurrentState)
+				msg := tgbotapi.NewMessage(update.Message.Chat.ID, execQuestions(reqMenu.Keyboard[1][0].Text, update.Message.Chat.ID, CurrentState))
+
 				msg.ReplyMarkup = tgbotapi.NewHideKeyboard(true)
 				bot.Send(msg)
 			}
