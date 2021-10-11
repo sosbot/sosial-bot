@@ -295,7 +295,25 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 			if update.Message.Text == mainMenu.Keyboard[0][1].Text {
 				cmdLine = mainMenu.Keyboard[0][1].Text
 				cmdLineMenu = "mainMenu"
-				rows, err := db.Query("SELECT reqnumber,reqtype,reqtext FROM public.requests WHERE reqfrom = " + strconv.Itoa(update.Message.From.ID))
+				//rows, err := db.Query("SELECT reqnumber,reqtype,reqtext FROM public.requests WHERE reqfrom = " + strconv.Itoa(update.Message.From.ID))
+				rows, err := db.Query(`select
+				qt."name" ,
+				q.request_text as question,
+				qa.value as answer,
+				(
+				select
+				min(qa1."timestamp"::date)
+				from
+				question_answers qa1
+				where
+				qa1.request_number = qa.request_number group by qa1.request_number) as request_date
+				from
+				question_answers qa ,
+				questions q ,
+				question_type qt
+				where
+				qa.questions_id = q.id
+				and q.question_type_id = qt.id and qa.chat_id=$1;`, update.Message.Chat.ID)
 				if err != nil {
 					log.Println(err)
 				}
