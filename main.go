@@ -295,26 +295,63 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 				cmdLine = mainMenu.Keyboard[0][1].Text
 				cmdLineMenu = "mainMenu"
 				//rows, err := db.Query("SELECT reqnumber,reqtype,reqtext FROM public.requests WHERE reqfrom = " + strconv.Itoa(update.Message.From.ID))
-				rows, err := db.Query(`select name as question_type_name,string_agg(answer,chr(10)) as answer,request_date::date as request_date,request_number from ( 
+				rows, err := db.Query(`select
+				name as question_type_name,
+				string_agg(answer, chr(10)) as answer,
+				request_date::date as request_date,
+				request_number,
+				status
+			from
+				(
+				select
+								qt."name" ,
+								q.request_text || ' : ' || chr(10)|| qa.value as answer,
+								(
 					select
-					qt."name" ,
-					q.request_text || ' : '||chr(10)||qa.value as answer,
+								min(qa1."timestamp"::date)
+					from
+								question_answers qa1
+					where
+								qa1.request_number = qa.request_number
+					group by
+						qa1.request_number) as request_date,
+								qa.request_number
+					,
 					(
 					select
-					min(qa1."timestamp"::date)
+						status
 					from
-					question_answers qa1
+						request_statuses rs
 					where
-					qa1.request_number = qa.request_number group by qa1.request_number) as request_date,
-					qa.request_number
-					from
-					question_answers qa ,
-					questions q ,
-					question_type qt
-					where
-					qa.questions_id = q.id
+						id =(
+						select
+							max(id)
+						from
+							request_statuses rs2
+						where
+							rs2.request_id =
+																			  (
+							select
+								id
+							from
+								requests r
+							where
+								r.reqnumber = qa.request_number))) as status
+				from
+								question_answers qa ,
+								questions q ,
+								question_type qt
+				where
+								qa.questions_id = q.id
 					and q.question_type_id = qt.id
-					and qa.chat_id =$1) tt group by tt.name,tt.request_date,tt.request_number ;`, update.Message.Chat.ID)
+					and qa.chat_id = $1) tt
+			group by
+				tt.name,
+				tt.request_date,
+				tt.request_number,
+				tt.status
+			order by
+				tt.request_number desc;`, update.Message.Chat.ID)
 				if err != nil {
 					log.Println(err)
 				}
@@ -326,9 +363,9 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 					var answer string
 					var requestDate string
 					var requestNumber string
-
-					_ = rows.Scan(&questionTypeName, &answer, &requestDate, &requestNumber)
-					msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Sorğu nömrəsi:"+"\n"+requestNumber+"\n"+"Müraciət mövzusu:  "+"\n"+questionTypeName+"\n"+"Sorğu və Cavab:"+"\n"+answer+"\n"+"Müraciət Tarixi:"+"\n"+requestDate+"\n"+"Müraciətin statusu:"+"\n"+" Baxılmaqdadır")
+					var status string
+					_ = rows.Scan(&questionTypeName, &answer, &requestDate, &requestNumber, &status)
+					msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Sorğu nömrəsi:"+"\n"+requestNumber+"\n"+"Müraciət mövzusu:  "+"\n"+questionTypeName+"\n"+"Sorğu və Cavab:"+"\n"+answer+"\n"+"Müraciət Tarixi:"+"\n"+requestDate+"\n"+"Müraciətin statusu:"+"\n"+status)
 					msg.ReplyMarkup = mainMenu
 					bot.Send(msg)
 
