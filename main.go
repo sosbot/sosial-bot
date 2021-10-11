@@ -299,7 +299,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 				rows, err := db.Query(`select name as question_type_name,string_agg(answer,chr(10)) as answer,request_date::date as request_date from ( 
 					select
 					qt."name" ,
-					q.request_text || ' : '||qa.value as answer,
+					q.request_text || ' : '||qa.value||chr(10) as answer,
 					(
 					select
 					min(qa1."timestamp"::date)
