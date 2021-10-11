@@ -455,7 +455,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 				//rand.Seed(time.Now().UTC().UnixNano())
 				//reqNumber = rand.Intn(10000000)
 				reqNumber = getNewRequestNumber()
-				createNewRequest(reqNumber, update.Message.Chat.ID, cmdLine)
+				//createNewRequest(reqNumber, update.Message.Chat.ID, cmdLine)
 				//setNewStatusToRequest(reqNumber, update.Message.Chat.ID, "SosialBot")
 				//execQuestions(cmdLine, update.Message.Chat.ID, CurrentState)
 				CurrentState = 999
