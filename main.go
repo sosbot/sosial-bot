@@ -296,7 +296,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 				cmdLine = mainMenu.Keyboard[0][1].Text
 				cmdLineMenu = "mainMenu"
 				//rows, err := db.Query("SELECT reqnumber,reqtype,reqtext FROM public.requests WHERE reqfrom = " + strconv.Itoa(update.Message.From.ID))
-				rows, err := db.Query(`select name as question_type_name,string_agg(answer,';') as answer,request_date from ( 
+				rows, err := db.Query(`select name as question_type_name,string_agg(answer,chr(10)) as answer,request_date::date as request_date from ( 
 					select
 					qt."name" ,
 					q.request_text || ' : '||qa.value as answer,
