@@ -432,7 +432,8 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 				cmdLineMenu = "reqMenu"
 				req1Map[update.Message.From.ID] = new(req1)
 				req1Map[update.Message.From.ID].State = 999
-
+				rand.Seed(time.Now().UTC().UnixNano())
+				reqNumber = rand.Intn(10000000)
 				execQuestions(cmdLine, update.Message.Chat.ID, CurrentState)
 				CurrentState = 999
 				//msg := tgbotapi.NewMessage(update.Message.Chat.ID, execQuestions(cmdLine, update.Message.Chat.ID, CurrentState))
@@ -555,13 +556,14 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 func execQuestionsAnswer(QuestionTypeName string, chat_id int64, currentState int, answer string) {
 	logger(123, QuestionTypeName, LogAppInfo)
 
-	rows, err := db.Query(`SELECT qt.name,q.state,q.request_text,q.request_error_text,q.response_validation_type from public.questions q,public.question_type qt  where qt.id=q.question_type_id and qt.name=$1 and q.state=$2;`, QuestionTypeName, currentState)
+	rows, err := db.Query(`SELECT q.id,qt.name,q.state,q.request_text,q.request_error_text,q.response_validation_type from public.questions q,public.question_type qt  where qt.id=q.question_type_id and qt.name=$1 and q.state=$2;`, QuestionTypeName, currentState)
 	checkErr(err)
 	defer rows.Close()
 	var sequence int = 0
 	var cs int
 	logger(123, "ok1", LogAppInfo)
 	//_, _ = questionsArrMap[chat_id]
+	var questionId int
 	var questionTypeName string
 	var state int
 	var requestText string
@@ -572,7 +574,7 @@ func execQuestionsAnswer(QuestionTypeName string, chat_id int64, currentState in
 		logger(123, "seq_"+strconv.Itoa(sequence), LogAppInfo)
 		sequence = sequence + 1
 
-		err = rows.Scan(&questionTypeName, &state, &requestText, &requestErrorText, &responseValidationType)
+		err = rows.Scan(&questionId, &questionTypeName, &state, &requestText, &requestErrorText, &responseValidationType)
 		checkErr(err)
 
 		// questionsArrMap[chat_id].QuestionTypeName = questionTypeName
@@ -603,6 +605,8 @@ func execQuestionsAnswer(QuestionTypeName string, chat_id int64, currentState in
 	if responseErrorText == "" {
 		cs = currentState
 		CurrentState = cs
+		_, err = db.Exec(`insert into public.question_answers(questions_id,value,chat_id,request_number) values($1,$2,$3,$4);`, questionId, answer, chat_id, reqNumber)
+		checkErr(err)
 		execQuestions(QuestionTypeName, chat_id, CurrentState)
 	} else {
 
@@ -650,8 +654,8 @@ func execQuestions(QuestionTypeName string, chat_id int64, currentState int) {
 		msg.ReplyMarkup = tgbotapi.NewHideKeyboard(true)
 		bot.Send(msg)
 	} else {
-		rand.Seed(time.Now().UTC().UnixNano())
-		reqNumber = rand.Intn(10000000)
+		//rand.Seed(time.Now().UTC().UnixNano())
+		//reqNumber = rand.Intn(10000000)
 		msg := tgbotapi.NewMessage(chat_id, "Müraciətiniz qəbul olundu. Müraciət nömrəsi: "+strconv.Itoa(reqNumber))
 		msg.ReplyMarkup = mainMenu
 		bot.Send(msg)
