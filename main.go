@@ -706,7 +706,7 @@ func createNewRequest(request_number int, chat_id int64, request_type string) {
 }
 
 func getNewRequestNumber() int {
-	rows, err := db.Query(`select coalesce (max(reqnumber)+1,1) as request_number from requests r ;`)
+	rows, err := db.Query(`select coalesce (max(reqnumber)+1,1) as request_number from public.requests r ;`)
 	checkErr(err)
 	defer rows.Close()
 	var maxRequestNumber int
@@ -717,7 +717,7 @@ func getNewRequestNumber() int {
 }
 
 func getRequestNumberId(request_number int) int {
-	rows, err := db.Query(`select  id from requests r  where reqnumber=$1;`, request_number)
+	rows, err := db.Query(`select  id from public.requests r  where reqnumber=$1;`, request_number)
 	checkErr(err)
 	defer rows.Close()
 	var requestNumberId int
