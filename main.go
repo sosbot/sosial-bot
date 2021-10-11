@@ -717,7 +717,7 @@ func getNewRequestNumber() int {
 }
 
 func getRequestNumberId(request_number int) int {
-	rows, err := db.Query(`select coalesce id from requests r  where reqnumber=$1;`, request_number)
+	rows, err := db.Query(`select  id from requests r  where reqnumber=$1;`, request_number)
 	checkErr(err)
 	defer rows.Close()
 	var requestNumberId int
