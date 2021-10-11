@@ -296,7 +296,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 				cmdLine = mainMenu.Keyboard[0][1].Text
 				cmdLineMenu = "mainMenu"
 				//rows, err := db.Query("SELECT reqnumber,reqtype,reqtext FROM public.requests WHERE reqfrom = " + strconv.Itoa(update.Message.From.ID))
-				rows, err := db.Query(`select name as question_type_name,string_agg(answer,chr(10)) as answer,request_date::date as request_date from ( 
+				rows, err := db.Query(`select name as question_type_name,string_agg(answer,chr(10)) as answer,request_date::date as request_date,request_number from ( 
 					select
 					qt."name" ,
 					q.request_text || ' : '||chr(10)||qa.value as answer,
@@ -306,7 +306,8 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 					from
 					question_answers qa1
 					where
-					qa1.request_number = qa.request_number group by qa1.request_number) as request_date
+					qa1.request_number = qa.request_number group by qa1.request_number) as request_date,
+					qa.request_number
 					from
 					question_answers qa ,
 					questions q ,
@@ -314,7 +315,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 					where
 					qa.questions_id = q.id
 					and q.question_type_id = qt.id
-					and qa.chat_id =$1) tt group by tt.name,tt.request_date ;`, update.Message.Chat.ID)
+					and qa.chat_id =$1) tt group by tt.name,tt.request_date,tt.request_number ;`, update.Message.Chat.ID)
 				if err != nil {
 					log.Println(err)
 				}
@@ -325,9 +326,10 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 					var questionTypeName string
 					var answer string
 					var requestDate string
+					var requestNumber string
 
 					_ = rows.Scan(&questionTypeName, &answer, &requestDate)
-					msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Müraciət mövzusu:  "+"\n"+questionTypeName+"\n"+"Sorğu/Cavab:"+"\n"+answer+"\n"+"Müraciət Tarixi:"+"\n"+requestDate+"\n"+"Müraciətin statusu:"+"\n"+" Baxılmaqdadır")
+					msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Sorğu nömrəsi:"+"\n"+requestNumber+"Müraciət mövzusu:  "+"\n"+questionTypeName+"\n"+"Sorğu/Cavab:"+"\n"+answer+"\n"+"Müraciət Tarixi:"+"\n"+requestDate+"\n"+"Müraciətin statusu:"+"\n"+" Baxılmaqdadır")
 					msg.ReplyMarkup = mainMenu
 					bot.Send(msg)
 
