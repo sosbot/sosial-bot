@@ -457,7 +457,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 				reqNumber = getNewRequestNumber()
 				//createNewRequest(reqNumber, update.Message.Chat.ID, cmdLine)
 				//setNewStatusToRequest(reqNumber, update.Message.Chat.ID, "SosialBot")
-				//execQuestions(cmdLine, update.Message.Chat.ID, CurrentState)
+				execQuestions(cmdLine, update.Message.Chat.ID, CurrentState)
 				CurrentState = 999
 				//msg := tgbotapi.NewMessage(update.Message.Chat.ID, execQuestions(cmdLine, update.Message.Chat.ID, CurrentState))
 
