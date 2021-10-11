@@ -456,7 +456,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 				//reqNumber = rand.Intn(10000000)
 				reqNumber = getNewRequestNumber()
 				createNewRequest(reqNumber, update.Message.Chat.ID, cmdLine)
-				//setNewStatusToRequest(reqNumber, update.Message.Chat.ID, "SosialBot")
+				setNewStatusToRequest(reqNumber, update.Message.Chat.ID, "SosialBot")
 				execQuestions(cmdLine, update.Message.Chat.ID, CurrentState)
 				CurrentState = 999
 				//msg := tgbotapi.NewMessage(update.Message.Chat.ID, execQuestions(cmdLine, update.Message.Chat.ID, CurrentState))
@@ -701,7 +701,7 @@ func logger(chatid int64, text string, logType string) {
 }
 
 func createNewRequest(request_number int, chat_id int64, request_type string) {
-	_, err := db.Exec("insert into public.requests(reqnumber,reqfrom,type) values($1,$2,$3)", request_number, chat_id, request_type)
+	_, err := db.Exec("insert into public.requests(reqnumber,reqfrom,reqtype) values($1,$2,$3)", request_number, chat_id, request_type)
 	checkErr(err)
 }
 
