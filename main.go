@@ -6,7 +6,6 @@ import (
 	"html/template"
 	"io/ioutil"
 	"log"
-	"math/rand"
 	"net/http"
 	"os"
 	"regexp"
@@ -453,8 +452,11 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 				cmdLineMenu = "reqMenu"
 				req1Map[update.Message.From.ID] = new(req1)
 				req1Map[update.Message.From.ID].State = 999
-				rand.Seed(time.Now().UTC().UnixNano())
-				reqNumber = rand.Intn(10000000)
+				//rand.Seed(time.Now().UTC().UnixNano())
+				//reqNumber = rand.Intn(10000000)
+				reqNumber = getNewRequestNumber()
+				createNewRequest(reqNumber, update.Message.Chat.ID, cmdLine)
+				setNewStatusToRequest(reqNumber, update.Message.Chat.ID, "SosialBot")
 				execQuestions(cmdLine, update.Message.Chat.ID, CurrentState)
 				CurrentState = 999
 				//msg := tgbotapi.NewMessage(update.Message.Chat.ID, execQuestions(cmdLine, update.Message.Chat.ID, CurrentState))
@@ -694,11 +696,40 @@ func checkErr(err error) {
 
 func logger(chatid int64, text string, logType string) {
 	_, err := db.Exec("insert into public.logs(chat_id,text,type) values($1,$2,$3)", chatid, text, logType)
-	if err != nil {
-		log.Println(err)
-		return
-	}
+	checkErr(err)
 
+}
+
+func createNewRequest(request_number int, chat_id int64, request_type string) {
+	_, err := db.Exec("insert into public.requests(reqnumber,reqfrom,type) values($1,$2,$3)", request_number, chat_id, request_type)
+	checkErr(err)
+}
+
+func getNewRequestNumber() int {
+	rows, err := db.Query(`select coalesce (max(reqnumber)+1,1) as request_number from requests r ;`)
+	checkErr(err)
+	defer rows.Close()
+	var maxRequestNumber int
+	for rows.Next() {
+		err = rows.Scan(&maxRequestNumber)
+	}
+	return maxRequestNumber
+}
+
+func getRequestNumberId(request_number int) int {
+	rows, err := db.Query(`select coalesce id from requests r  where reqnumber=$1;`, request_number)
+	checkErr(err)
+	defer rows.Close()
+	var requestNumberId int
+	for rows.Next() {
+		err = rows.Scan(&requestNumberId)
+	}
+	return requestNumberId
+}
+
+func setNewStatusToRequest(request_number int, chat_id int64, status string) {
+	_, err := db.Exec("insert into public.request_statuses(request_id,status,insertedby) values($1,$2,$3)", getRequestNumberId(request_number), status, chat_id)
+	checkErr(err)
 }
 
 func checkFin(value string) bool {
