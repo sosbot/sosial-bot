@@ -297,7 +297,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 				//rows, err := db.Query("SELECT reqnumber,reqtype,reqtext FROM public.requests WHERE reqfrom = " + strconv.Itoa(update.Message.From.ID))
 				rows, err := db.Query(`SELECT name AS question_type_name,
 				string_agg(answer, chr(10)) AS answer,
-				date(request_date)::date AS request_date,
+				CAST(request_date AS DATE) AS request_date,
 				request_number,
 				status
 		 FROM
