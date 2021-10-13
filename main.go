@@ -332,7 +332,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 				  tt.request_date,
 				  tt.request_number,
 				  tt.status
-		 ORDER BY tt.request_number DESC;	`, update.Message.Chat.ID)
+		 ORDER BY tt.request_number ASC;	`, update.Message.Chat.ID)
 				if err != nil {
 					log.Println(err)
 				}
