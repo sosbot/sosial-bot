@@ -321,9 +321,12 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 						 WHERE r.reqnumber = qa.request_number))) AS status
 			FROM question_answers qa,
 				 questions q,
-				 question_type qt
+				 question_type qt,
+				 requests r2
 			WHERE qa.questions_id = q.id
 			  AND q.question_type_id = qt.id
+			  and r2.reqnumber=qa.request_number
+			  and r2.status=1
 			  AND qa.chat_id = $1) tt
 		 GROUP BY tt.name,
 				  tt.request_date,
@@ -697,6 +700,8 @@ func execQuestions(QuestionTypeName string, chat_id int64, currentState int) {
 		msg := tgbotapi.NewMessage(chat_id, "Müraciətiniz qəbul olundu. Müraciət nömrəsi: "+strconv.Itoa(reqNumber))
 		msg.ReplyMarkup = mainMenu
 		bot.Send(msg)
+		_, err = db.Exec(`update  public.requests set status=1 where reqnumber=?;`, reqNumber)
+		checkErr(err)
 		//_,err = db.Exec(`insert into public.requests(reqnumber,reqfrom,reqtype,reqtext) values($1,$2,$3,$4);`, reqNumber, chat_id, cmdLine, reqText)
 		//checkErr(err)
 	}
