@@ -302,7 +302,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 				status
 		 FROM
 		   (SELECT qt."name",
-				   '	*'||q.request_text||'*' || ' : ' || chr(10)||'		_'||qa.value||'_' AS answer,
+				   '		*'||q.request_text||'*' || ' : ' || chr(10)||'			_'||qa.value||'_' AS answer,
 		 
 			  (SELECT min(qa1."timestamp"::date)
 			   FROM question_answers qa1
@@ -346,7 +346,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 					var requestNumber string
 					var status string
 					_ = rows.Scan(&questionTypeName, &answer, &requestDate, &requestNumber, &status)
-					msg := tgbotapi.NewMessage(update.Message.Chat.ID, "*Sorğu nömrəsi:*"+"\n	_"+requestNumber+"_\n"+"*Müraciət mövzusu:*  "+"\n	_"+questionTypeName+"_\n"+"*Sorğu və Cavab:*"+"\n	"+answer+"\n"+"*Müraciət Tarixi:*"+"\n	_"+requestDate+"_\n"+"*Müraciətin statusu:*	"+"\n_"+status+"_")
+					msg := tgbotapi.NewMessage(update.Message.Chat.ID, "*Sorğu nömrəsi:*"+"\n	_"+requestNumber+"_\n"+"*Müraciət mövzusu:*  "+"\n	_"+questionTypeName+"_\n"+"*Sorğu və Cavab:*"+"\n"+answer+"\n"+"*Müraciət Tarixi:*"+"\n	_"+requestDate+"_\n"+"*Müraciətin statusu:*	"+"\n_"+status+"_")
 					//msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Sorğu nömrəsi:"+"\n"+requestNumber+"\n"+"Müraciət mövzusu:"+"\n"+questionTypeName+"\n"+"Sorğu və Cavab:"+"\n"+answer+"\n"+"Müraciət Tarixi:"+"\n"+requestDate+"\n"+"Müraciətin statusu:"+"\n"+status)
 
 					msg.ParseMode = "markdown"
