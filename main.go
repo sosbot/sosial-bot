@@ -700,7 +700,7 @@ func execQuestions(QuestionTypeName string, chat_id int64, currentState int) {
 		msg := tgbotapi.NewMessage(chat_id, "Müraciətiniz qəbul olundu. Müraciət nömrəsi: "+strconv.Itoa(reqNumber))
 		msg.ReplyMarkup = mainMenu
 		bot.Send(msg)
-		_, err = db.Exec(`update  public.requests set status=1 where reqnumber=?;`, reqNumber)
+		_, err = db.Exec(`update  public.requests set status=1 where reqnumber=$1;`, reqNumber)
 		checkErr(err)
 		//_,err = db.Exec(`insert into public.requests(reqnumber,reqfrom,reqtype,reqtext) values($1,$2,$3,$4);`, reqNumber, chat_id, cmdLine, reqText)
 		//checkErr(err)
