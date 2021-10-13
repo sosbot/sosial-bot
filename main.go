@@ -346,7 +346,8 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 					var requestNumber string
 					var status string
 					_ = rows.Scan(&questionTypeName, &answer, &requestDate, &requestNumber, &status)
-					msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Sorğu nömrəsi:"+"\n"+requestNumber+"\n"+"Müraciət mövzusu:  "+"\n"+questionTypeName+"\n"+"Sorğu və Cavab:"+"\n"+answer+"\n"+"Müraciət Tarixi:"+"\n"+requestDate+"\n"+"Müraciətin statusu:"+"\n"+status)
+					msg := tgbotapi.NewMessage(update.Message.Chat.ID, "_*Sorğu nömrəsi:*_"+"\n"+requestNumber+"\n"+"*Müraciət mövzusu:*  "+"\n"+questionTypeName+"\n"+"Sorğu və Cavab:"+"\n"+answer+"\n"+"Müraciət Tarixi:"+"\n"+requestDate+"\n"+"Müraciətin statusu:"+"\n"+status)
+					msg.ParseMode = "markdown"
 					msg.ReplyMarkup = mainMenu
 					bot.Send(msg)
 
