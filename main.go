@@ -346,8 +346,8 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 					var requestNumber string
 					var status string
 					_ = rows.Scan(&questionTypeName, &answer, &requestDate, &requestNumber, &status)
-					//	msg := tgbotapi.NewMessage(update.Message.Chat.ID, "<u><b>Sorğu nömrəsi:</u></b>"+"\n"+requestNumber+"\n"+"<u><b>Müraciət mövzusu:</u></b>  "+"\n"+questionTypeName+"\n"+"<u><b>Sorğu və Cavab:</u></b>"+"\n"+answer+"\n"+"<u><b>Müraciət Tarixi:</u></b>"+"\n"+requestDate+"\n"+"<u><b>Müraciətin statusu:</u></b>"+"\n"+status)
-					msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Sorğu nömrəsi:"+"\n"+requestNumber+"\n"+"Müraciət mövzusu:"+"\n"+questionTypeName+"\n"+"Sorğu və Cavab:"+"\n"+answer+"\n"+"Müraciət Tarixi:"+"\n"+requestDate+"\n"+"Müraciətin statusu:"+"\n"+status)
+					msg := tgbotapi.NewMessage(update.Message.Chat.ID, "<u><b>Sorğu nömrəsi:</u></b>"+"\n"+requestNumber+"\n"+"<u><b>Müraciət mövzusu:</u></b>  "+"\n"+questionTypeName+"\n"+"<u><b>Sorğu və Cavab:</u></b>"+"\n"+answer+"\n"+"<u><b>Müraciət Tarixi:</u></b>"+"\n"+requestDate+"\n"+"<u><b>Müraciətin statusu:</u></b>"+"\n"+status)
+					//msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Sorğu nömrəsi:"+"\n"+requestNumber+"\n"+"Müraciət mövzusu:"+"\n"+questionTypeName+"\n"+"Sorğu və Cavab:"+"\n"+answer+"\n"+"Müraciət Tarixi:"+"\n"+requestDate+"\n"+"Müraciətin statusu:"+"\n"+status)
 
 					msg.ParseMode = "html"
 					msg.ReplyMarkup = mainMenu
