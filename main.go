@@ -302,7 +302,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 				status
 		 FROM
 		   (SELECT qt."name",
-				   '*'||q.request_text||'*' || ' : ' || chr(10)|| ||'_'||qa.value||'_' AS answer,
+				   '*'||q.request_text||'*' || ' : ' || chr(10)||'_'||qa.value||'_' AS answer,
 		 
 			  (SELECT min(qa1."timestamp"::date)
 			   FROM question_answers qa1
