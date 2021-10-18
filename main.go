@@ -600,7 +600,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 func execQuestionsAnswer(QuestionTypeName string, chat_id int64, currentState int, answer string) {
 	logger(123, QuestionTypeName, LogAppInfo)
 
-	rows, err := db.Query(`SELECT q.id,qt.name,q.state,q.request_text,q.request_error_text,q.response_validation_type from public.questions q,public.question_type qt  where qt.id=q.question_type_id and qt.name=$1 and q.state=$2;`, QuestionTypeName, currentState)
+	rows, err := db.Query(`SELECT q.id,qt.name,q.state,q.request_text,q.request_error_text,q.response_validation_type,q.response_type from public.questions q,public.question_type qt  where qt.id=q.question_type_id and qt.name=$1 and q.state=$2;`, QuestionTypeName, currentState)
 	checkErr(err)
 	defer rows.Close()
 	var sequence int = 0
@@ -614,11 +614,14 @@ func execQuestionsAnswer(QuestionTypeName string, chat_id int64, currentState in
 	var requestErrorText string
 	var responseValidationType string = ""
 	var responseErrorText string
+	var response_type int
+	var response_type_list_count int
+
 	for rows.Next() {
 		logger(123, "seq_"+strconv.Itoa(sequence), LogAppInfo)
 		sequence = sequence + 1
 
-		err = rows.Scan(&questionId, &questionTypeName, &state, &requestText, &requestErrorText, &responseValidationType)
+		err = rows.Scan(&questionId, &questionTypeName, &state, &requestText, &requestErrorText, &responseValidationType, &response_type)
 		checkErr(err)
 
 		// questionsArrMap[chat_id].QuestionTypeName = questionTypeName
@@ -628,42 +631,63 @@ func execQuestionsAnswer(QuestionTypeName string, chat_id int64, currentState in
 		// questionsArrMap[chat_id].ResponseValidationType = responseValidationType
 
 	}
+	switch response_type {
+	case 1:
 
-	switch responseValidationType {
-	case "FIN":
-		if checkFin(answer) == false {
-			responseErrorText = requestErrorText
+		switch responseValidationType {
+		case "FIN":
+			if checkFin(answer) == false {
+				responseErrorText = requestErrorText
+			}
+		case "MOBIL":
+			if validPhoneFormat(answer) == false {
+				responseErrorText = requestErrorText
+			}
+		case "EMAIL":
+			if validEmail(answer) == false {
+				responseErrorText = requestErrorText
+			}
 		}
-	case "MOBIL":
-		if validPhoneFormat(answer) == false {
-			responseErrorText = requestErrorText
-		}
-	case "EMAIL":
-		if validEmail(answer) == false {
-			responseErrorText = requestErrorText
-		}
-	}
-	logger(123, "ok2", LogAppInfo)
-	logger(123, strconv.Itoa(sequence), LogAppInfo)
+		logger(123, "ok2", LogAppInfo)
+		logger(123, strconv.Itoa(sequence), LogAppInfo)
 
-	if responseErrorText == "" {
-		cs = currentState
-		CurrentState = cs
-		_, err = db.Exec(`insert into public.question_answers(questions_id,value,chat_id,request_number) values($1,$2,$3,$4);`, questionId, answer, chat_id, reqNumber)
+		if responseErrorText == "" {
+			cs = currentState
+			CurrentState = cs
+			_, err = db.Exec(`insert into public.question_answers(questions_id,value,chat_id,request_number) values($1,$2,$3,$4);`, questionId, answer, chat_id, reqNumber)
+			checkErr(err)
+			execQuestions(QuestionTypeName, chat_id, CurrentState)
+		} else {
+
+			msg := tgbotapi.NewMessage(chat_id, responseErrorText)
+			msg.ReplyMarkup = tgbotapi.NewHideKeyboard(true)
+			bot.Send(msg)
+		}
+	case 2:
+		rows, err = db.Query(`SELECT count(*) as cnt  from public.question_list ql where ql.question_id=$1;`, questionId)
 		checkErr(err)
-		execQuestions(QuestionTypeName, chat_id, CurrentState)
-	} else {
+		for rows.Next() {
+			err = rows.Scan(&response_type_list_count)
+		}
+		defer rows.Close()
+		rows, err = db.Query(`SELECT ql.value  from public.question_list ql where ql.question_id=$1;`, questionId)
+		checkErr(err)
+		defer rows.Close()
+		InlineButtons := make([][]tgbotapi.InlineKeyboardButton, response_type_list_count)
+		index := 0
+		for rows.Next() {
+			InlineButtons[index] = tgbotapi.NewInlineKeyboardRow(tgbotapi.NewInlineKeyboardButtonData("aa", "aa"))
+			index++
+		}
 
-		msg := tgbotapi.NewMessage(chat_id, responseErrorText)
-		msg.ReplyMarkup = tgbotapi.NewHideKeyboard(true)
-		bot.Send(msg)
 	}
+
 }
 
 func execQuestions(QuestionTypeName string, chat_id int64, currentState int) {
 	logger(123, QuestionTypeName, LogAppInfo)
 	cs := currentState + 1
-	rows, err := db.Query(`SELECT qt.name,q.state,q.request_text,q.request_error_text,q.response_validation_type from public.questions q,public.question_type qt  where qt.id=q.question_type_id and qt.name=$1 and q.state=$2;`, QuestionTypeName, cs)
+	rows, err := db.Query(`SELECT qt.name,q.state,q.request_text,q.request_error_text,q.response_validation_type,q.response_type,q.id from public.questions q,public.question_type qt  where qt.id=q.question_type_id and qt.name=$1 and q.state=$2;`, QuestionTypeName, cs)
 	checkErr(err)
 	defer rows.Close()
 	var sequence int = 0
@@ -675,12 +699,15 @@ func execQuestions(QuestionTypeName string, chat_id int64, currentState int) {
 	var requestText string
 	var requestErrorText string
 	var responseValidationType string
+	var response_type int
+	var response_type_list_count int
+	var questionId int
 
 	for rows.Next() {
 		logger(123, "seq_"+strconv.Itoa(sequence), LogAppInfo)
 		sequence = sequence + 1
 
-		err = rows.Scan(&questionTypeName, &state, &requestText, &requestErrorText, &responseValidationType)
+		err = rows.Scan(&questionTypeName, &state, &requestText, &requestErrorText, &responseValidationType, &response_type, &questionId)
 		checkErr(err)
 
 		// questionsArrMap[chat_id].QuestionTypeName = questionTypeName
@@ -693,10 +720,35 @@ func execQuestions(QuestionTypeName string, chat_id int64, currentState int) {
 	logger(123, "ok2", LogAppInfo)
 	logger(123, strconv.Itoa(sequence), LogAppInfo)
 	if sequence != 0 {
-		CurrentState = cs
-		msg := tgbotapi.NewMessage(chat_id, requestText)
-		msg.ReplyMarkup = tgbotapi.NewHideKeyboard(true)
-		bot.Send(msg)
+		switch response_type {
+		case 1:
+
+			CurrentState = cs
+			msg := tgbotapi.NewMessage(chat_id, requestText)
+			msg.ReplyMarkup = tgbotapi.NewHideKeyboard(true)
+			bot.Send(msg)
+		case 2:
+			rows, err = db.Query(`SELECT count(*) as cnt  from public.question_list ql where ql.question_id=$1;`, questionId)
+			checkErr(err)
+			for rows.Next() {
+				err = rows.Scan(&response_type_list_count)
+			}
+			defer rows.Close()
+			rows, err = db.Query(`SELECT ql.value  from public.question_list ql where ql.question_id=$1;`, questionId)
+			checkErr(err)
+			defer rows.Close()
+			InlineButtons := make([][]tgbotapi.InlineKeyboardButton, response_type_list_count)
+			index := 0
+			value := ""
+			for rows.Next() {
+				err = rows.Scan(&value)
+				InlineButtons[index] = tgbotapi.NewInlineKeyboardRow(tgbotapi.NewInlineKeyboardButtonData(value, value))
+				index++
+			}
+			msg := tgbotapi.NewMessage(chat_id, requestText)
+			msg.ReplyMarkup = InlineButtons
+			bot.Send(msg)
+		}
 	} else {
 		//rand.Seed(time.Now().UTC().UnixNano())
 		//reqNumber = rand.Intn(10000000)
