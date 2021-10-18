@@ -687,7 +687,7 @@ func execQuestionsAnswer(QuestionTypeName string, chat_id int64, currentState in
 func execQuestions(QuestionTypeName string, chat_id int64, currentState int) {
 	logger(123, QuestionTypeName, LogAppInfo)
 	cs := currentState + 1
-	rows, err := db.Query(`SELECT qt.name,q.state,q.request_text,q.request_error_text,q.response_validation_type,q.response_type,q.id from public.questions q,public.question_type qt  where qt.id=q.question_type_id and qt.name=$1 and q.state=$2;`, QuestionTypeName, cs)
+	rows, err := db.Query(`SELECT  qt.name,q.state,q.request_text,q.request_error_text,q.response_validation_type,q.response_type,q.id from public.questions q,public.question_type qt  where qt.id=q.question_type_id and qt.name=$1 and q.state=$2;`, QuestionTypeName, cs)
 	checkErr(err)
 	defer rows.Close()
 	var sequence int = 0
