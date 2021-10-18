@@ -614,7 +614,7 @@ func execQuestionsAnswer(QuestionTypeName string, chat_id int64, currentState in
 	var requestErrorText string
 	var responseValidationType string = ""
 	var responseErrorText string
-	var response_type int
+	var response_type int = 0
 	var response_type_list_count int
 
 	for rows.Next() {
@@ -699,7 +699,7 @@ func execQuestions(QuestionTypeName string, chat_id int64, currentState int) {
 	var requestText string
 	var requestErrorText string
 	var responseValidationType string
-	var response_type int
+	var response_type int = 0
 	var response_type_list_count int
 	var questionId int
 
