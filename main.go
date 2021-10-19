@@ -670,6 +670,7 @@ func execQuestionsAnswer(QuestionTypeName string, chat_id int64, currentState in
 			bot.Send(msg)
 		}
 	case 2:
+		logger(123, "hello mothe fucker", LogAppInfo)
 		rows, err = db.Query(`SELECT count(*) as cnt  from public.question_list ql where ql.question_id=$1;`, questionId)
 		checkErr(err)
 		for rows.Next() {
