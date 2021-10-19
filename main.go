@@ -734,6 +734,7 @@ func execQuestions(QuestionTypeName string, chat_id int64, currentState int) {
 			for rows.Next() {
 				err = rows.Scan(&response_type_list_count)
 			}
+			logger(123, "response_type_list_count_"+strconv.Itoa(response_type_list_count), LogAppInfo)
 			defer rows.Close()
 			rows, err = db.Query(`SELECT ql.value  from public.question_list ql where ql.question_id=$1;`, questionId)
 			checkErr(err)
