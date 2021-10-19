@@ -722,6 +722,7 @@ func execQuestions(QuestionTypeName string, chat_id int64, currentState int) {
 	logger(123, strconv.Itoa(sequence), LogAppInfo)
 	if sequence != 0 {
 		CurrentState = cs
+		logger(123, "response_type_"+strconv.Itoa(response_type), LogAppInfo)
 		switch response_type {
 		case 1:
 			msg := tgbotapi.NewMessage(chat_id, requestText)
