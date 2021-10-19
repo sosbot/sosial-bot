@@ -670,22 +670,22 @@ func execQuestionsAnswer(QuestionTypeName string, chat_id int64, currentState in
 			bot.Send(msg)
 		}
 	case 2:
-		logger(123, "hello mothe fucker", LogAppInfo)
-		rows, err = db.Query(`SELECT count(*) as cnt  from public.question_list ql where ql.question_id=$1;`, questionId)
-		checkErr(err)
-		for rows.Next() {
-			err = rows.Scan(&response_type_list_count)
-		}
-		defer rows.Close()
-		rows, err = db.Query(`SELECT ql.value  from public.question_list ql where ql.question_id=$1;`, questionId)
-		checkErr(err)
-		defer rows.Close()
-		InlineButtons := make([][]tgbotapi.InlineKeyboardButton, response_type_list_count)
-		index := 0
-		for rows.Next() {
-			InlineButtons[index] = tgbotapi.NewInlineKeyboardRow(tgbotapi.NewInlineKeyboardButtonData("aa", "aa"))
-			index++
-		}
+		// logger(123, "hello mothe fucker", LogAppInfo)
+		// rows, err = db.Query(`SELECT count(*) as cnt  from public.question_list ql where ql.question_id=$1;`, questionId)
+		// checkErr(err)
+		// for rows.Next() {
+		// 	err = rows.Scan(&response_type_list_count)
+		// }
+		// defer rows.Close()
+		// rows, err = db.Query(`SELECT ql.value  from public.question_list ql where ql.question_id=$1;`, questionId)
+		// checkErr(err)
+		// defer rows.Close()
+		// InlineButtons := make([][]tgbotapi.InlineKeyboardButton, response_type_list_count)
+		// index := 0
+		// for rows.Next() {
+		// 	InlineButtons[index] = tgbotapi.NewInlineKeyboardRow(tgbotapi.NewInlineKeyboardButtonData("aa", "aa"))
+		// 	index++
+		// }
 
 	}
 
