@@ -680,7 +680,7 @@ func execQuestionsAnswer(QuestionTypeName string, chat_id int64, currentState in
 		checkErr(err)
 		defer rows.Close()
 		InlineButtons := make([][]tgbotapi.InlineKeyboardButton, response_type_list_count)
-		index := 1
+		index := 0
 		for rows.Next() {
 			InlineButtons[index] = tgbotapi.NewInlineKeyboardRow(tgbotapi.NewInlineKeyboardButtonData("aa", "aa"))
 			index++
@@ -746,7 +746,7 @@ func execQuestions(QuestionTypeName string, chat_id int64, currentState int) {
 			checkErr(err)
 			defer rows.Close()
 			InlineButtons := make([][]tgbotapi.InlineKeyboardButton, response_type_list_count)
-			index := 1
+			index := 0
 			value := ""
 			for rows.Next() {
 				err = rows.Scan(&value)
