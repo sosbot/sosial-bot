@@ -123,6 +123,19 @@ var cmdLineMenu string
 var back_clicked_once bool
 var reqNumber int
 
+var numericKeyboard = tgbotapi.NewInlineKeyboardMarkup(
+	tgbotapi.NewInlineKeyboardRow(
+		tgbotapi.NewInlineKeyboardButtonURL("1.com", "http://1.com"),
+		tgbotapi.NewInlineKeyboardButtonData("2", "2"),
+		tgbotapi.NewInlineKeyboardButtonData("3", "3"),
+	),
+	tgbotapi.NewInlineKeyboardRow(
+		tgbotapi.NewInlineKeyboardButtonData("4", "4"),
+		tgbotapi.NewInlineKeyboardButtonData("5", "5"),
+		tgbotapi.NewInlineKeyboardButtonData("6", "6"),
+	),
+)
+
 func init() {
 	req1Map = make(map[int]*req1)
 	questionsArrMap = make(map[int64]*questionsArr)
@@ -758,7 +771,7 @@ func execQuestions(QuestionTypeName string, chat_id int64, currentState int) {
 			}
 			logger(123, "lenInlineButtons_"+strconv.Itoa(len(InlineButtons)), LogAppInfo)
 			msg := tgbotapi.NewMessage(chat_id, requestText)
-			msg.ReplyMarkup = tgbotapi.NewInlineKeyboardMarkup(InlineButtons...)
+			msg.ReplyMarkup = numericKeyboard //tgbotapi.NewInlineKeyboardMarkup(InlineButtons...)
 			bot.Send(msg)
 		default:
 		}
