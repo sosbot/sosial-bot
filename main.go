@@ -267,6 +267,19 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 	////msg,err:=bot.GetUpdatesChan(u)
 	cmdText := ""
 
+	if update.CallbackQuery != nil {
+		logger(123, "not nil", LogAppInfo)
+		// Respond to the callback query, telling Telegram to show the user
+		// a message with the data received.
+		//callback := tgbotapi.NewCallback(update.CallbackQuery.ID, update.CallbackQuery.Data)
+
+		// And finally, send a message containing the data received.
+		msg := tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, update.CallbackQuery.Data)
+		if _, err := bot.Send(msg); err != nil {
+			panic(err)
+		}
+	}
+
 	if update.Message != nil {
 
 		if update.Message.From.ID != 820987449 {
@@ -608,19 +621,6 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 
 	}
 
-	if update.CallbackQuery == nil {
-		logger(123, "is nil", LogAppInfo)
-		// Respond to the callback query, telling Telegram to show the user
-		// a message with the data received.
-		//callback := tgbotapi.NewCallback(update.CallbackQuery.ID, update.CallbackQuery.Data)
-
-		// And finally, send a message containing the data received.
-		// msg := tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, update.CallbackQuery.Data)
-		// if _, err := bot.Send(msg); err != nil {
-		// 	panic(err)
-		// }
-	}
-
 	//}
 }
 
@@ -771,7 +771,7 @@ func execQuestions(QuestionTypeName string, chat_id int64, currentState int) {
 			}
 			logger(123, "lenInlineButtons_"+strconv.Itoa(len(InlineButtons)), LogAppInfo)
 			msg := tgbotapi.NewMessage(chat_id, requestText)
-			msg.ReplyMarkup = numericKeyboard //tgbotapi.NewInlineKeyboardMarkup(InlineButtons...)
+			msg.ReplyMarkup = tgbotapi.NewInlineKeyboardMarkup(InlineButtons...)
 			bot.Send(msg)
 		default:
 		}
