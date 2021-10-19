@@ -267,7 +267,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 	////msg,err:=bot.GetUpdatesChan(u)
 	cmdText := ""
 
-	if update.CallbackQuery != nil {
+	if update.CallbackQuery.Data == "az" {
 		logger(123, "not nil", LogAppInfo)
 		// Respond to the callback query, telling Telegram to show the user
 		// a message with the data received.
@@ -278,9 +278,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 		if _, err := bot.Send(msg); err != nil {
 			panic(err)
 		}
-	}
-
-	if update.Message != nil {
+	} else if update.Message != nil {
 
 		if update.Message.From.ID != 820987449 {
 			msg := tgbotapi.NewMessage(update.Message.Chat.ID, "SosialBot-un funksionallığını daha da yaxşılaşdırmaq məqsədilə komanda olaraq, gecə-gündüz işləyirik. Hal-hazırda yeni dəyişikliklərimizi tətbiq etməyə çalışırıq. Bu səbəbdən botun funksionallığını müvəqqəti olaraq dayandırmışıq. Az sonra, son yeniliklərlə, bot fəaliyyətini davam etidərəcək. Anlayışınız üçün təşəkkür edirik.")
