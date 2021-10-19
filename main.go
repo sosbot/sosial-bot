@@ -627,7 +627,7 @@ func execQuestionsAnswer(QuestionTypeName string, chat_id int64, currentState in
 	var responseValidationType string = ""
 	var responseErrorText string
 	var response_type int = 0
-	//var response_type_list_count int
+	var response_type_list_count int
 
 	for rows.Next() {
 		logger(123, "seq_"+strconv.Itoa(sequence), LogAppInfo)
