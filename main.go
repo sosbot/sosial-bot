@@ -729,6 +729,7 @@ func execQuestions(QuestionTypeName string, chat_id int64, currentState int) {
 			msg.ReplyMarkup = tgbotapi.NewHideKeyboard(true)
 			bot.Send(msg)
 		case 2:
+			logger(123, "question_id"+strconv.Itoa(questionId), LogAppInfo)
 			rows, err = db.Query(`SELECT count(*) as cnt  from public.question_list ql where ql.question_id=$1;`, questionId)
 			checkErr(err)
 			for rows.Next() {
