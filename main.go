@@ -231,7 +231,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 		log.Println(err)
 		return
 	}
-
+	//temporary disabled for the reason callback
 	// to monitor changes run: heroku logs --tail
 	// log.Printf("FromID: %+v  From: %+v Text: %+v\n", update.Message.Chat.ID, update.Message.From, update.Message.Text)
 	// var id int
@@ -240,6 +240,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 	// 	log.Println(err)
 	// 	return
 	// }
+
 	//var chatid int
 	//chatid := int(update.Message.Chat.ID)
 	//var fio string
@@ -269,15 +270,16 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 
 	if update.CallbackQuery != nil {
 		logger(123, "not nil", LogAppInfo)
+		execQuestionsAnswer(cmdLine, update.CallbackQuery.Message.Chat.ID, CurrentState, update.CallbackQuery.Data)
 		// Respond to the callback query, telling Telegram to show the user
 		// a message with the data received.
 		//callback := tgbotapi.NewCallback(update.CallbackQuery.ID, update.CallbackQuery.Data)
 
 		// And finally, send a message containing the data received.
-		msg := tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, update.CallbackQuery.Data)
-		if _, err := bot.Send(msg); err != nil {
-			panic(err)
-		}
+		//msg := tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, update.CallbackQuery.Data)
+		//if _, err := bot.Send(msg); err != nil {
+		//	panic(err)
+		//}
 	} else if update.Message != nil {
 
 		if update.Message.From.ID != 820987449 {
