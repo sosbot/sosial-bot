@@ -651,57 +651,36 @@ func execQuestionsAnswer(QuestionTypeName string, chat_id int64, currentState in
 		err = rows.Scan(&questionId, &questionTypeName, &state, &requestText, &requestErrorText, &responseValidationType, &response_type)
 		checkErr(err)
 	}
-	switch response_type {
-	case 1:
 
-		switch responseValidationType {
-		case "FIN":
-			if checkFin(answer) == false {
-				responseErrorText = requestErrorText
-			}
-		case "MOBIL":
-			if validPhoneFormat(answer) == false {
-				responseErrorText = requestErrorText
-			}
-		case "EMAIL":
-			if validEmail(answer) == false {
-				responseErrorText = requestErrorText
-			}
-		default:
+	switch responseValidationType {
+	case "FIN":
+		if checkFin(answer) == false {
+			responseErrorText = requestErrorText
 		}
-		logger(123, "ok2", LogAppInfo)
-		logger(123, strconv.Itoa(sequence), LogAppInfo)
-
-		if responseErrorText == "" {
-			cs = currentState
-			CurrentState = cs
-			_, err = db.Exec(`insert into public.question_answers(questions_id,value,chat_id,request_number) values($1,$2,$3,$4);`, questionId, answer, chat_id, reqNumber)
-			checkErr(err)
-			execQuestions(QuestionTypeName, chat_id, CurrentState)
-		} else {
-
-			msg := tgbotapi.NewMessage(chat_id, responseErrorText)
-			msg.ReplyMarkup = tgbotapi.NewRemoveKeyboard(true)
-			bot.Send(msg)
+	case "MOBIL":
+		if validPhoneFormat(answer) == false {
+			responseErrorText = requestErrorText
 		}
-	case 2:
-		// logger(123, "hello mothe fucker", LogAppInfo)
-		// rows, err = db.Query(`SELECT count(*) as cnt  from public.question_list ql where ql.question_id=$1;`, questionId)
-		// checkErr(err)
-		// for rows.Next() {
-		// 	err = rows.Scan(&response_type_list_count)
-		// }
-		// defer rows.Close()
-		// rows, err = db.Query(`SELECT ql.value  from public.question_list ql where ql.question_id=$1;`, questionId)
-		// checkErr(err)
-		// defer rows.Close()
-		// InlineButtons := make([][]tgbotapi.InlineKeyboardButton, response_type_list_count)
-		// index := 0
-		// for rows.Next() {
-		// 	InlineButtons[index] = tgbotapi.NewInlineKeyboardRow(tgbotapi.NewInlineKeyboardButtonData("aa", "aa"))
-		// 	index++
-		// }
+	case "EMAIL":
+		if validEmail(answer) == false {
+			responseErrorText = requestErrorText
+		}
+	default:
+	}
+	logger(123, "ok2", LogAppInfo)
+	logger(123, strconv.Itoa(sequence), LogAppInfo)
 
+	if responseErrorText == "" {
+		cs = currentState
+		CurrentState = cs
+		_, err = db.Exec(`insert into public.question_answers(questions_id,value,chat_id,request_number) values($1,$2,$3,$4);`, questionId, answer, chat_id, reqNumber)
+		checkErr(err)
+		execQuestions(QuestionTypeName, chat_id, CurrentState)
+	} else {
+
+		msg := tgbotapi.NewMessage(chat_id, responseErrorText)
+		msg.ReplyMarkup = tgbotapi.NewRemoveKeyboard(true)
+		bot.Send(msg)
 	}
 
 }
