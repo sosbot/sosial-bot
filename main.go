@@ -594,6 +594,10 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 
 	}
 
+	if update.CallbackQuery != nil {
+		logger(123, update.CallbackQuery.Data, LogAppInfo)
+	}
+
 	//}
 }
 
