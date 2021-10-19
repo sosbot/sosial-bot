@@ -661,7 +661,7 @@ func execQuestionsAnswer(QuestionTypeName string, chat_id int64, currentState in
 		} else {
 
 			msg := tgbotapi.NewMessage(chat_id, responseErrorText)
-			msg.ReplyMarkup = tgbotapi.NewHideKeyboard(true)
+			msg.ReplyMarkup = tgbotapi.NewRemoveKeyboard(true)
 			bot.Send(msg)
 		}
 	case 2:
@@ -721,10 +721,9 @@ func execQuestions(QuestionTypeName string, chat_id int64, currentState int) {
 	logger(123, "ok2", LogAppInfo)
 	logger(123, strconv.Itoa(sequence), LogAppInfo)
 	if sequence != 0 {
+		CurrentState = cs
 		switch response_type {
 		case 1:
-
-			CurrentState = cs
 			msg := tgbotapi.NewMessage(chat_id, requestText)
 			msg.ReplyMarkup = tgbotapi.NewHideKeyboard(true)
 			bot.Send(msg)
