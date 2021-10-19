@@ -748,6 +748,7 @@ func execQuestions(QuestionTypeName string, chat_id int64, currentState int) {
 				InlineButtons[index] = tgbotapi.NewInlineKeyboardRow(tgbotapi.NewInlineKeyboardButtonData(value, value))
 				index++
 			}
+			logger(123, "lenInlineButtons_"+strconv.Itoa(len(InlineButtons)), LogAppInfo)
 			msg := tgbotapi.NewMessage(chat_id, requestText)
 			msg.ReplyMarkup = InlineButtons
 			bot.Send(msg)
