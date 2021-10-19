@@ -233,13 +233,13 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 	}
 
 	// to monitor changes run: heroku logs --tail
-	log.Printf("FromID: %+v  From: %+v Text: %+v\n", update.Message.Chat.ID, update.Message.From, update.Message.Text)
-	var id int
-	err = db.QueryRow("insert into public.messages(text,sent,sentby,tel_chat_id,tel_message_id) values($1,$2,$3,$4,$5) returning id;", update.Message.Text, time.Now(), update.Message.From.ID, update.Message.Chat.ID, update.Message.MessageID).Scan(&id)
-	if err != nil {
-		log.Println(err)
-		return
-	}
+	// log.Printf("FromID: %+v  From: %+v Text: %+v\n", update.Message.Chat.ID, update.Message.From, update.Message.Text)
+	// var id int
+	// err = db.QueryRow("insert into public.messages(text,sent,sentby,tel_chat_id,tel_message_id) values($1,$2,$3,$4,$5) returning id;", update.Message.Text, time.Now(), update.Message.From.ID, update.Message.Chat.ID, update.Message.MessageID).Scan(&id)
+	// if err != nil {
+	// 	log.Println(err)
+	// 	return
+	// }
 	//var chatid int
 	//chatid := int(update.Message.Chat.ID)
 	//var fio string
@@ -267,7 +267,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 	////msg,err:=bot.GetUpdatesChan(u)
 	cmdText := ""
 
-	if update.CallbackQuery.Data == "az" {
+	if update.CallbackQuery != nil {
 		logger(123, "not nil", LogAppInfo)
 		// Respond to the callback query, telling Telegram to show the user
 		// a message with the data received.
