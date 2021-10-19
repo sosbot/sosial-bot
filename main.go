@@ -594,17 +594,17 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 
 	}
 
-	if update.CallbackQuery != nil {
-		// Respond to the callback query, telling Telegram to show the user
-		// a message with the data received.
-		//callback := tgbotapi.NewCallback(update.CallbackQuery.ID, update.CallbackQuery.Data)
+	// if update.CallbackQuery != nil {
+	// 	// Respond to the callback query, telling Telegram to show the user
+	// 	// a message with the data received.
+	// 	//callback := tgbotapi.NewCallback(update.CallbackQuery.ID, update.CallbackQuery.Data)
 
-		// And finally, send a message containing the data received.
-		msg := tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, update.CallbackQuery.Data)
-		if _, err := bot.Send(msg); err != nil {
-			panic(err)
-		}
-	}
+	// 	// And finally, send a message containing the data received.
+	// 	msg := tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, update.CallbackQuery.Data)
+	// 	if _, err := bot.Send(msg); err != nil {
+	// 		panic(err)
+	// 	}
+	// }
 
 	//}
 }
@@ -635,13 +635,6 @@ func execQuestionsAnswer(QuestionTypeName string, chat_id int64, currentState in
 
 		err = rows.Scan(&questionId, &questionTypeName, &state, &requestText, &requestErrorText, &responseValidationType, &response_type)
 		checkErr(err)
-
-		// questionsArrMap[chat_id].QuestionTypeName = questionTypeName
-		// questionsArrMap[chat_id].State = state
-		// questionsArrMap[chat_id].RequestText = requestText
-		// questionsArrMap[chat_id].RequestErrorText = requestErrorText
-		// questionsArrMap[chat_id].ResponseValidationType = responseValidationType
-
 	}
 	switch response_type {
 	case 1:
