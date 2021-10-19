@@ -13,7 +13,7 @@ import (
 	"time"
 	"unicode/utf8"
 
-	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
+	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"github.com/gorilla/mux"
 	_ "github.com/lib/pq"
 	//_"github.com/go-sql-driver/mysql"
@@ -752,7 +752,7 @@ func execQuestions(QuestionTypeName string, chat_id int64, currentState int) {
 			value := ""
 			for rows.Next() {
 				err = rows.Scan(&value)
-				InlineButtons[index] = tgbotapi.NewInlineKeyboardRow(tgbotapi.NewInlineKeyboardButtonData(value, "1"))
+				InlineButtons[index] = tgbotapi.NewInlineKeyboardRow(tgbotapi.NewInlineKeyboardButtonData(value, value))
 				index++
 			}
 			logger(123, "lenInlineButtons_"+strconv.Itoa(len(InlineButtons)), LogAppInfo)
