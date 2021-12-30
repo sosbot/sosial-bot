@@ -756,6 +756,30 @@ func execQuestions(QuestionTypeName string, chat_id int64, currentState int) {
 			msg := tgbotapi.NewMessage(chat_id, requestText)
 			msg.ReplyMarkup = tgbotapi.NewInlineKeyboardMarkup(InlineButtons...)
 			bot.Send(msg)
+		case 3:
+			logger(123, "question_id"+strconv.Itoa(questionId), LogAppInfo)
+			rows, err = db.Query(`SELECT count(*) as cnt  from public.question_list ql where ql.question_id=$1;`, questionId)
+			checkErr(err)
+			for rows.Next() {
+				err = rows.Scan(&response_type_list_count)
+			}
+			logger(123, "response_type_list_count_"+strconv.Itoa(response_type_list_count), LogAppInfo)
+			defer rows.Close()
+			rows, err = db.Query(`SELECT ql.value  from public.question_list ql where ql.question_id=$1;`, questionId)
+			checkErr(err)
+			defer rows.Close()
+			InlineButtons := make([][]tgbotapi.InlineKeyboardButton, response_type_list_count)
+			index := 0
+			value := ""
+			for rows.Next() {
+				err = rows.Scan(&value)
+				InlineButtons[index] = tgbotapi.NewInlineKeyboardRow(tgbotapi.NewInlineKeyboardButtonData(value, value))
+				index++
+			}
+			logger(123, "lenInlineButtons_"+strconv.Itoa(len(InlineButtons)), LogAppInfo)
+			msg := tgbotapi.NewMessage(chat_id, requestText)
+			msg.ReplyMarkup = tgbotapi.NewInlineKeyboardMarkup(InlineButtons...)
+			bot.Send(msg)
 		default:
 		}
 	} else {
