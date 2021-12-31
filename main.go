@@ -670,31 +670,47 @@ func execQuestionsAnswer(update *tgbotapi.Update, QuestionTypeName string, chat_
 		if count == 0 {
 			_, err = db.Exec(`insert into public.question_answers(questions_id,value,chat_id,request_number) values($1,$2,$3,$4);`, questionId, answer, chat_id, reqNumber)
 			checkErr(err)
-			markup := tgbotapi.NewInlineKeyboardMarkup(
-				tgbotapi.NewInlineKeyboardRow(
-					tgbotapi.NewInlineKeyboardButtonData("✓ "+update.CallbackQuery.Data, update.CallbackQuery.Data),
-				))
-			edit := tgbotapi.NewEditMessageReplyMarkup(
-				update.CallbackQuery.Message.Chat.ID,
-				update.CallbackQuery.Message.MessageID,
-				markup,
-			)
-			edit.ReplyMarkup = &markup
-			bot.Send(edit)
-		} else {
-			markup := tgbotapi.NewInlineKeyboardMarkup(
-				tgbotapi.NewInlineKeyboardRow(
-					tgbotapi.NewInlineKeyboardButtonData("❌ "+update.CallbackQuery.Data, update.CallbackQuery.Data),
-				))
-
-			edit := tgbotapi.NewEditMessageReplyMarkup(
-				update.CallbackQuery.Message.Chat.ID,
-				update.CallbackQuery.Message.MessageID,
-				markup,
-			)
-			edit.ReplyMarkup = &markup
-			bot.Send(edit)
 		}
+		qlistCount := 0
+		rows, err = db.Query(`SELECT count(*) as cnt  from public.question_list ql where ql.question_id=$1;`, questionId)
+		checkErr(err)
+		for rows.Next() {
+			err = rows.Scan(&qlistCount)
+		}
+
+		rows, err = db.Query(` select ql.value,qa.value as answer_value from question_list ql  left join question_answers qa  on ql.question_id =qa.questions_id and ql.value=qa.value and qa.chat_id = $1 and qa.request_number = $2 ;`, questionId)
+		checkErr(err)
+		defer rows.Close()
+		InlineButtons := make([][]tgbotapi.InlineKeyboardButton, qlistCount)
+		index := 0
+		value := ""
+		answerValue := ""
+		for rows.Next() {
+			err = rows.Scan(&value, &answerValue)
+			if answerValue == "" {
+				InlineButtons[index] = tgbotapi.NewInlineKeyboardRow(tgbotapi.NewInlineKeyboardButtonData("✓ "+value, value))
+			} else {
+				InlineButtons[index] = tgbotapi.NewInlineKeyboardRow(tgbotapi.NewInlineKeyboardButtonData("❌ "+value, value))
+			}
+			index++
+		}
+		logger(123, "lenInlineButtons_"+strconv.Itoa(len(InlineButtons)), LogAppInfo)
+		//msg := tgbotapi.NewMessage(chat_id, requestText)
+		//msg.ReplyMarkup = tgbotapi.NewInlineKeyboardMarkup(InlineButtons...)
+		//bot.Send(msg)
+
+		// markup := tgbotapi.NewInlineKeyboardMarkup(
+		// 	tgbotapi.NewInlineKeyboardRow(
+		// 		tgbotapi.NewInlineKeyboardButtonData("❌ "+update.CallbackQuery.Data, update.CallbackQuery.Data),
+		// 	))
+		markup := tgbotapi.NewInlineKeyboardMarkup(InlineButtons...)
+		edit := tgbotapi.NewEditMessageReplyMarkup(
+			update.CallbackQuery.Message.Chat.ID,
+			update.CallbackQuery.Message.MessageID,
+			markup,
+		)
+		edit.ReplyMarkup = &markup
+		bot.Send(edit)
 
 	default:
 		switch responseValidationType {
