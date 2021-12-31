@@ -780,6 +780,13 @@ func execQuestions(QuestionTypeName string, chat_id int64, currentState int) {
 			msg := tgbotapi.NewMessage(chat_id, requestText)
 			msg.ReplyMarkup = tgbotapi.NewInlineKeyboardMarkup(InlineButtons...)
 			bot.Send(msg)
+
+			var nextButton = tgbotapi.NewInlineKeyboardMarkup(
+				tgbotapi.NewInlineKeyboardRow(
+					tgbotapi.NewInlineKeyboardButtonData("Növbəti", "nextButton"),
+				))
+			msg.ReplyMarkup = nextButton
+			bot.Send(msg)
 		default:
 		}
 	} else {
