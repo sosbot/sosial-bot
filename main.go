@@ -3,6 +3,7 @@ package main
 import (
 	"database/sql"
 	"encoding/json"
+	"fmt"
 	"html/template"
 	"io/ioutil"
 	"log"
@@ -269,6 +270,8 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 
 	if update.CallbackQuery != nil {
 		logger(123, "not nil", LogAppInfo)
+		logger(update.Message.Chat.ID, "Top message chat id  "+fmt.Sprintf("%d", update.CallbackQuery.Message.Chat.ID), LogAppInfo)
+		logger(update.Message.Chat.ID, "Top message  id  "+fmt.Sprintf("%d", update.CallbackQuery.Message.MessageID), LogAppInfo)
 		execQuestionsAnswer(&update, cmdLine, update.CallbackQuery.Message.Chat.ID, CurrentState, update.CallbackQuery.Data)
 		// Respond to the callback query, telling Telegram to show the user
 		// a message with the data received.
@@ -657,6 +660,9 @@ func execQuestionsAnswer(update *tgbotapi.Update, QuestionTypeName string, chat_
 
 	switch response_type {
 	case 3:
+		logger(update.Message.Chat.ID, "inside message chat id  "+fmt.Sprintf("%d", update.CallbackQuery.Message.Chat.ID), LogAppInfo)
+		logger(update.Message.Chat.ID, "inside message  id  "+fmt.Sprintf("%d", update.CallbackQuery.Message.MessageID), LogAppInfo)
+
 		res, err := db.Exec(` delete from  public.question_answers where questions_id=$1 and chat_id=$2 and request_number=$3 and value=$4`, questionId, chat_id, reqNumber, answer)
 		checkErr(err)
 		count, err := res.RowsAffected()
