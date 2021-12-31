@@ -687,7 +687,7 @@ func execQuestionsAnswer(update *tgbotapi.Update, QuestionTypeName string, chat_
 		answerValue := ""
 		for rows.Next() {
 			err = rows.Scan(&value, &answerValue)
-			if answerValue == "" {
+			if answerValue == value {
 				InlineButtons[index] = tgbotapi.NewInlineKeyboardRow(tgbotapi.NewInlineKeyboardButtonData("❌ "+value, value))
 			} else {
 				InlineButtons[index] = tgbotapi.NewInlineKeyboardRow(tgbotapi.NewInlineKeyboardButtonData("✓ "+value, value))
