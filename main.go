@@ -786,7 +786,7 @@ func execQuestions(QuestionTypeName string, chat_id int64, currentState int) {
 					tgbotapi.NewInlineKeyboardButtonData("-> Növbəti", "nextButton"),
 				))
 			msgNextButton := tgbotapi.NewMessage(chat_id, "Seçim(lər)i edib, növbəti düyməsinə sıxın.")
-			msg.ReplyMarkup = nextButton
+			msgNextButton.ReplyMarkup = nextButton
 			bot.Send(msgNextButton)
 		default:
 		}
