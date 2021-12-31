@@ -678,7 +678,7 @@ func execQuestionsAnswer(update *tgbotapi.Update, QuestionTypeName string, chat_
 			err = rows.Scan(&qlistCount)
 		}
 
-		rows, err = db.Query(` select ql.value,qa.value as answer_value from question_list ql  left join question_answers qa  on ql.question_id =qa.questions_id and ql.value=qa.value and qa.chat_id = $1 and qa.request_number = $2 ;`, questionId)
+		rows, err = db.Query(` select ql.value,qa.value as answer_value from question_list ql  left join question_answers qa  on ql.question_id =qa.questions_id and ql.value=qa.value and qa.chat_id = $1 and qa.request_number = $2 ;`, chat_id, reqNumber)
 		checkErr(err)
 		defer rows.Close()
 		InlineButtons := make([][]tgbotapi.InlineKeyboardButton, qlistCount)
