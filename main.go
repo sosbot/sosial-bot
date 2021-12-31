@@ -727,6 +727,7 @@ func execQuestionsAnswer(update *tgbotapi.Update, QuestionTypeName string, chat_
 				responseErrorText = requestErrorText
 			}
 		default:
+			responseErrorText = ""
 		}
 		logger(123, "ok2", LogAppInfo)
 		logger(123, strconv.Itoa(sequence), LogAppInfo)
