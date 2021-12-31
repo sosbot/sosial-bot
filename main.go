@@ -270,8 +270,8 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 
 	if update.CallbackQuery != nil {
 		logger(123, "not nil", LogAppInfo)
-		logger(update.Message.Chat.ID, "Top message chat id  "+fmt.Sprint(update.CallbackQuery.Message.Chat.ID), LogAppInfo)
-		logger(update.Message.Chat.ID, "Top message  id  "+fmt.Sprint(update.CallbackQuery.Message.MessageID), LogAppInfo)
+		logger(update.CallbackQuery.Message.Chat.ID, "Top message chat id  "+fmt.Sprint(update.CallbackQuery.Message.Chat.ID), LogAppInfo)
+		logger(update.CallbackQuery.Message.Chat.ID, "Top message  id  "+fmt.Sprint(update.CallbackQuery.Message.MessageID), LogAppInfo)
 		execQuestionsAnswer(&update, cmdLine, update.CallbackQuery.Message.Chat.ID, CurrentState, update.CallbackQuery.Data)
 		// Respond to the callback query, telling Telegram to show the user
 		// a message with the data received.
