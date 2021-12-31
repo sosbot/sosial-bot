@@ -122,6 +122,7 @@ var cmdLineArch string
 var cmdLineMenu string
 var back_clicked_once bool
 var reqNumber int
+var update tgbotapi.Update
 
 var numericKeyboard = tgbotapi.NewInlineKeyboardMarkup(
 	tgbotapi.NewInlineKeyboardRow(
@@ -225,7 +226,6 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 		return
 	}
 
-	var update tgbotapi.Update
 	err = json.Unmarshal(bytes, &update)
 	if err != nil {
 		log.Println(err)
@@ -656,35 +656,66 @@ func execQuestionsAnswer(QuestionTypeName string, chat_id int64, currentState in
 		checkErr(err)
 	}
 
-	switch responseValidationType {
-	case "FIN":
-		if checkFin(answer) == false {
-			responseErrorText = requestErrorText
-		}
-	case "MOBIL":
-		if validPhoneFormat(answer) == false {
-			responseErrorText = requestErrorText
-		}
-	case "EMAIL":
-		if validEmail(answer) == false {
-			responseErrorText = requestErrorText
-		}
-	default:
-	}
-	logger(123, "ok2", LogAppInfo)
-	logger(123, strconv.Itoa(sequence), LogAppInfo)
-
-	if responseErrorText == "" {
-		cs = currentState
-		CurrentState = cs
-		_, err = db.Exec(`insert into public.question_answers(questions_id,value,chat_id,request_number) values($1,$2,$3,$4);`, questionId, answer, chat_id, reqNumber)
+	switch response_type {
+	case 3:
+		res, err := db.Exec(` delete from  public.question_answers where question_id=$1 and chat_id=$2 and request_number=$3 and value=$4`, questionId, chat_id, reqNumber, answer)
 		checkErr(err)
-		execQuestions(QuestionTypeName, chat_id, CurrentState)
-	} else {
+		count, err := res.RowsAffected()
+		checkErr(err)
+		if count == 0 {
+			_, err = db.Exec(`insert into public.question_answers(questions_id,value,chat_id,request_number) values($1,$2,$3,$4);`, questionId, answer, chat_id, reqNumber)
+			checkErr(err)
+			var markup tgbotapi.InlineKeyboardMarkup
+			edit := tgbotapi.NewEditMessageText(
+				update.Message.Chat.ID,
+				update.Message.MessageID,
+				"✓ "+answer,
+			)
+			edit.ReplyMarkup = &markup
+			bot.Send(edit)
+		} else {
+			var markup tgbotapi.InlineKeyboardMarkup
+			edit := tgbotapi.NewEditMessageText(
+				update.Message.Chat.ID,
+				update.Message.MessageID,
+				"❌ "+answer,
+			)
+			edit.ReplyMarkup = &markup
+			bot.Send(edit)
+		}
 
-		msg := tgbotapi.NewMessage(chat_id, responseErrorText)
-		msg.ReplyMarkup = tgbotapi.NewRemoveKeyboard(true)
-		bot.Send(msg)
+	default:
+		switch responseValidationType {
+		case "FIN":
+			if checkFin(answer) == false {
+				responseErrorText = requestErrorText
+			}
+		case "MOBIL":
+			if validPhoneFormat(answer) == false {
+				responseErrorText = requestErrorText
+			}
+		case "EMAIL":
+			if validEmail(answer) == false {
+				responseErrorText = requestErrorText
+			}
+		default:
+		}
+		logger(123, "ok2", LogAppInfo)
+		logger(123, strconv.Itoa(sequence), LogAppInfo)
+
+		if responseErrorText == "" {
+			cs = currentState
+			CurrentState = cs
+			//_, err = db.Exec(`insert into public.question_answers(questions_id,value,chat_id,request_number) values($1,$2,$3,$4);`, questionId, answer, chat_id, reqNumber)
+			//checkErr(err)
+			execQuestions(QuestionTypeName, chat_id, CurrentState)
+		} else {
+
+			msg := tgbotapi.NewMessage(chat_id, responseErrorText)
+			msg.ReplyMarkup = tgbotapi.NewRemoveKeyboard(true)
+			bot.Send(msg)
+
+		}
 	}
 
 }
