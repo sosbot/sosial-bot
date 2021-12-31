@@ -657,7 +657,7 @@ func execQuestionsAnswer(update *tgbotapi.Update, QuestionTypeName string, chat_
 
 	switch response_type {
 	case 3:
-		res, err := db.Exec(` delete from  public.question_answers where question_id=$1 and chat_id=$2 and request_number=$3 and value=$4`, questionId, chat_id, reqNumber, answer)
+		res, err := db.Exec(` delete from  public.question_answers where questions_id=$1 and chat_id=$2 and request_number=$3 and value=$4`, questionId, chat_id, reqNumber, answer)
 		checkErr(err)
 		count, err := res.RowsAffected()
 		checkErr(err)
