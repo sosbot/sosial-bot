@@ -773,7 +773,7 @@ func execQuestions(QuestionTypeName string, chat_id int64, currentState int) {
 			value := ""
 			for rows.Next() {
 				err = rows.Scan(&value)
-				InlineButtons[index] = tgbotapi.NewInlineKeyboardRow(tgbotapi.NewInlineKeyboardButtonData(value, value))
+				InlineButtons[index] = tgbotapi.NewInlineKeyboardRow(tgbotapi.NewInlineKeyboardButtonData("🗹 "+value, value))
 				index++
 			}
 			logger(123, "lenInlineButtons_"+strconv.Itoa(len(InlineButtons)), LogAppInfo)
@@ -783,7 +783,7 @@ func execQuestions(QuestionTypeName string, chat_id int64, currentState int) {
 
 			var nextButton = tgbotapi.NewInlineKeyboardMarkup(
 				tgbotapi.NewInlineKeyboardRow(
-					tgbotapi.NewInlineKeyboardButtonData("-> Növbəti", "nextButton"),
+					tgbotapi.NewInlineKeyboardButtonData("▶️ Növbəti", "nextButton"),
 				))
 			msgNextButton := tgbotapi.NewMessage(chat_id, "Seçim(lər)i edib, növbəti düyməsinə sıxın.")
 			msgNextButton.ReplyMarkup = nextButton
