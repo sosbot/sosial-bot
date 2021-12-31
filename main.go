@@ -122,7 +122,6 @@ var cmdLineArch string
 var cmdLineMenu string
 var back_clicked_once bool
 var reqNumber int
-var update tgbotapi.Update
 
 var numericKeyboard = tgbotapi.NewInlineKeyboardMarkup(
 	tgbotapi.NewInlineKeyboardRow(
@@ -225,7 +224,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 		log.Println(err)
 		return
 	}
-
+	var update tgbotapi.Update
 	err = json.Unmarshal(bytes, &update)
 	if err != nil {
 		log.Println(err)
@@ -270,7 +269,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 
 	if update.CallbackQuery != nil {
 		logger(123, "not nil", LogAppInfo)
-		execQuestionsAnswer(cmdLine, update.CallbackQuery.Message.Chat.ID, CurrentState, update.CallbackQuery.Data)
+		execQuestionsAnswer(&update, cmdLine, update.CallbackQuery.Message.Chat.ID, CurrentState, update.CallbackQuery.Data)
 		// Respond to the callback query, telling Telegram to show the user
 		// a message with the data received.
 		//callback := tgbotapi.NewCallback(update.CallbackQuery.ID, update.CallbackQuery.Data)
@@ -559,7 +558,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 					if CurrentState == 999 {
 						CurrentState = 1
 					} else {
-						execQuestionsAnswer(cmdLine, update.Message.Chat.ID, CurrentState, update.Message.Text)
+						execQuestionsAnswer(&update, cmdLine, update.Message.Chat.ID, CurrentState, update.Message.Text)
 					}
 				}
 				//cs, ok := req1Map[update.Message.From.ID]
@@ -624,7 +623,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 	//}
 }
 
-func execQuestionsAnswer(QuestionTypeName string, chat_id int64, currentState int, answer string) {
+func execQuestionsAnswer(update *tgbotapi.Update, QuestionTypeName string, chat_id int64, currentState int, answer string) {
 	logger(123, QuestionTypeName, LogAppInfo)
 
 	if reqNumber == 0 {
