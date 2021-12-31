@@ -670,7 +670,7 @@ func execQuestionsAnswer(update *tgbotapi.Update, QuestionTypeName string, chat_
 		if count == 0 {
 			_, err = db.Exec(`insert into public.question_answers(questions_id,value,chat_id,request_number) values($1,$2,$3,$4);`, questionId, answer, chat_id, reqNumber)
 			checkErr(err)
-			var markup tgbotapi.InlineKeyboardMarkup
+			markup := tgbotapi.InlineKeyboardMarkup{}
 			edit := tgbotapi.NewEditMessageText(
 				update.CallbackQuery.Message.Chat.ID,
 				update.CallbackQuery.Message.MessageID,
@@ -679,7 +679,7 @@ func execQuestionsAnswer(update *tgbotapi.Update, QuestionTypeName string, chat_
 			edit.ReplyMarkup = &markup
 			bot.Send(edit)
 		} else {
-			var markup tgbotapi.InlineKeyboardMarkup
+			markup := tgbotapi.InlineKeyboardMarkup{}
 			edit := tgbotapi.NewEditMessageText(
 				update.CallbackQuery.Message.Chat.ID,
 				update.CallbackQuery.Message.MessageID,
