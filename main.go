@@ -672,25 +672,25 @@ func execQuestionsAnswer(update *tgbotapi.Update, QuestionTypeName string, chat_
 			checkErr(err)
 			markup := tgbotapi.NewInlineKeyboardMarkup(
 				tgbotapi.NewInlineKeyboardRow(
-					tgbotapi.NewInlineKeyboardButtonData(update.CallbackQuery.Data, update.CallbackQuery.Data),
+					tgbotapi.NewInlineKeyboardButtonData("✓ "+update.CallbackQuery.Data, update.CallbackQuery.Data),
 				))
-			edit := tgbotapi.NewEditMessageText(
+			edit := tgbotapi.NewEditMessageReplyMarkup(
 				update.CallbackQuery.Message.Chat.ID,
 				update.CallbackQuery.Message.MessageID,
-				"✓ "+answer,
+				markup,
 			)
 			edit.ReplyMarkup = &markup
 			bot.Send(edit)
 		} else {
 			markup := tgbotapi.NewInlineKeyboardMarkup(
 				tgbotapi.NewInlineKeyboardRow(
-					tgbotapi.NewInlineKeyboardButtonData(update.CallbackQuery.Data, update.CallbackQuery.Data),
+					tgbotapi.NewInlineKeyboardButtonData("❌ "+update.CallbackQuery.Data, update.CallbackQuery.Data),
 				))
 
-			edit := tgbotapi.NewEditMessageText(
+			edit := tgbotapi.NewEditMessageReplyMarkup(
 				update.CallbackQuery.Message.Chat.ID,
 				update.CallbackQuery.Message.MessageID,
-				"❌ "+answer,
+				markup,
 			)
 			edit.ReplyMarkup = &markup
 			bot.Send(edit)
