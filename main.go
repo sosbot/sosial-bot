@@ -859,14 +859,16 @@ func execQuestions(QuestionTypeName string, chat_id int64, currentState int) {
 	} else {
 		//rand.Seed(time.Now().UTC().UnixNano())
 		//reqNumber = rand.Intn(10000000)
-		msg := tgbotapi.NewMessage(chat_id, "Müraciətiniz qəbul olundu. Müraciət nömrəsi: "+strconv.Itoa(reqNumber))
-		msg.ReplyMarkup = mainMenu
-		bot.Send(msg)
-		_, err = db.Exec(`update  public.requests set status=1 where reqnumber=$1;`, reqNumber)
-		checkErr(err)
-		reqNumber = 0
-		//_,err = db.Exec(`insert into public.requests(reqnumber,reqfrom,reqtype,reqtext) values($1,$2,$3,$4);`, reqNumber, chat_id, cmdLine, reqText)
-		//checkErr(err)
+		if reqNumber > 0 {
+			msg := tgbotapi.NewMessage(chat_id, "Müraciətiniz qəbul olundu. Müraciət nömrəsi: "+strconv.Itoa(reqNumber))
+			msg.ReplyMarkup = mainMenu
+			bot.Send(msg)
+			_, err = db.Exec(`update  public.requests set status=1 where reqnumber=$1;`, reqNumber)
+			checkErr(err)
+			reqNumber = 0
+			//_,err = db.Exec(`insert into public.requests(reqnumber,reqfrom,reqtype,reqtext) values($1,$2,$3,$4);`, reqNumber, chat_id, cmdLine, reqText)
+			//checkErr(err)
+		}
 	}
 
 }
