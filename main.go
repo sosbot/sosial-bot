@@ -737,9 +737,10 @@ func execQuestionsAnswer(update *tgbotapi.Update, QuestionTypeName string, chat_
 			CurrentState = cs
 			//_, err = db.Exec(`insert into public.question_answers(questions_id,value,chat_id,request_number) values($1,$2,$3,$4);`, questionId, answer, chat_id, reqNumber)
 			//checkErr(err)
+			logger(123, "responseErrorText==null", LogAppInfo)
 			execQuestions(QuestionTypeName, chat_id, CurrentState)
 		} else {
-
+			logger(123, "responseErrorText not null", LogAppInfo)
 			msg := tgbotapi.NewMessage(chat_id, responseErrorText)
 			msg.ReplyMarkup = tgbotapi.NewRemoveKeyboard(true)
 			bot.Send(msg)
