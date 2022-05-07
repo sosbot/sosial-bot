@@ -408,8 +408,8 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 				//msg := tgbotapi.NewMessage(update.Message.Chat.ID, "https://dma.gov.az/agentlik/idare-heyeti/idare-heyetinin-sedri/abbasbeyli-mustafa-aslan-oglu")
 				//msg.ReplyMarkup = mainMenu
 				//bot.Send(msg)
-				file := tgbotapi.File{FilePath: "https://sosialbot.eu-central-1.linodeobjects.com/audio_2022-05-07_17-49-21.ogg"}
-				msg := tgbotapi.NewAudioUpload(update.Message.Chat.ID, file)
+				//file := tgbotapi.File{FilePath: "https://sosialbot.eu-central-1.linodeobjects.com/audio_2022-05-07_17-49-21.ogg"}
+				msg := tgbotapi.NewAudioShare(update.Message.Chat.ID, "https://sosialbot.eu-central-1.linodeobjects.com/audio_2022-05-07_17-49-21.ogg")
 
 				msg.ReplyToMessageID = update.Message.MessageID
 				_, err := bot.Send(msg)
