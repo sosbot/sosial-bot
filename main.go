@@ -410,8 +410,12 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 				//bot.Send(msg)
 				file := tgbotapi.File{FilePath: "https://sosialbot.eu-central-1.linodeobjects.com/audio_2022-05-07_17-49-21.ogg"}
 				msg := tgbotapi.NewAudioUpload(update.Message.Chat.ID, file)
-				msg.ReplyMarkup = mainMenu
-				bot.Send(msg)
+
+				msg.ReplyToMessageID = update.Message.MessageID
+				_, err := bot.Send(msg)
+				if err != nil {
+					panic(err)
+				}
 
 			}
 			if update.Message.Text == mainMenu.Keyboard[3][0].Text { //📌 Filiallar
