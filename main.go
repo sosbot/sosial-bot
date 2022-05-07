@@ -410,7 +410,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 				//bot.Send(msg)
 				file := tgbotapi.File{FilePath: "https://sosialbot.eu-central-1.linodeobjects.com/audio_2022-05-07_17-49-21.ogg"}
 				msg := tgbotapi.NewAudioUpload(update.Message.Chat.ID, file)
-
+				msg.ReplyMarkup = mainMenu
 				bot.Send(msg)
 
 			}
