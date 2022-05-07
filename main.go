@@ -405,8 +405,12 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 			if update.Message.Text == mainMenu.Keyboard[2][0].Text {
 				cmdLine = mainMenu.Keyboard[2][0].Text
 				cmdLineMenu = "mainMenu"
-				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "https://dma.gov.az/agentlik/idare-heyeti/idare-heyetinin-sedri/abbasbeyli-mustafa-aslan-oglu")
-				msg.ReplyMarkup = mainMenu
+				//msg := tgbotapi.NewMessage(update.Message.Chat.ID, "https://dma.gov.az/agentlik/idare-heyeti/idare-heyetinin-sedri/abbasbeyli-mustafa-aslan-oglu")
+				//msg.ReplyMarkup = mainMenu
+				//bot.Send(msg)
+				file := tgbotapi.File{FilePath: "https://drive.google.com/file/d/1DeDX_CH8-znhbm9M-kgoVnDV12lrUx4j/view?usp=sharing"}
+				msg := tgbotapi.NewAudioUpload(update.Message.Chat.ID, file)
+
 				bot.Send(msg)
 			}
 			if update.Message.Text == mainMenu.Keyboard[3][0].Text { //📌 Filiallar
