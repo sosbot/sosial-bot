@@ -317,11 +317,16 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 				bot.Send(msg)
 			}
 		} else if update.Message.Audio != nil {
-			audio := *update.Message.Audio
-			resp, _ := bot.GetFile(tgbotapi.FileConfig{audio.FileID})
-			r, _ := http.Get("https://api.telegram.org/file/bot" + botToken + "/" + resp.FilePath)
-			defer r.Body.Close()
-			msg := tgbotapi.NewAudioShare(update.Message.Chat.ID, audio.FileID)
+			/*
+				audio := *update.Message.Audio
+				resp, _ := bot.GetFile(tgbotapi.FileConfig{audio.FileID})
+				r, _ := http.Get("https://api.telegram.org/file/bot" + botToken + "/" + resp.FilePath)
+				defer r.Body.Close()
+				msg := tgbotapi.NewAudioShare(update.Message.Chat.ID, audio.FileID)
+				msg.ReplyToMessageID = update.Message.MessageID
+				bot.Send(msg)
+			*/
+			msg := tgbotapi.NewMessage(update.Message.Chat.ID, "ok")
 			msg.ReplyToMessageID = update.Message.MessageID
 			bot.Send(msg)
 		} else {
