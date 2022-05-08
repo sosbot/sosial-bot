@@ -325,9 +325,9 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 			msg := tgbotapi.NewAudioShare(update.Message.Chat.ID, voice.FileID)
 			msg.ReplyToMessageID = update.Message.MessageID
 			bot.Send(msg)
-			vc := r.Body
+			//vc := r.Body
 			sqlStatement := `insert into voices(voice) values($1)`
-			_, err := db.Exec(sqlStatement, vc)
+			_, err := db.Exec(sqlStatement, msg)
 			if err != nil {
 				panic(err)
 			}
