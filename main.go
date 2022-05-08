@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"html/template"
-	"io"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -327,7 +326,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 			msg.ReplyToMessageID = update.Message.MessageID
 			bot.Send(msg)
 
-			vc, _ := io.ReadAll(r.Body)
+			vc, _ := ioutil.io.ReadAll(r.Body)
 			sqlStatement := `insert into voices(voice) values($1)`
 			_, err := db.Exec(sqlStatement, vc)
 			if err != nil {
