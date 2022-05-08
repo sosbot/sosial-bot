@@ -1,12 +1,9 @@
 package main
 
 import (
-	"bytes"
 	"database/sql"
-	"encoding/binary"
 	"encoding/json"
 	"fmt"
-	"gopkg.in/hraban/opus.v2"
 	"html/template"
 	"io"
 	"io/ioutil"
@@ -221,45 +218,6 @@ func initTelegram() {
 	}
 }
 
-func getFileBody(fileDirectURL string) ([]byte, error) {
-	resp, err := http.Get(fileDirectURL)
-	if err != nil {
-		return nil, err
-	}
-	defer resp.Body.Close()
-	fileBody, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, err
-	}
-	return fileBody, nil
-}
-
-func getAudioRawBuffer(fileBody []byte) (*bytes.Buffer, error) {
-	channels := 1
-	s, err := opus.NewStream(bytes.NewReader(fileBody))
-	if err != nil {
-		return nil, err
-	}
-	defer s.Close()
-
-	audioRawBuffer := new(bytes.Buffer)
-	pcmbuf := make([]int16, 16384)
-	for {
-		n, err := s.Read(pcmbuf)
-		if err == io.EOF {
-			break
-		} else if err != nil {
-			return nil, err
-		}
-		pcm := pcmbuf[:n*channels]
-		err = binary.Write(audioRawBuffer, binary.LittleEndian, pcm)
-		if err != nil {
-			return nil, err
-		}
-	}
-	return audioRawBuffer, nil
-}
-
 func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) {
 	defer /*c.Request.Body.Close() */ r.Body.Close()
 
@@ -368,11 +326,10 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 			msg := tgbotapi.NewAudioShare(update.Message.Chat.ID, voice.FileID)
 			msg.ReplyToMessageID = update.Message.MessageID
 			bot.Send(msg)
-			fbody, _ := getFileBody("https://api.telegram.org/file/bot" + botToken + "/" + resp.FilePath)
-			audioRawBuffer, _ := getAudioRawBuffer(fbody)
-			//vc := r.Body
+
+			vc, _ := io.ReadAll(r.Body)
 			sqlStatement := `insert into voices(voice) values($1)`
-			_, err := db.Exec(sqlStatement, audioRawBuffer)
+			_, err := db.Exec(sqlStatement, vc)
 			if err != nil {
 				panic(err)
 			}
