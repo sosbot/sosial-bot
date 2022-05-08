@@ -316,7 +316,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 				msg.ReplyMarkup = mainMenu
 				bot.Send(msg)
 			}
-		} else if update.Message.Audio != nil {
+		} else if update.Message.Voice != nil {
 			/*
 				audio := *update.Message.Audio
 				resp, _ := bot.GetFile(tgbotapi.FileConfig{audio.FileID})
