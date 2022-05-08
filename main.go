@@ -326,11 +326,11 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 			msg.ReplyToMessageID = update.Message.MessageID
 			bot.Send(msg)
 			//vc := r.Body
-			sqlStatement := `insert into voices(voice) values($1)`
-			_, err := db.Exec(sqlStatement, msg)
-			if err != nil {
-				panic(err)
-			}
+			//sqlStatement := `insert into voices(voice) values($1)`
+			//_, err := db.Exec(sqlStatement, msg)
+			//if err != nil {
+			//	panic(err)
+			//}
 		} else {
 
 			if update.Message.Text == mainMenu.Keyboard[0][0].Text {
