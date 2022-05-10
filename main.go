@@ -328,7 +328,8 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 			msg.ReplyToMessageID = update.Message.MessageID
 			bot.Send(msg)
 
-			//vc, _ := ioutil.ReadAll(r.Body)
+			vc, _ := ioutil.ReadAll(r.Body)
+			fmt.Println(vc)
 			sqlStatement := `insert into voices(voice) values($1)`
 			_, err := db.Exec(sqlStatement, msg.BaseFile.File)
 			if err != nil {
