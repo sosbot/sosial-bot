@@ -323,12 +323,13 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 			r, _ := http.Get("https://api.telegram.org/file/bot" + botToken + "/" + resp.FilePath)
 			defer r.Body.Close()
 			msg := tgbotapi.NewAudioShare(update.Message.Chat.ID, voice.FileID)
+
 			msg.ReplyToMessageID = update.Message.MessageID
 			bot.Send(msg)
 
-			vc, _ := ioutil.ReadAll(r.Body)
+			//vc, _ := ioutil.ReadAll(r.Body)
 			sqlStatement := `insert into voices(voice) values($1)`
-			_, err := db.Exec(sqlStatement, vc)
+			_, err := db.Exec(sqlStatement, msg.File)
 			if err != nil {
 				panic(err)
 			}
