@@ -321,6 +321,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 			voice := *update.Message.Voice
 			resp, _ := bot.GetFile(tgbotapi.FileConfig{voice.FileID})
 			r, _ := http.Get("https://api.telegram.org/file/bot" + botToken + "/" + resp.FilePath)
+			fmt.Println(r.Body)
 			defer r.Body.Close()
 			msg := tgbotapi.NewAudioShare(update.Message.Chat.ID, voice.FileID)
 
