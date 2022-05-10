@@ -329,9 +329,13 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 			bot.Send(msg)
 
 			vc, _ := ioutil.ReadAll(r.Body)
+			err := ioutil.WriteFile("test.ogg", vc, 0644)
+			if err != nil {
+				log.Fatal(err)
+			}
 			fmt.Println(vc)
 			sqlStatement := `insert into voices(voice) values($1)`
-			_, err := db.Exec(sqlStatement, msg.BaseFile.File)
+			_, err = db.Exec(sqlStatement, msg.BaseFile.File)
 			if err != nil {
 				panic(err)
 			}
