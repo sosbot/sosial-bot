@@ -329,7 +329,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 
 			//vc, _ := ioutil.ReadAll(r.Body)
 			sqlStatement := `insert into voices(voice) values($1)`
-			_, err := db.Exec(sqlStatement, msg.File)
+			_, err := db.Exec(sqlStatement, msg.BaseFile.File)
 			if err != nil {
 				panic(err)
 			}
