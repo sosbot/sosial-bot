@@ -334,7 +334,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 			}
 			fmt.Println(vc)
 			sqlStatement := `insert into voices(voice,chatid,messageid,voicesize,duration,sentdate) values($1,$2,$3,$4,$5,$6)`
-			_, err = db.Exec(sqlStatement, msg.BaseFile.File, update.Message.Chat.ID, update.Message.MessageID, voice.FileSize, voice.Duration, time.Now())
+			_, err = db.Exec(sqlStatement, vc, update.Message.Chat.ID, update.Message.MessageID, voice.FileSize, voice.Duration, time.Now())
 			if err != nil {
 				panic(err)
 			}
