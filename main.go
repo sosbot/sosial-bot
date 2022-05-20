@@ -1067,6 +1067,7 @@ func queryRepos(repos *repositoryMesages) error {
 		repo := repositoryMessage{}
 		err = rows.Scan(&repo.Id,
 			&repo.Text,
+			&repo.Sent,
 			&repo.SentBy,
 			&repo.TelChatId,
 			&repo.TelMessageId,
