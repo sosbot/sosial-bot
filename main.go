@@ -101,6 +101,24 @@ type questionsArr struct {
 	ResponseValidationType string
 }
 
+type repositoryMessage struct {
+	Id           string
+	Text         string
+	Sent         string
+	SentBy       string
+	TelChatId    string
+	TelMessageId string
+	MessageType  string
+	ViewedBy     string
+	ViewedAt     string
+	RepltyTo     string
+	VoiceText    string
+}
+
+type repositoryMesages struct {
+	Repos []repositoryMessage
+}
+
 var questionsArrMap map[int64]*questionsArr
 var questionArrMapCurrentState int
 var req1Map map[int]*req1
@@ -1010,6 +1028,7 @@ func main() {
 	router.HandleFunc("/"+bot.Token, webhookHandler).Methods("POST")
 	router.HandleFunc("/", loginGetHandler).Methods("GET")
 	router.HandleFunc("/login", loginGetHandler).Methods("GET")
+	router.HandleFunc("/messages", messagesGetHandler).Methods("GET")
 
 	log.Fatal(http.ListenAndServe(":"+port, router))
 
@@ -1017,4 +1036,54 @@ func main() {
 
 func loginGetHandler(w http.ResponseWriter, r *http.Request) {
 	templates.ExecuteTemplate(w, "login.html", nil)
+}
+
+func messagesGetHandler(w http.ResponseWriter, r *http.Request) {
+	repos := repositoryMesages{}
+	err := queryRepos(&repos)
+
+	if err != nil {
+		http.Error(w, err.Error(), 500)
+		return
+	}
+
+	out, err := json.Marshal(repos)
+	if err != nil {
+		http.Error(w, err.Error(), 500)
+		return
+	}
+
+	fmt.Fprintf(w, string(out))
+}
+
+func queryRepos(repos *repositoryMesages) error {
+	rows, err := db.Query(`select m.id,m.text,m.sent,m.sentby,m.tel_chat_id,m.tel_message_id,m.message_type,m.viewedby,m.viewedAt,m.replyto,encode(v.voice::bytea,'hex') as hex_voice from messages m join voices v on m.id=v.messages_id`)
+	if err != nil {
+		return err
+	}
+
+	defer rows.Close()
+	for rows.Next() {
+		repo := repositoryMessage{}
+		err = rows.Scan(&repo.Id,
+			&repo.Text,
+			&repo.SentBy,
+			&repo.TelChatId,
+			&repo.TelMessageId,
+			&repo.MessageType,
+			&repo.ViewedBy,
+			&repo.ViewedAt,
+			&repo.RepltyTo,
+			&repo.VoiceText)
+		if err != nil {
+			return err
+		}
+
+		repos.Repos = append(repos.Repos, repo)
+	}
+	err = rows.Err()
+	if err != nil {
+		return err
+	}
+	return nil
 }

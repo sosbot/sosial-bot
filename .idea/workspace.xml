@@ -4,11 +4,24 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="329891d6-e1be-480b-b063-64e37689b7b4" name="Changes" comment="voice table altered" />
+    <list default="true" id="329891d6-e1be-480b-b063-64e37689b7b4" name="Changes" comment="voice table altered">
+      <change afterPath="$PROJECT_DIR$/messages.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/a07b9cca-ad5f-416e-8a9a-0bc852c612b6.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/a07b9cca-ad5f-416e-8a9a-0bc852c612b6.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/a07b9cca-ad5f-416e-8a9a-0bc852c612b6/storage_v2/_src_/database/nyrdyxoc.8L_Vaw/schema/public.abK9xQ.meta" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/a07b9cca-ad5f-416e-8a9a-0bc852c612b6/storage_v2/_src_/database/nyrdyxoc.8L_Vaw/schema/public.abK9xQ.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Go File" />
+      </list>
+    </option>
   </component>
   <component name="GOROOT" url="file://C:/Program Files/Go" />
   <component name="Git.Settings">
@@ -35,6 +48,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="DatabaseDriversLRU" value="postgresql" />
+    <property name="DefaultGoTemplateProperty" value="Go File" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
