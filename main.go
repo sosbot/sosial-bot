@@ -1061,7 +1061,7 @@ func messagesGetHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func queryRepos(repos *repositoryMesages) error {
-	rows, err := db.Query(`select m.id,m.text,m.sent,m.sentby,m.tel_chat_id,m.tel_message_id,m.message_type,m.viewedby,m.viewedAt,coalesce(m.replyto,''),encode(v.voice::bytea,'hex') as hex_voice from messages m join voices v on m.id=v.messages_id`)
+	rows, err := db.Query(`select m.id,m.text,m.sent,m.sentby,m.tel_chat_id,m.tel_message_id,m.message_type,m.viewedby,m.viewedAt,coalesce(cast(m.replyto as varchar),''),encode(v.voice::bytea,'hex') as hex_voice from messages m join voices v on m.id=v.messages_id`)
 	if err != nil {
 		return err
 	}
