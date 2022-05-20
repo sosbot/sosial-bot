@@ -111,7 +111,7 @@ type repositoryMessage struct {
 	MessageType  string
 	ViewedBy     string
 	ViewedAt     string
-	RepltyTo     string
+	RepltyTo     sql.NullString
 	VoiceText    string
 }
 
