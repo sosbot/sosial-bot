@@ -1059,7 +1059,7 @@ func messageToGetHandler(w http.ResponseWriter, r *http.Request) {
 	//msg.ReplyMarkup = mainMenu
 	bot.Send(msg)
 
-	_, err = db.Exec(`insert into messages(text,sent,sentby) values($1,$2,$3)`, r.URL.Query().Get("message"), time.Now(), params["id"])
+	_, err = db.Exec(`insert into messages(text,sent,sentby,tel_chat_id,message_type,viewedby,viewedat) values($1,$2,$3,$4,$5,$6,$7)`, r.URL.Query().Get("message"), time.Now(), 1, params["id"], 1, 1, time.Now())
 	checkErr(err)
 }
 
@@ -1098,7 +1098,7 @@ func messagesIdGetHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	_, err = db.Exec(`update messages set viewedBy=1,viewedAt=$1 where sentby=$2`, time.Now(), params["id"])
+	_, err = db.Exec(`update messages set viewedBy=1,viewedAt=$1 where tel_chat_id=$2`, time.Now(), params["id"])
 	checkErr(err)
 
 	fmt.Fprintf(w, string(out))
@@ -1128,7 +1128,7 @@ func messagesGetHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func queryUserRepos(repos *repositoryUsers) error {
-	rows, err := db.Query(`select a.sentby,a.cnt from (select sentby,coalesce((select count(*) from messages where sentby=m.sentby and viewedat is null group by m.sentby),0) as cnt from messages m where sentby is not null group by sentby) a order by a.cnt desc`)
+	rows, err := db.Query(`select a.tel_chat_id,a.cnt from (select tel_chat_id,coalesce((select count(*) from messages where tel_chat_id=m.tel_chat_id and viewedat is null group by m.tel_chat_id),0) as cnt from messages m where tel_chat_id is not null group by tel_chat_id) a order by a.cnt desc`)
 
 	if err != nil {
 		return err
@@ -1152,7 +1152,7 @@ func queryUserRepos(repos *repositoryUsers) error {
 
 func queryMessageRepos(repos *repositoryMesages) error {
 	//rows, err := db.Query(`select m.id,m.text,m.sent,m.sentby,m.tel_chat_id,m.tel_message_id,m.message_type,coalesce(cast(m.viewedBy as varchar),''),coalesce(cast(m.viewedAt as varchar),''),coalesce(cast(m.replyto as varchar),''),encode(v.voice::bytea,'hex') as hex_voice from messages m left join voices v on m.id=v.messages_id`)
-	rows, err := db.Query(`select m.id,coalesce(m.text,'') as text,m.sent,m.sentby,coalesce(cast(m.tel_chat_id as varchar),'') as  tel_chat_id,coalesce(cast(m.tel_message_id as varchar),'') as tel_message_id,coalesce(cast(m.message_type as varchar),'') as message_type,coalesce(cast(m.viewedBy as varchar),'') as  viewedBy,coalesce(cast(m.viewedAt as varchar),'') as viewedAt,coalesce(cast(m.replyto as varchar),'') as replyTo,coalesce(cast(v.duration as varchar),'') as duration,coalesce(encode(v.voice::bytea,'hex'),'') as hex_voice from messages m left join voices v on m.id=v.messages_id where sentby is not null`)
+	rows, err := db.Query(`select m.id,coalesce(m.text,'') as text,m.sent,m.sentby,coalesce(cast(m.tel_chat_id as varchar),'') as  tel_chat_id,coalesce(cast(m.tel_message_id as varchar),'') as tel_message_id,coalesce(cast(m.message_type as varchar),'') as message_type,coalesce(cast(m.viewedBy as varchar),'') as  viewedBy,coalesce(cast(m.viewedAt as varchar),'') as viewedAt,coalesce(cast(m.replyto as varchar),'') as replyTo,coalesce(cast(v.duration as varchar),'') as duration,coalesce(encode(v.voice::bytea,'hex'),'') as hex_voice from messages m left join voices v on m.id=v.messages_id where tel_chat_id is not null`)
 	if err != nil {
 		return err
 	}
@@ -1187,7 +1187,7 @@ func queryMessageRepos(repos *repositoryMesages) error {
 
 func queryMessageReposById(repos *repositoryMesages, id string) error {
 
-	rows, err := db.Query(`select m.id,coalesce(m.text,'') as  text,m.sent,m.sentby,coalesce(cast(m.tel_chat_id as varchar),'') as tel_chat_id,coalesce(cast(m.tel_message_id as varchar),'') as tel_message_id,coalesce(cast(m.message_type as varchar),'') as  message_type,coalesce(cast(m.viewedBy as varchar),'') as  viewedBy,coalesce(cast(m.viewedAt as varchar),'') as viewedAt,coalesce(cast(m.replyto as varchar),'') as replyTo,coalesce(cast(v.duration as varchar),'') as duration,coalesce(encode(v.voice::bytea,'hex'),'') as hex_voice from messages m left join voices v on m.id=v.messages_id where sentby is not null and sentby=$1 order by sent asc`, id)
+	rows, err := db.Query(`select m.id,coalesce(m.text,'') as  text,m.sent,m.sentby,coalesce(cast(m.tel_chat_id as varchar),'') as tel_chat_id,coalesce(cast(m.tel_message_id as varchar),'') as tel_message_id,coalesce(cast(m.message_type as varchar),'') as  message_type,coalesce(cast(m.viewedBy as varchar),'') as  viewedBy,coalesce(cast(m.viewedAt as varchar),'') as viewedAt,coalesce(cast(m.replyto as varchar),'') as replyTo,coalesce(cast(v.duration as varchar),'') as duration,coalesce(encode(v.voice::bytea,'hex'),'') as hex_voice from messages m left join voices v on m.id=v.messages_id where tel_chat_id is not null and tel_chat_id=$1 order by sent asc`, id)
 	if err != nil {
 		return err
 	}
