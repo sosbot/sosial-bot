@@ -1084,7 +1084,7 @@ func messagesIdGetHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	_, err = db.Exec(`update messages set viewedBy=1,viewedAt=$2 where sentby=$3`, time.Now(), params["id"])
+	_, err = db.Exec(`update messages set viewedBy=1,viewedAt=$1 where sentby=$2`, time.Now(), params["id"])
 	checkErr(err)
 
 	fmt.Fprintf(w, string(out))
