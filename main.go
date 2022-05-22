@@ -123,6 +123,15 @@ type MyString struct {
 	val string
 }
 
+type repositoryUser struct {
+	User     string
+	ViewedAt string
+}
+
+type repositoryUsers struct {
+	Repos []repositoryUser
+}
+
 var questionsArrMap map[int64]*questionsArr
 var questionArrMapCurrentState int
 var req1Map map[int]*req1
@@ -1034,8 +1043,27 @@ func main() {
 	router.HandleFunc("/login", loginGetHandler).Methods("GET")
 	router.HandleFunc("/messages", messagesGetHandler).Methods("GET")
 	router.HandleFunc("/messages/{id}", messagesIdGetHandler).Methods("GET")
+	router.HandleFunc("/users", usersGetHandler).Methods("GET")
 
 	log.Fatal(http.ListenAndServe(":"+port, router))
+
+}
+
+func usersGetHandler(w http.ResponseWriter, r *http.Request) {
+	repos := repositoryUsers{}
+	err := queryUserRepos(&repos)
+	if err != nil {
+		http.Error(w, err.Error(), 500)
+		return
+	}
+
+	out, err := json.Marshal(repos)
+	if err != nil {
+		http.Error(w, err.Error(), 500)
+		return
+	}
+
+	fmt.Fprintf(w, string(out))
 
 }
 
@@ -1079,6 +1107,29 @@ func messagesGetHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	fmt.Fprintf(w, string(out))
+}
+
+func queryUserRepos(repos *repositoryUsers) error {
+	rows, err := db.Query(`select distinct sentby,viewedat from messages m where m.viewedat is null order by m.viewedat nulls first`)
+
+	if err != nil {
+		return err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		repo := repositoryUser{}
+		err = rows.Scan(&repo.User, &repo.ViewedAt)
+		if err != nil {
+			return err
+		}
+		repos.Repos = append(repos.Repos, repo)
+	}
+	err = rows.Err()
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 func queryRepos(repos *repositoryMesages) error {
