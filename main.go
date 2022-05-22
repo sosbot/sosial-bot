@@ -1045,9 +1045,19 @@ func main() {
 	router.HandleFunc("/messages", messagesGetHandler).Methods("GET")
 	router.HandleFunc("/messages/{id}", messagesIdGetHandler).Methods("GET")
 	router.HandleFunc("/users", usersGetHandler).Methods("GET")
+	router.HandleFunc("/messageTo/{id}", messageToGetHandler).Methods("GET")
 
 	log.Fatal(http.ListenAndServe(":"+port, router))
 
+}
+
+func messageToGetHandler(w http.ResponseWriter, r *http.Request) {
+
+	params := mux.Vars(r)
+	telegramId, _ := strconv.ParseInt(params["id"], 10, 64)
+	msg := tgbotapi.NewMessage(telegramId, r.URL.Query().Get("message"))
+	//msg.ReplyMarkup = mainMenu
+	bot.Send(msg)
 }
 
 func usersGetHandler(w http.ResponseWriter, r *http.Request) {
