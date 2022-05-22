@@ -1061,6 +1061,7 @@ func messageToGetHandler(w http.ResponseWriter, r *http.Request) {
 
 	_, err = db.Exec(`insert into messages(text,sent,sentby,tel_chat_id,message_type,viewedby,viewedat) values($1,$2,$3,$4,$5,$6,$7)`, r.URL.Query().Get("message"), time.Now(), 1, params["id"], 1, 1, time.Now())
 	checkErr(err)
+	fmt.Fprintf(w, "")
 }
 
 func usersGetHandler(w http.ResponseWriter, r *http.Request) {
