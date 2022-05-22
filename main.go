@@ -1085,6 +1085,9 @@ func messagesIdGetHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	fmt.Fprintf(w, string(out))
+
+	_, err = db.Exec(`update messages set viewedBy=1,viewedAt=$2 where sentby=$3`, time.Now(), params["id"])
+	checkErr(err)
 }
 
 func loginGetHandler(w http.ResponseWriter, r *http.Request) {
