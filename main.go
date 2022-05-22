@@ -1138,7 +1138,7 @@ func queryUserRepos(repos *repositoryUsers) error {
 
 func queryMessageRepos(repos *repositoryMesages) error {
 	//rows, err := db.Query(`select m.id,m.text,m.sent,m.sentby,m.tel_chat_id,m.tel_message_id,m.message_type,coalesce(cast(m.viewedBy as varchar),''),coalesce(cast(m.viewedAt as varchar),''),coalesce(cast(m.replyto as varchar),''),encode(v.voice::bytea,'hex') as hex_voice from messages m left join voices v on m.id=v.messages_id`)
-	rows, err := db.Query(`select m.id,coalesce(m.text,'') text,m.sent,m.sentby,coalesce(m.tel_chat_id,'') tel_chat_id,coalesce(m.tel_message_id,'') tel_message_id,coalesce(cast(m.message_type as varchar),'') message_type,coalesce(cast(m.viewedBy as varchar),'') viewedBy,coalesce(cast(m.viewedAt as varchar),'') viewedAt,coalesce(cast(m.replyto as varchar),'') replyTo,coalesce(encode(v.voice::bytea,'hex'),'') as hex_voice from messages m left join voices v on m.id=v.messages_id where sentby is not null`)
+	rows, err := db.Query(`select m.id,coalesce(m.text,'') as text,m.sent,m.sentby,coalesce(m.tel_chat_id,'') as  tel_chat_id,coalesce(m.tel_message_id,'') as tel_message_id,coalesce(cast(m.message_type as varchar),'') as message_type,coalesce(cast(m.viewedBy as varchar),'') as  viewedBy,coalesce(cast(m.viewedAt as varchar),'') as viewedAt,coalesce(cast(m.replyto as varchar),'') as replyTo,coalesce(encode(v.voice::bytea,'hex'),'') as hex_voice from messages m left join voices v on m.id=v.messages_id where sentby is not null`)
 	if err != nil {
 		return err
 	}
@@ -1172,7 +1172,7 @@ func queryMessageRepos(repos *repositoryMesages) error {
 
 func queryMessageReposById(repos *repositoryMesages, id string) error {
 
-	rows, err := db.Query(`select m.id,coalesce(m.text,'') text,m.sent,m.sentby,coalesce(m.tel_chat_id,'')tel_chat_id,coalesce(m.tel_message_id,'')tel_message_id,coalesce(cast(m.message_type as varchar),'') message_type,coalesce(cast(m.viewedBy as varchar),'') viewedBy,coalesce(cast(m.viewedAt as varchar),'') viewedAt,coalesce(cast(m.replyto as varchar),'') replyTo,coalesce(encode(v.voice::bytea,'hex'),'') as hex_voice from messages m left join voices v on m.id=v.messages_id where sentby is not null and sentby=$1`, id)
+	rows, err := db.Query(`select m.id,coalesce(m.text,'') as  text,m.sent,m.sentby,coalesce(m.tel_chat_id,'') as tel_chat_id,coalesce(m.tel_message_id,'') as tel_message_id,coalesce(cast(m.message_type as varchar),'') as  message_type,coalesce(cast(m.viewedBy as varchar),'') as  viewedBy,coalesce(cast(m.viewedAt as varchar),'') as viewedAt,coalesce(cast(m.replyto as varchar),'') as replyTo,coalesce(encode(v.voice::bytea,'hex'),'') as hex_voice from messages m left join voices v on m.id=v.messages_id where sentby is not null and sentby=$1`, id)
 	if err != nil {
 		return err
 	}
