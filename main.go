@@ -1114,7 +1114,7 @@ func messagesGetHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func queryUserRepos(repos *repositoryUsers) error {
-	rows, err := db.Query(`select sentby,coalesce((select count(*) from messages where sentby=m.sentby and viewedat is null group by m.sentby),0) as cnt from messages m where sentby is not null group by sentby`)
+	rows, err := db.Query(`select sentby,cnt from (select sentby,coalesce((select count(*) from messages where sentby=m.sentby and viewedat is null group by m.sentby),0) as cnt from messages m where sentby is not null group by sentby) order by cnt desc`)
 
 	if err != nil {
 		return err
