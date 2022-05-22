@@ -1116,7 +1116,7 @@ func queryRepos(repos *repositoryMesages) error {
 
 func queryReposById(repos *repositoryMesages, id string) error {
 
-	rows, err := db.Query(`select m.id,m.text,m.sent,m.sentby,m.tel_chat_id,m.tel_message_id,m.message_type,coalesce(cast(m.viewedBy as varchar),''),coalesce(cast(m.viewedAt as varchar),''),coalesce(cast(m.replyto as varchar),''),encode(v.voice::bytea,'hex') as hex_voice from messages m join voices v on m.id=v.messages_id where m.sentby=:1`, id)
+	rows, err := db.Query(`select m.id,m.text,m.sent,m.sentby,m.tel_chat_id,m.tel_message_id,m.message_type,coalesce(cast(m.viewedBy as varchar),''),coalesce(cast(m.viewedAt as varchar),''),coalesce(cast(m.replyto as varchar),''),encode(v.voice::bytea,'hex') as hex_voice from messages m join voices v on m.id=v.messages_id where m.sentby=$1`, id)
 	if err != nil {
 		return err
 	}
