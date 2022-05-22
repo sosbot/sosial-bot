@@ -1110,7 +1110,7 @@ func messagesGetHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func queryUserRepos(repos *repositoryUsers) error {
-	rows, err := db.Query(`select distinct on (sentby) sentby,coalesce(cast(m.viewedAt as varchar),'') from messages m where m.viewedat is null order by m.sentby,m.viewedat nulls first`)
+	rows, err := db.Query(`select distinct on (sentby) sentby,coalesce(cast(m.viewedAt as varchar),'') from messages m where m.viewedat is null and m.sentby is not null order by m.sentby,m.viewedat nulls first`)
 
 	if err != nil {
 		return err
