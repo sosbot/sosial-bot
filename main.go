@@ -124,8 +124,8 @@ type MyString struct {
 }
 
 type repositoryUser struct {
-	User     string
-	ViewedAt string
+	User        string
+	UnviewedCnt int
 }
 
 type repositoryUsers struct {
@@ -1114,7 +1114,7 @@ func messagesGetHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func queryUserRepos(repos *repositoryUsers) error {
-	rows, err := db.Query(`select distinct on (sentby) sentby,coalesce(cast(m.viewedAt as varchar),'') from messages m where m.viewedat is null and m.sentby is not null order by m.sentby,m.viewedat nulls first`)
+	rows, err := db.Query(`select sentby,coalesce((select count(*) from messages where sentby=m.sentby and viewedat is null group by m.sentby),0) as cnt from messages m where sentby is not null group by sentby`)
 
 	if err != nil {
 		return err
@@ -1123,7 +1123,7 @@ func queryUserRepos(repos *repositoryUsers) error {
 
 	for rows.Next() {
 		repo := repositoryUser{}
-		err = rows.Scan(&repo.User, &repo.ViewedAt)
+		err = rows.Scan(&repo.User, &repo.UnviewedCnt)
 		if err != nil {
 			return err
 		}
