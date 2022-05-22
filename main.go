@@ -1172,7 +1172,7 @@ func queryMessageRepos(repos *repositoryMesages) error {
 
 func queryMessageReposById(repos *repositoryMesages, id string) error {
 
-	rows, err := db.Query(`select m.id,coalesce(m.text,'') as  text,m.sent,m.sentby,coalesce(cast(m.tel_chat_id as varchar),'') as tel_chat_id,coalesce(cast(m.tel_message_id as varchar),'') as tel_message_id,coalesce(cast(m.message_type as varchar),'') as  message_type,coalesce(cast(m.viewedBy as varchar),'') as  viewedBy,coalesce(cast(m.viewedAt as varchar),'') as viewedAt,coalesce(cast(m.replyto as varchar),'') as replyTo,coalesce(encode(v.voice::bytea,'hex'),'') as hex_voice from messages m left join voices v on m.id=v.messages_id where sentby is not null and sentby=$1`, id)
+	rows, err := db.Query(`select m.id,coalesce(m.text,'') as  text,m.sent,m.sentby,coalesce(cast(m.tel_chat_id as varchar),'') as tel_chat_id,coalesce(cast(m.tel_message_id as varchar),'') as tel_message_id,coalesce(cast(m.message_type as varchar),'') as  message_type,coalesce(cast(m.viewedBy as varchar),'') as  viewedBy,coalesce(cast(m.viewedAt as varchar),'') as viewedAt,coalesce(cast(m.replyto as varchar),'') as replyTo,coalesce(encode(v.voice::bytea,'hex'),'') as hex_voice from messages m left join voices v on m.id=v.messages_id where sentby is not null and sentby=$1 order by sent asc`, id)
 	if err != nil {
 		return err
 	}
