@@ -1058,6 +1058,9 @@ func messageToGetHandler(w http.ResponseWriter, r *http.Request) {
 	msg := tgbotapi.NewMessage(telegramId, r.URL.Query().Get("message"))
 	//msg.ReplyMarkup = mainMenu
 	bot.Send(msg)
+
+	_, err = db.Exec(`insert into messages(text,sent,sentby) values($1,$2,$3)`, r.URL.Query().Get("message"), time.Now(), params["id"])
+	checkErr(err)
 }
 
 func usersGetHandler(w http.ResponseWriter, r *http.Request) {
