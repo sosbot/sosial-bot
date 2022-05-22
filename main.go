@@ -1071,7 +1071,7 @@ func messagesIdGetHandler(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 
 	repos := repositoryMesages{}
-	err := queryReposById(&repos, params["id"])
+	err := queryMessageReposById(&repos, params["id"])
 
 	if err != nil {
 		http.Error(w, err.Error(), 500)
@@ -1097,7 +1097,7 @@ func loginGetHandler(w http.ResponseWriter, r *http.Request) {
 
 func messagesGetHandler(w http.ResponseWriter, r *http.Request) {
 	repos := repositoryMesages{}
-	err := queryRepos(&repos)
+	err := queryMessageRepos(&repos)
 
 	if err != nil {
 		http.Error(w, err.Error(), 500)
@@ -1136,8 +1136,9 @@ func queryUserRepos(repos *repositoryUsers) error {
 	return nil
 }
 
-func queryRepos(repos *repositoryMesages) error {
-	rows, err := db.Query(`select m.id,m.text,m.sent,m.sentby,m.tel_chat_id,m.tel_message_id,m.message_type,coalesce(cast(m.viewedBy as varchar),''),coalesce(cast(m.viewedAt as varchar),''),coalesce(cast(m.replyto as varchar),''),encode(v.voice::bytea,'hex') as hex_voice from messages m left join voices v on m.id=v.messages_id`)
+func queryMessageRepos(repos *repositoryMesages) error {
+	//rows, err := db.Query(`select m.id,m.text,m.sent,m.sentby,m.tel_chat_id,m.tel_message_id,m.message_type,coalesce(cast(m.viewedBy as varchar),''),coalesce(cast(m.viewedAt as varchar),''),coalesce(cast(m.replyto as varchar),''),encode(v.voice::bytea,'hex') as hex_voice from messages m left join voices v on m.id=v.messages_id`)
+	rows, err := db.Query(`select m.id,m.text,m.sent,m.sentby,m.tel_chat_id,m.tel_message_id,coalesce(cast(m.message_type as varchar),'') message_type,coalesce(cast(m.viewedBy as varchar),'') viewedBy,coalesce(cast(m.viewedAt as varchar),'') viewedAt,coalesce(cast(m.replyto as varchar),'') replyTo,coalesce(encode(v.voice::bytea,'hex'),'') as hex_voice from messages m left join voices v on m.id=v.messages_id where sentby is not null`)
 	if err != nil {
 		return err
 	}
@@ -1169,9 +1170,9 @@ func queryRepos(repos *repositoryMesages) error {
 	return nil
 }
 
-func queryReposById(repos *repositoryMesages, id string) error {
+func queryMessageReposById(repos *repositoryMesages, id string) error {
 
-	rows, err := db.Query(`select m.id,m.text,m.sent,m.sentby,m.tel_chat_id,m.tel_message_id,m.message_type,coalesce(cast(m.viewedBy as varchar),''),coalesce(cast(m.viewedAt as varchar),''),coalesce(cast(m.replyto as varchar),''),encode(v.voice::bytea,'hex') as hex_voice from messages m left join voices v on m.id=v.messages_id where m.sentby=$1`, id)
+	rows, err := db.Query(`select m.id,m.text,m.sent,m.sentby,m.tel_chat_id,m.tel_message_id,coalesce(cast(m.message_type as varchar),'') message_type,coalesce(cast(m.viewedBy as varchar),'') viewedBy,coalesce(cast(m.viewedAt as varchar),'') viewedAt,coalesce(cast(m.replyto as varchar),'') replyTo,coalesce(encode(v.voice::bytea,'hex'),'') as hex_voice from messages m left join voices v on m.id=v.messages_id where sentby is not null and sentby=$1`, id)
 	if err != nil {
 		return err
 	}
