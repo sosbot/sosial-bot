@@ -1033,9 +1033,30 @@ func main() {
 	router.HandleFunc("/", loginGetHandler).Methods("GET")
 	router.HandleFunc("/login", loginGetHandler).Methods("GET")
 	router.HandleFunc("/messages", messagesGetHandler).Methods("GET")
+	router.HandleFunc("/messages/{id}", messagesIdGetHandler).Methods("GET")
 
 	log.Fatal(http.ListenAndServe(":"+port, router))
 
+}
+
+func messagesIdGetHandler(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+
+	repos := repositoryMesages{}
+	err := queryReposById(&repos, params["id"])
+
+	if err != nil {
+		http.Error(w, err.Error(), 500)
+		return
+	}
+
+	out, err := json.Marshal(repos)
+	if err != nil {
+		http.Error(w, err.Error(), 500)
+		return
+	}
+
+	fmt.Fprintf(w, string(out))
 }
 
 func loginGetHandler(w http.ResponseWriter, r *http.Request) {
@@ -1062,6 +1083,40 @@ func messagesGetHandler(w http.ResponseWriter, r *http.Request) {
 
 func queryRepos(repos *repositoryMesages) error {
 	rows, err := db.Query(`select m.id,m.text,m.sent,m.sentby,m.tel_chat_id,m.tel_message_id,m.message_type,coalesce(cast(m.viewedBy as varchar),''),coalesce(cast(m.viewedAt as varchar),''),coalesce(cast(m.replyto as varchar),''),encode(v.voice::bytea,'hex') as hex_voice from messages m join voices v on m.id=v.messages_id`)
+	if err != nil {
+		return err
+	}
+
+	defer rows.Close()
+	for rows.Next() {
+		repo := repositoryMessage{}
+		err = rows.Scan(&repo.Id,
+			&repo.Text,
+			&repo.Sent,
+			&repo.SentBy,
+			&repo.TelChatId,
+			&repo.TelMessageId,
+			&repo.MessageType,
+			&repo.ViewedBy,
+			&repo.ViewedAt,
+			&repo.RepltyTo,
+			&repo.VoiceText)
+		if err != nil {
+			return err
+		}
+
+		repos.Repos = append(repos.Repos, repo)
+	}
+	err = rows.Err()
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func queryReposById(repos *repositoryMesages, id string) error {
+
+	rows, err := db.Query(`select m.id,m.text,m.sent,m.sentby,m.tel_chat_id,m.tel_message_id,m.message_type,coalesce(cast(m.viewedBy as varchar),''),coalesce(cast(m.viewedAt as varchar),''),coalesce(cast(m.replyto as varchar),''),encode(v.voice::bytea,'hex') as hex_voice from messages m join voices v on m.id=v.messages_id where m.sentby=?`, id)
 	if err != nil {
 		return err
 	}
