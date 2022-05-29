@@ -267,10 +267,13 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 	// to monitor changes run: heroku logs --tail
 	// log.Printf("FromID: %+v  From: %+v Text: %+v\n", update.Message.Chat.ID, update.Message.From, update.Message.Text)
 	var id int64
-	err = db.QueryRow("insert into public.messages(text,sent,sentby,tel_chat_id,tel_message_id,message_type) values($1,$2,$3,$4,$5,$6) returning id;", update.Message.Text, time.Now(), update.Message.From.ID, update.Message.Chat.ID, update.Message.MessageID, 1).Scan(&id)
-	if err != nil {
-		log.Println(err)
-		return
+	var text = update.Message.Text
+	if len(text) > 0 {
+		err = db.QueryRow("insert into public.messages(text,sent,sentby,tel_chat_id,tel_message_id,message_type) values($1,$2,$3,$4,$5,$6) returning id;", update.Message.Text, time.Now(), update.Message.From.ID, update.Message.Chat.ID, update.Message.MessageID, 1).Scan(&id)
+		if err != nil {
+			log.Println(err)
+			return
+		}
 	}
 
 	//var chatid int
