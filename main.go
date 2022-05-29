@@ -1018,8 +1018,8 @@ func main() {
 	templates = template.Must(template.ParseGlob("templates/*.html"))
 	port := os.Getenv("PORT")
 
-	//db, err = sql.Open("postgres", "postgres://nyrdyxoc:r4lOIZWMIoHImjb16U3u6XBQEe1Fdd7Q@queenie.db.elephantsql.com:5432/nyrdyxoc")
-	db, err = sql.Open("postgres", "postgres://bbuitmkqevrfzf:ebcea06a881aee891ebaa6176c11aaa534fc7021091792389315020cf67ec954@ec2-3-209-65-193.compute-1.amazonaws.com:5432/dave9oelfnd2v0")
+	db, err = sql.Open("postgres", "postgres://nyrdyxoc:r4lOIZWMIoHImjb16U3u6XBQEe1Fdd7Q@queenie.db.elephantsql.com:5432/nyrdyxoc")
+	//db, err = sql.Open("postgres", "postgres://bbuitmkqevrfzf:ebcea06a881aee891ebaa6176c11aaa534fc7021091792389315020cf67ec954@ec2-3-209-65-193.compute-1.amazonaws.com:5432/dave9oelfnd2v0")
 
 	db.SetMaxOpenConns(5)
 	db.SetMaxIdleConns(5)
