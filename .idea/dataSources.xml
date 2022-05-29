@@ -8,5 +8,12 @@
       <jdbc-url>jdbc:postgresql://queenie.db.elephantsql.com:5432/nyrdyxoc</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
+    <data-source source="LOCAL" name="ec2-3-209-65-193.compute-1.amazonaws.com" uuid="1fa633ea-c498-45b4-b0df-4cdaaaf0d96e">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://ec2-3-209-65-193.compute-1.amazonaws.com:5432/dave9oelfnd2v0</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
   </component>
 </project>
