@@ -1254,7 +1254,7 @@ func queryMessageReposById(repos *repositoryMesages, id string) error {
 }
 
 func queryMessagesCountReposById(repos *repositoryMessagesCountArr, id string) error {
-	rows, err := db.Query(`select count(*) as cnt from messages m left join voices v on m.id=v.messages_id where tel_chat_id is not null and tel_chat_id=$1 order by sent asc`, id)
+	rows, err := db.Query(`select count(*) as cnt from messages m left join voices v on m.id=v.messages_id where tel_chat_id is not null and tel_chat_id=$1`, id)
 	if err != nil {
 		return err
 	}
