@@ -120,6 +120,13 @@ type repositoryMesages struct {
 	Repos []repositoryMessage
 }
 
+type repositoryMessagesCount struct {
+	Count string
+}
+
+type repositoryMessagesCountArr struct {
+	Repos []repositoryMessagesCount
+}
 type MyString struct {
 	val string
 }
@@ -1049,6 +1056,7 @@ func main() {
 	router.HandleFunc("/login", loginGetHandler).Methods("GET")
 	router.HandleFunc("/messages", messagesGetHandler).Methods("GET")
 	router.HandleFunc("/messages/{id}", messagesIdGetHandler).Methods("GET")
+	router.HandleFunc("/messagesCount/{id}", messagesCountGetHandler).Methods("GET")
 	router.HandleFunc("/users", usersGetHandler).Methods("GET")
 	router.HandleFunc("/messageTo/{id}", messageToGetHandler).Methods("GET")
 
@@ -1118,6 +1126,25 @@ func loginGetHandler(w http.ResponseWriter, r *http.Request) {
 func messagesGetHandler(w http.ResponseWriter, r *http.Request) {
 	repos := repositoryMesages{}
 	err := queryMessageRepos(&repos)
+
+	if err != nil {
+		http.Error(w, err.Error(), 500)
+		return
+	}
+
+	out, err := json.Marshal(repos)
+	if err != nil {
+		http.Error(w, err.Error(), 500)
+		return
+	}
+
+	fmt.Fprintf(w, string(out))
+}
+
+func messagesCountGetHandler(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	repos := repositoryMessagesCountArr{}
+	err := queryMessagesCountReposById(&repos, params["id"])
 
 	if err != nil {
 		http.Error(w, err.Error(), 500)
@@ -1213,6 +1240,29 @@ func queryMessageReposById(repos *repositoryMesages, id string) error {
 			&repo.RepltyTo,
 			&repo.Duration,
 			&repo.VoiceText)
+		if err != nil {
+			return err
+		}
+
+		repos.Repos = append(repos.Repos, repo)
+	}
+	err = rows.Err()
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func queryMessagesCountReposById(repos *repositoryMessagesCountArr, id string) error {
+	rows, err := db.Query(`select count(*) as cnt from messages m left join voices v on m.id=v.messages_id where tel_chat_id is not null and tel_chat_id=$1 order by sent asc`, id)
+	if err != nil {
+		return err
+	}
+
+	defer rows.Close()
+	for rows.Next() {
+		repo := repositoryMessagesCount{}
+		err = rows.Scan(&repo.Count)
 		if err != nil {
 			return err
 		}
