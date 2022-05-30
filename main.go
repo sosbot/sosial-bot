@@ -1167,15 +1167,23 @@ func queryUserRepos(repos *repositoryUsers) error {
 		return err
 	}
 	defer rows.Close()
-
+	var i = 0
+	repo := repositoryUser{}
 	for rows.Next() {
-		repo := repositoryUser{}
+		i = 1
+
 		err = rows.Scan(&repo.User, &repo.UnviewedCnt)
 		if err != nil {
 			return err
 		}
 		repos.Repos = append(repos.Repos, repo)
 	}
+	if i == 0 {
+		repo.User = "0"
+		repo.UnviewedCnt = 0
+		repos.Repos = append(repos.Repos, repo)
+	}
+
 	err = rows.Err()
 	if err != nil {
 		return err
