@@ -1141,7 +1141,7 @@ func serviceRequestsReqsGetHandler(w http.ResponseWriter, r *http.Request) {
 	bot.Send(msg)
 
 	InlineButtons := make([][]tgbotapi.InlineKeyboardButton, 1)
-	InlineButtons[0] = tgbotapi.NewInlineKeyboardRow(tgbotapi.NewInlineKeyboardButtonData("Linke kecid", "http://google.ru"))
+	InlineButtons[0] = tgbotapi.NewInlineKeyboardRow(tgbotapi.NewInlineKeyboardButtonData("Linke kecid", "https://google.ru"))
 	markup := tgbotapi.NewInlineKeyboardMarkup(InlineButtons...)
 	msg.ReplyMarkup = &markup
 	bot.Send(msg)
