@@ -136,6 +136,28 @@ type repositoryRequestTypeArr struct {
 	Repos []repositoryRequestType
 }
 
+type repositoryServiceRequest struct {
+	Name string
+}
+
+type repositoryServiceRequestArr struct {
+	Repos []repositoryServiceRequest
+}
+
+type repositoryServiceRequestToClient struct {
+	TypeName    string
+	ServiceName string
+}
+type repositoryServiceRequestToClientArr struct {
+	Repos []repositoryServiceRequestToClient
+}
+
+type repositoryRequests struct {
+	Name string
+}
+type repositoryRequestsArr struct {
+	Repos []repositoryRequests
+}
 type MyString struct {
 	val string
 }
@@ -1069,6 +1091,7 @@ func main() {
 	router.HandleFunc("/users", usersGetHandler).Methods("GET")
 	router.HandleFunc("/messageTo/{id}", messageToGetHandler).Methods("GET")
 	router.HandleFunc("/requestTypes", requestTypesGetHandler).Methods("GET")
+	router.HandleFunc("/servicesrequeststoclient", servicesRequestsToClientGetHandler).Methods("GET")
 
 	log.Fatal(http.ListenAndServe(":"+port, router))
 
@@ -1085,6 +1108,23 @@ func messageToGetHandler(w http.ResponseWriter, r *http.Request) {
 	_, err = db.Exec(`insert into messages(text,sent,sentby,tel_chat_id,message_type,viewedby,viewedat) values($1,$2,$3,$4,$5,$6,$7)`, r.URL.Query().Get("message"), time.Now(), 1, params["id"], 1, 1, time.Now())
 	checkErr(err)
 	fmt.Fprintf(w, "")
+}
+
+func servicesRequestsToClientGetHandler(w http.ResponseWriter, r *http.Request) {
+	repos := repositoryServiceRequestToClientArr{}
+	err := queryServiceRequestToClient(&repos)
+	if err != nil {
+		http.Error(w, err.Error(), 500)
+		return
+	}
+
+	out, err := json.Marshal(repos)
+	if err != nil {
+		http.Error(w, err.Error(), 500)
+		return
+	}
+
+	fmt.Fprintf(w, string(out))
 }
 
 func requestTypesGetHandler(w http.ResponseWriter, r *http.Request) {
@@ -1322,6 +1362,30 @@ func queryRequestTypes(repos *repositoryRequestTypeArr) error {
 	for rows.Next() {
 		repo := repositoryRequestType{}
 		err = rows.Scan(&repo.Name)
+		if err != nil {
+			return err
+		}
+
+		repos.Repos = append(repos.Repos, repo)
+	}
+	err = rows.Err()
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func queryServiceRequestToClient(repos *repositoryServiceRequestToClientArr) error {
+
+	rows, err := db.Query(`select rt.name as req_type_name,sr.service_name from request_type rt left join servicesrequests sr on rt.id=sr.request_type_id`)
+	if err != nil {
+		return err
+	}
+
+	defer rows.Close()
+	for rows.Next() {
+		repo := repositoryServiceRequestToClient{}
+		err = rows.Scan(&repo.TypeName, &repo.ServiceName)
 		if err != nil {
 			return err
 		}

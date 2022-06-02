@@ -13974,7 +13974,7 @@
 6756599||1804528|C|G
 6756599||-9223372036854775808|T|G
 6756599||1804528|T|G</Grants>
-      <IntrospectionStateNumber>54170040</IntrospectionStateNumber>
+      <IntrospectionStateNumber>54173340</IntrospectionStateNumber>
       <ServerVersion>11.11</ServerVersion>
       <StartupTime>1627879758</StartupTime>
       <TimeZones>true ACDT
@@ -26196,7 +26196,7 @@ true posixrules
 12825||10|C|G
 12825||-9223372036854775808|U|G
 12825||10|U|G</Grants>
-      <IntrospectionStateNumber>54170046</IntrospectionStateNumber>
+      <IntrospectionStateNumber>54173349</IntrospectionStateNumber>
       <ObjectId>2903294</ObjectId>
       <Relations>sequence|table|2919841|2919843|1
 sequence|table|5314350|5314352|1
@@ -63724,7 +63724,7 @@ sequence|table|8473846|8473848|1
 18318||10|t|G
 18318||10|D|G
 18318||10|w|G</Grants>
-      <IntrospectionStateNumber>54170046</IntrospectionStateNumber>
+      <IntrospectionStateNumber>54173349</IntrospectionStateNumber>
       <ObjectId>2200</ObjectId>
       <StateNumber>359</StateNumber>
       <OwnerName>postgres</OwnerName>
@@ -76413,7 +76413,7 @@ sequence|table|8473846|8473848|1
     </table>
     <table id="11254" parent="10198" name="servicesrequests">
       <ObjectId>8445828</ObjectId>
-      <StateNumber>53590043</StateNumber>
+      <StateNumber>54172288</StateNumber>
       <OwnerName>nyrdyxoc</OwnerName>
     </table>
     <table id="11255" parent="10198" name="test">
@@ -87331,73 +87331,79 @@ sequence|table|8473846|8473848|1
       <StateNumber>53590043</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="13893" parent="11255" name="id">
+    <column id="13893" parent="11254" name="request_type_id">
+      <DataType>bigint|0s</DataType>
+      <Position>3</Position>
+      <StateNumber>54173338</StateNumber>
+      <TypeId>20</TypeId>
+    </column>
+    <column id="13894" parent="11255" name="id">
       <DataType>numeric|0s</DataType>
       <Position>1</Position>
       <StateNumber>53694424</StateNumber>
       <TypeId>1700</TypeId>
     </column>
-    <column id="13894" parent="11255" name="name">
+    <column id="13895" parent="11255" name="name">
       <DataType>varchar(40)|0s</DataType>
       <Position>2</Position>
       <StateNumber>53694424</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="13895" parent="11256" name="tel_chat_id">
+    <column id="13896" parent="11256" name="tel_chat_id">
       <DataType>varchar(100)|0s</DataType>
       <Position>1</Position>
       <StateNumber>53599697</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="13896" parent="11256" name="servicesrequests_id">
+    <column id="13897" parent="11256" name="servicesrequests_id">
       <DataType>numeric|0s</DataType>
       <Position>2</Position>
       <StateNumber>53599697</StateNumber>
       <TypeId>1700</TypeId>
     </column>
-    <column id="13897" parent="11256" name="request_datetime">
+    <column id="13898" parent="11256" name="request_datetime">
       <DataType>timestamp with time zone|0s</DataType>
       <Position>3</Position>
       <StateNumber>53599697</StateNumber>
       <TypeId>1184</TypeId>
     </column>
-    <column id="13898" parent="11257" name="voice">
+    <column id="13899" parent="11257" name="voice">
       <DataType>bytea|0s</DataType>
       <Position>1</Position>
       <StateNumber>52614480</StateNumber>
       <TypeId>17</TypeId>
     </column>
-    <column id="13899" parent="11257" name="chatid">
+    <column id="13900" parent="11257" name="chatid">
       <DataType>varchar(50)|0s</DataType>
       <Position>2</Position>
       <StateNumber>53239588</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="13900" parent="11257" name="messageid">
+    <column id="13901" parent="11257" name="messageid">
       <DataType>varchar(50)|0s</DataType>
       <Position>3</Position>
       <StateNumber>53239589</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="13901" parent="11257" name="voicesize">
+    <column id="13902" parent="11257" name="voicesize">
       <DataType>numeric|0s</DataType>
       <Position>4</Position>
       <StateNumber>53239606</StateNumber>
       <TypeId>1700</TypeId>
     </column>
-    <column id="13902" parent="11257" name="duration">
+    <column id="13903" parent="11257" name="duration">
       <DataType>numeric|0s</DataType>
       <Position>5</Position>
       <StateNumber>53239591</StateNumber>
       <TypeId>1700</TypeId>
     </column>
-    <column id="13903" parent="11257" name="sentdate">
+    <column id="13904" parent="11257" name="sentdate">
       <DataType>timestamp with time zone|0s</DataType>
       <Position>6</Position>
       <StateNumber>53239592</StateNumber>
       <TypeId>1184</TypeId>
     </column>
-    <column id="13904" parent="11257" name="id">
+    <column id="13905" parent="11257" name="id">
       <DataType>integer|0s</DataType>
       <DefaultExpression>nextval(&apos;voices_id_seq&apos;::regclass)</DefaultExpression>
       <NotNull>1</NotNull>
@@ -87405,13 +87411,13 @@ sequence|table|8473846|8473848|1
       <StateNumber>53245381</StateNumber>
       <TypeId>23</TypeId>
     </column>
-    <column id="13905" parent="11257" name="messages_id">
+    <column id="13906" parent="11257" name="messages_id">
       <DataType>numeric|0s</DataType>
       <Position>10</Position>
       <StateNumber>53283787</StateNumber>
       <TypeId>1700</TypeId>
     </column>
-    <index id="13906" parent="11257" name="idx_voices_messagesid">
+    <index id="13907" parent="11257" name="idx_voices_messagesid">
       <ClassIds>3125</ClassIds>
       <ColNames>messages_id</ColNames>
       <CollationIds>0</CollationIds>
@@ -87419,124 +87425,124 @@ sequence|table|8473846|8473848|1
       <StateNumber>54047295</StateNumber>
       <AccessMethodId>403</AccessMethodId>
     </index>
-    <trigger id="13907" parent="11257" name="setviewedattrg">
+    <trigger id="13908" parent="11257" name="setviewedattrg">
       <Events>U</Events>
       <ObjectId>8426620</ObjectId>
       <StateNumber>53283315</StateNumber>
       <Turn>after-row</Turn>
       <CallRoutineId>8426596</CallRoutineId>
     </trigger>
-    <column id="13908" parent="11258" name="userid">
+    <column id="13909" parent="11258" name="userid">
       <DataType>oid|0s</DataType>
       <Position>1</Position>
       <StateNumber>591</StateNumber>
     </column>
-    <column id="13909" parent="11258" name="dbid">
+    <column id="13910" parent="11258" name="dbid">
       <DataType>oid|0s</DataType>
       <Position>2</Position>
       <StateNumber>591</StateNumber>
     </column>
-    <column id="13910" parent="11258" name="queryid">
+    <column id="13911" parent="11258" name="queryid">
       <DataType>bigint|0s</DataType>
       <Position>3</Position>
       <StateNumber>591</StateNumber>
     </column>
-    <column id="13911" parent="11258" name="query">
+    <column id="13912" parent="11258" name="query">
       <DataType>text|0s</DataType>
       <Position>4</Position>
       <StateNumber>591</StateNumber>
     </column>
-    <column id="13912" parent="11258" name="calls">
+    <column id="13913" parent="11258" name="calls">
       <DataType>bigint|0s</DataType>
       <Position>5</Position>
       <StateNumber>591</StateNumber>
     </column>
-    <column id="13913" parent="11258" name="total_time">
+    <column id="13914" parent="11258" name="total_time">
       <DataType>double precision|0s</DataType>
       <Position>6</Position>
       <StateNumber>591</StateNumber>
     </column>
-    <column id="13914" parent="11258" name="min_time">
+    <column id="13915" parent="11258" name="min_time">
       <DataType>double precision|0s</DataType>
       <Position>7</Position>
       <StateNumber>591</StateNumber>
     </column>
-    <column id="13915" parent="11258" name="max_time">
+    <column id="13916" parent="11258" name="max_time">
       <DataType>double precision|0s</DataType>
       <Position>8</Position>
       <StateNumber>591</StateNumber>
     </column>
-    <column id="13916" parent="11258" name="mean_time">
+    <column id="13917" parent="11258" name="mean_time">
       <DataType>double precision|0s</DataType>
       <Position>9</Position>
       <StateNumber>591</StateNumber>
     </column>
-    <column id="13917" parent="11258" name="stddev_time">
+    <column id="13918" parent="11258" name="stddev_time">
       <DataType>double precision|0s</DataType>
       <Position>10</Position>
       <StateNumber>591</StateNumber>
     </column>
-    <column id="13918" parent="11258" name="rows">
+    <column id="13919" parent="11258" name="rows">
       <DataType>bigint|0s</DataType>
       <Position>11</Position>
       <StateNumber>591</StateNumber>
     </column>
-    <column id="13919" parent="11258" name="shared_blks_hit">
+    <column id="13920" parent="11258" name="shared_blks_hit">
       <DataType>bigint|0s</DataType>
       <Position>12</Position>
       <StateNumber>591</StateNumber>
     </column>
-    <column id="13920" parent="11258" name="shared_blks_read">
+    <column id="13921" parent="11258" name="shared_blks_read">
       <DataType>bigint|0s</DataType>
       <Position>13</Position>
       <StateNumber>591</StateNumber>
     </column>
-    <column id="13921" parent="11258" name="shared_blks_dirtied">
+    <column id="13922" parent="11258" name="shared_blks_dirtied">
       <DataType>bigint|0s</DataType>
       <Position>14</Position>
       <StateNumber>591</StateNumber>
     </column>
-    <column id="13922" parent="11258" name="shared_blks_written">
+    <column id="13923" parent="11258" name="shared_blks_written">
       <DataType>bigint|0s</DataType>
       <Position>15</Position>
       <StateNumber>591</StateNumber>
     </column>
-    <column id="13923" parent="11258" name="local_blks_hit">
+    <column id="13924" parent="11258" name="local_blks_hit">
       <DataType>bigint|0s</DataType>
       <Position>16</Position>
       <StateNumber>591</StateNumber>
     </column>
-    <column id="13924" parent="11258" name="local_blks_read">
+    <column id="13925" parent="11258" name="local_blks_read">
       <DataType>bigint|0s</DataType>
       <Position>17</Position>
       <StateNumber>591</StateNumber>
     </column>
-    <column id="13925" parent="11258" name="local_blks_dirtied">
+    <column id="13926" parent="11258" name="local_blks_dirtied">
       <DataType>bigint|0s</DataType>
       <Position>18</Position>
       <StateNumber>591</StateNumber>
     </column>
-    <column id="13926" parent="11258" name="local_blks_written">
+    <column id="13927" parent="11258" name="local_blks_written">
       <DataType>bigint|0s</DataType>
       <Position>19</Position>
       <StateNumber>591</StateNumber>
     </column>
-    <column id="13927" parent="11258" name="temp_blks_read">
+    <column id="13928" parent="11258" name="temp_blks_read">
       <DataType>bigint|0s</DataType>
       <Position>20</Position>
       <StateNumber>591</StateNumber>
     </column>
-    <column id="13928" parent="11258" name="temp_blks_written">
+    <column id="13929" parent="11258" name="temp_blks_written">
       <DataType>bigint|0s</DataType>
       <Position>21</Position>
       <StateNumber>591</StateNumber>
     </column>
-    <column id="13929" parent="11258" name="blk_read_time">
+    <column id="13930" parent="11258" name="blk_read_time">
       <DataType>double precision|0s</DataType>
       <Position>22</Position>
       <StateNumber>591</StateNumber>
     </column>
-    <column id="13930" parent="11258" name="blk_write_time">
+    <column id="13931" parent="11258" name="blk_write_time">
       <DataType>double precision|0s</DataType>
       <Position>23</Position>
       <StateNumber>591</StateNumber>
