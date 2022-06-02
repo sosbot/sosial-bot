@@ -1147,7 +1147,7 @@ func serviceRequestsReqsGetHandler(w http.ResponseWriter, r *http.Request) {
 
 	var numericKeyboard = tgbotapi.NewInlineKeyboardMarkup(
 		tgbotapi.NewInlineKeyboardRow(
-			tgbotapi.NewInlineKeyboardButtonURL("Linkə Keçid", "https://sosialbot.herokuapp.com/export/"+strconv.Itoa(reqNumber))))
+			tgbotapi.NewInlineKeyboardButtonURL("Linkə Keçid", "https://sosialbot.herokuapp.com/export/"+reqnumber)))
 
 	//markup := tgbotapi.NewInlineKeyboardMarkup(InlineButtons...)
 	msg.ReplyMarkup = &numericKeyboard
