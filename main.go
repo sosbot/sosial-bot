@@ -1110,7 +1110,7 @@ func main() {
 
 func serviceRequestsReqsGetHandler(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
-	reqfrom := params["reqfrom"]
+	reqfrom, _ := strconv.ParseInt(params["reqfrom"], 10, 64)
 	servreqid, _ := strconv.ParseInt(params["servicereqid"], 10, 64)
 
 	repo := repositoryServiceRequestReq{}
@@ -1685,7 +1685,7 @@ func queryServiceRequestToClient(repos *repositoryServiceRequestToClientArr) err
 	return nil
 }
 
-func queryServiceRequestReq(repo *repositoryServiceRequestReq, reqFrom string, servicesrequestsid int64) error {
+func queryServiceRequestReq(repo *repositoryServiceRequestReq, reqFrom int64, servicesrequestsid int64) error {
 
 	var id int64
 	err := db.QueryRow("insert into requests(reqfrom,servicesrequestsid,status) values($1,$2,0) returning id;", reqFrom, servicesrequestsid).Scan(&id)
