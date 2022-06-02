@@ -1119,7 +1119,7 @@ func serviceRequestsReqsGetHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Println(servreqid)
 
 	var id int64
-	var reqnumber int
+	var reqnumber string
 	err := db.QueryRow("insert into requests(reqfrom,servicesrequestsid,status) values($1,$2,0) returning id", reqfrom, servreqid).Scan(&id)
 	fmt.Println(id)
 	if err != nil {
@@ -1130,6 +1130,8 @@ func serviceRequestsReqsGetHandler(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 	rows, err := db.Query(`select reqnumber from requests where id=$1`, id)
+	defer rows.Close()
+
 	for rows.Next() {
 		err = rows.Scan(&reqnumber)
 	}
