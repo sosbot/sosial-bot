@@ -129,6 +129,7 @@ type repositoryMessagesCountArr struct {
 }
 
 type repositoryRequestType struct {
+	Id   int64
 	Name string
 }
 
@@ -137,6 +138,7 @@ type repositoryRequestTypeArr struct {
 }
 
 type repositoryServiceRequest struct {
+	Id   int64
 	Name string
 }
 
@@ -1091,6 +1093,7 @@ func main() {
 	router.HandleFunc("/users", usersGetHandler).Methods("GET")
 	router.HandleFunc("/messageTo/{id}", messageToGetHandler).Methods("GET")
 	router.HandleFunc("/requestTypes", requestTypesGetHandler).Methods("GET")
+	router.HandleFunc("/servicesRequests/{reqtypeid}", servicesRequestsGetHandler).Methods("GET")
 	router.HandleFunc("/servicesrequeststoclient", servicesRequestsToClientGetHandler).Methods("GET")
 
 	log.Fatal(http.ListenAndServe(":"+port, router))
@@ -1108,6 +1111,26 @@ func messageToGetHandler(w http.ResponseWriter, r *http.Request) {
 	_, err = db.Exec(`insert into messages(text,sent,sentby,tel_chat_id,message_type,viewedby,viewedat) values($1,$2,$3,$4,$5,$6,$7)`, r.URL.Query().Get("message"), time.Now(), 1, params["id"], 1, 1, time.Now())
 	checkErr(err)
 	fmt.Fprintf(w, "")
+}
+
+func servicesRequestsGetHandler(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	reqtypeid, _ := strconv.ParseInt(params["id"], 10, 64)
+
+	repos := repositoryServiceRequestArr{}
+	err := queryServiceRequests(&repos, reqtypeid)
+	if err != nil {
+		http.Error(w, err.Error(), 500)
+		return
+	}
+
+	out, err := json.Marshal(repos)
+	if err != nil {
+		http.Error(w, err.Error(), 500)
+		return
+	}
+
+	fmt.Fprintf(w, string(out))
 }
 
 func servicesRequestsToClientGetHandler(w http.ResponseWriter, r *http.Request) {
@@ -1353,7 +1376,7 @@ func queryMessagesCountReposById(repos *repositoryMessagesCountArr, id string) e
 
 func queryRequestTypes(repos *repositoryRequestTypeArr) error {
 
-	rows, err := db.Query(`select name from request_type`)
+	rows, err := db.Query(`select id,name from request_type`)
 	if err != nil {
 		return err
 	}
@@ -1361,7 +1384,7 @@ func queryRequestTypes(repos *repositoryRequestTypeArr) error {
 	defer rows.Close()
 	for rows.Next() {
 		repo := repositoryRequestType{}
-		err = rows.Scan(&repo.Name)
+		err = rows.Scan(&repo.Id, &repo.Name)
 		if err != nil {
 			return err
 		}
@@ -1386,6 +1409,30 @@ func queryServiceRequestToClient(repos *repositoryServiceRequestToClientArr) err
 	for rows.Next() {
 		repo := repositoryServiceRequestToClient{}
 		err = rows.Scan(&repo.TypeName, &repo.ServiceName)
+		if err != nil {
+			return err
+		}
+
+		repos.Repos = append(repos.Repos, repo)
+	}
+	err = rows.Err()
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func queryServiceRequests(repos *repositoryServiceRequestArr, reqtypeid int64) error {
+
+	rows, err := db.Query(`select sr.id,sr.service_name from  servicesrequests sr where request_type_id=$1`, reqtypeid)
+	if err != nil {
+		return err
+	}
+
+	defer rows.Close()
+	for rows.Next() {
+		repo := repositoryServiceRequest{}
+		err = rows.Scan(&repo.Id, &repo.Name)
 		if err != nil {
 			return err
 		}
