@@ -1125,13 +1125,12 @@ func serviceRequestsReqsGetHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		panic(err)
 	}
-	err = db.QueryRow(`update requests set reqnumber=luhn_generate($1)::numeric where id=$2 returning reqnumber`, id, id).Scan(&reqnumber)
+	err = db.QueryRow(`update requests set reqnumber=luhn_generate($1)::numeric where id=$2 returning reqnumber::numeric`, id, id).Scan(&reqnumber)
 	if err != nil {
 		panic(err)
 	}
 	fmt.Println(reqNumber)
-	txt := `Hörmətli Vətəndaş, Müraciətiniz üzrə sorğunu tamamlamaq üçün xahiş edirik,
-              ilkin tələb olunan məlumatları "Linkə keçid" vasitəsilə keçid edərək, əlavə ediniz.`
+	txt := `Hörmətli Vətəndaş, Müraciətiniz üzrə sorğunu tamamlamaq üçün xahiş edirik, ilkin tələb olunan məlumatları "Linkə keçid" vasitəsilə keçid edərək, əlavə ediniz.`
 	snt := time.Now()
 	_, err = db.Exec(`insert into messages(text,sent,sentby,tel_chat_id,message_type) 
                            values($1,$2,$3,$4,$5)`, txt, snt, 1, reqfrom, 1)
