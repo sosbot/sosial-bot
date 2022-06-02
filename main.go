@@ -1115,7 +1115,7 @@ func messageToGetHandler(w http.ResponseWriter, r *http.Request) {
 
 func servicesRequestsGetHandler(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
-	reqtypeid, _ := strconv.ParseInt(params["id"], 10, 64)
+	reqtypeid, _ := strconv.ParseInt(params["reqtypeid"], 10, 64)
 
 	repos := repositoryServiceRequestArr{}
 	err := queryServiceRequests(&repos, reqtypeid)
