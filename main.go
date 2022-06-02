@@ -1129,9 +1129,9 @@ func serviceRequestsReqsGetHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		panic(err)
 	}
-
+	fmt.Println(reqNumber)
 	txt := `Hörmətli Vətəndaş, Müraciətiniz üzrə sorğunu tamamlamaq üçün xahiş edirik,
-              ilkin tələb olunan məlumatıarı "Linkə keçid" vasitəsilə linkə keçid edərək, doldurasınız.`
+              ilkin tələb olunan məlumatları "Linkə keçid" vasitəsilə keçid edərək, əlavə ediniz.`
 	snt := time.Now()
 	_, err = db.Exec(`insert into messages(text,sent,sentby,tel_chat_id,message_type) 
                            values($1,$2,$3,$4,$5)`, txt, snt, 1, reqfrom, 1)
@@ -1140,8 +1140,6 @@ func serviceRequestsReqsGetHandler(w http.ResponseWriter, r *http.Request) {
 	//msg.ReplyMarkup = mainMenu
 	bot.Send(msg)
 
-	InlineButtons := make([][]tgbotapi.InlineKeyboardButton, 1)
-	InlineButtons[0] = tgbotapi.NewInlineKeyboardRow(tgbotapi.NewInlineKeyboardButtonData("Linke kecid", "https://google.ru"))
 	var numericKeyboard = tgbotapi.NewInlineKeyboardMarkup(
 		tgbotapi.NewInlineKeyboardRow(
 			tgbotapi.NewInlineKeyboardButtonURL("Linkə Keçid", "https://sosialbot.herokuapp.com/export/"+strconv.Itoa(reqNumber))))
