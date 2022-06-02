@@ -1125,9 +1125,13 @@ func serviceRequestsReqsGetHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		panic(err)
 	}
-	err = db.QueryRow(`update requests set reqnumber=luhn_generate($1)::numeric where id=$2 returning reqnumber::numeric`, id, id).Scan(&reqnumber)
+	_, err = db.Exec(`update requests set reqnumber=luhn_generate($1)::numeric where id=$2 returning reqnumber::numeric`, id, id)
 	if err != nil {
 		panic(err)
+	}
+	rows, err := db.Query(`select reqnumber from requests where id=$1`, id)
+	for rows.Next() {
+		err = rows.Scan(&reqnumber)
 	}
 	fmt.Println(reqNumber)
 	txt := `Hörmətli Vətəndaş, Müraciətiniz üzrə sorğunu tamamlamaq üçün xahiş edirik, ilkin tələb olunan məlumatları "Linkə keçid" vasitəsilə keçid edərək, əlavə ediniz.`
