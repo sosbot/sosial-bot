@@ -1120,12 +1120,12 @@ func serviceRequestsReqsGetHandler(w http.ResponseWriter, r *http.Request) {
 
 	var id int64
 	var reqnumber int64
-	err := db.QueryRow("insert into requests(reqfrom,servicesrequestsid,status) values($1,$2,0) returning id;", reqfrom, servreqid).Scan(&id)
-
+	err := db.QueryRow("insert into requests(reqfrom,servicesrequestsid,status) values($1,$2,0) returning id", reqfrom, servreqid).Scan(&id)
+	fmt.Println(id)
 	if err != nil {
 		panic(err)
 	}
-	err = db.QueryRow(`update requests set reqnumber=luhn_generate($1)::numeric where id=$2 returning reqnumber;`, id, id).Scan(&reqnumber)
+	err = db.QueryRow(`update requests set reqnumber=luhn_generate($1)::numeric where id=$2 returning reqnumber`, id, id).Scan(&reqnumber)
 	if err != nil {
 		panic(err)
 	}
