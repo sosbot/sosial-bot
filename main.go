@@ -1135,7 +1135,7 @@ func serviceRequestsReqsGetHandler(w http.ResponseWriter, r *http.Request) {
 	for rows.Next() {
 		err = rows.Scan(&reqnumber)
 	}
-	fmt.Println(reqNumber)
+	fmt.Println(reqnumber)
 	txt := `Hörmətli Vətəndaş, Müraciətiniz üzrə sorğunu tamamlamaq üçün xahiş edirik, ilkin tələb olunan məlumatları "Linkə keçid" vasitəsilə keçid edərək, əlavə ediniz.`
 	snt := time.Now()
 	_, err = db.Exec(`insert into messages(text,sent,sentby,tel_chat_id,message_type) 
