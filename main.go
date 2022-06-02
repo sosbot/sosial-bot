@@ -1117,21 +1117,54 @@ func serviceRequestsReqsGetHandler(w http.ResponseWriter, r *http.Request) {
 	servreqid, _ := strconv.ParseInt(r.URL.Query().Get("servicereqid"), 10, 64)
 	fmt.Println(reqfrom)
 	fmt.Println(servreqid)
-	repo := repositoryServiceRequestReqArr{}
-	err := queryServiceRequestReq(&repo, reqfrom, servreqid)
+
+	var id int64
+	var reqnumber int64
+	err := db.QueryRow("insert into requests(reqfrom,servicesrequestsid,status) values($1,$2,0) returning id;", reqfrom, servreqid).Scan(&id)
+
+	if err != nil {
+		panic(err)
+	}
+	err = db.QueryRow(`update requests set reqnumber=luhn_generate($1)::numeric where id=$2 returning reqnumber`, id, id).Scan(&reqnumber)
+	if err != nil {
+		panic(err)
+	}
+
+	txt := `Hörmətli Vətəndaş, Müraciətiniz üzrə sorğunu tamamlamaq üçün xahiş edirik,
+              ilkin tələb olunan məlumatıarı "Linkə keçid" vasitəsilə linkə keçid edərək, doldurasınız.`
+	snt := time.Now()
+	_, err = db.Exec(`insert into messages(text,sent,sentby,tel_chat_id,message_type) 
+                           values($1,$2,$3,$4,$5)`, txt, snt, 1, reqfrom, 1)
+
+	msg := tgbotapi.NewMessage(reqfrom, txt)
+	//msg.ReplyMarkup = mainMenu
+	bot.Send(msg)
+
+	InlineButtons := make([][]tgbotapi.InlineKeyboardButton, 1)
+	InlineButtons[0] = tgbotapi.NewInlineKeyboardRow(tgbotapi.NewInlineKeyboardButtonData("Linke kecid", "http://google.ru"))
+	markup := tgbotapi.NewInlineKeyboardMarkup(InlineButtons...)
+	edit := tgbotapi.NewEditMessageReplyMarkup(
+		reqfrom,
+		int(reqfrom),
+		markup,
+	)
+	edit.ReplyMarkup = &markup
+	bot.Send(edit)
+	//repo := repositoryServiceRequestReqArr{}
+	//err := queryServiceRequestReq(&repo, reqfrom, servreqid)
 
 	if err != nil {
 		http.Error(w, err.Error(), 500)
 		return
 	}
 
-	out, err := json.Marshal(repo)
+	//out, err := json.Marshal(repo)
 	if err != nil {
 		http.Error(w, err.Error(), 500)
 		return
 	}
 
-	fmt.Fprintf(w, string(out))
+	//fmt.Fprintf(w, string(out))
 }
 
 func messageToGetHandler(w http.ResponseWriter, r *http.Request) {
