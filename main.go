@@ -1143,13 +1143,8 @@ func serviceRequestsReqsGetHandler(w http.ResponseWriter, r *http.Request) {
 	InlineButtons := make([][]tgbotapi.InlineKeyboardButton, 1)
 	InlineButtons[0] = tgbotapi.NewInlineKeyboardRow(tgbotapi.NewInlineKeyboardButtonData("Linke kecid", "http://google.ru"))
 	markup := tgbotapi.NewInlineKeyboardMarkup(InlineButtons...)
-	edit := tgbotapi.NewEditMessageReplyMarkup(
-		reqfrom,
-		int(reqfrom),
-		markup,
-	)
-	edit.ReplyMarkup = &markup
-	bot.Send(edit)
+	msg.ReplyMarkup = &markup
+	bot.Send(msg)
 	//repo := repositoryServiceRequestReqArr{}
 	//err := queryServiceRequestReq(&repo, reqfrom, servreqid)
 
