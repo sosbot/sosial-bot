@@ -1113,9 +1113,8 @@ func main() {
 }
 
 func serviceRequestsReqsGetHandler(w http.ResponseWriter, r *http.Request) {
-	params := mux.Vars(r)
-	reqfrom, _ := strconv.ParseInt(params["reqfrom"], 10, 64)
-	servreqid, _ := strconv.ParseInt(params["servicereqid"], 10, 64)
+	reqfrom, _ := strconv.ParseInt(r.URL.Query().Get("reqfrom"), 10, 64)
+	servreqid, _ := strconv.ParseInt(r.URL.Query().Get("servicereqid"), 10, 64)
 	fmt.Println(reqfrom)
 	fmt.Println(servreqid)
 	repo := repositoryServiceRequestReqArr{}
