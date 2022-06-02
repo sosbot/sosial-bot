@@ -127,6 +127,15 @@ type repositoryMessagesCount struct {
 type repositoryMessagesCountArr struct {
 	Repos []repositoryMessagesCount
 }
+
+type repositoryRequestType struct {
+	Name string
+}
+
+type repositoryRequestTypeArr struct {
+	Repos []repositoryRequestType
+}
+
 type MyString struct {
 	val string
 }
@@ -1059,6 +1068,7 @@ func main() {
 	router.HandleFunc("/messagesCount/{id}", messagesCountGetHandler).Methods("GET")
 	router.HandleFunc("/users", usersGetHandler).Methods("GET")
 	router.HandleFunc("/messageTo/{id}", messageToGetHandler).Methods("GET")
+	router.HandleFunc("/requestTypes", requestTypesGetHandler).Methods("GET")
 
 	log.Fatal(http.ListenAndServe(":"+port, router))
 
@@ -1075,6 +1085,23 @@ func messageToGetHandler(w http.ResponseWriter, r *http.Request) {
 	_, err = db.Exec(`insert into messages(text,sent,sentby,tel_chat_id,message_type,viewedby,viewedat) values($1,$2,$3,$4,$5,$6,$7)`, r.URL.Query().Get("message"), time.Now(), 1, params["id"], 1, 1, time.Now())
 	checkErr(err)
 	fmt.Fprintf(w, "")
+}
+
+func requestTypesGetHandler(w http.ResponseWriter, r *http.Request) {
+	repos := repositoryRequestTypeArr{}
+	err := queryRequestTypes(&repos)
+	if err != nil {
+		http.Error(w, err.Error(), 500)
+		return
+	}
+
+	out, err := json.Marshal(repos)
+	if err != nil {
+		http.Error(w, err.Error(), 500)
+		return
+	}
+
+	fmt.Fprintf(w, string(out))
 }
 
 func usersGetHandler(w http.ResponseWriter, r *http.Request) {
@@ -1271,6 +1298,30 @@ func queryMessagesCountReposById(repos *repositoryMessagesCountArr, id string) e
 	for rows.Next() {
 		repo := repositoryMessagesCount{}
 		err = rows.Scan(&repo.Count)
+		if err != nil {
+			return err
+		}
+
+		repos.Repos = append(repos.Repos, repo)
+	}
+	err = rows.Err()
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func queryRequestTypes(repos *repositoryRequestTypeArr) error {
+
+	rows, err := db.Query(`select name from request_type`)
+	if err != nil {
+		return err
+	}
+
+	defer rows.Close()
+	for rows.Next() {
+		repo := repositoryRequestType{}
+		err = rows.Scan(&repo.Name)
 		if err != nil {
 			return err
 		}
