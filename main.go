@@ -1125,7 +1125,7 @@ func serviceRequestsReqsGetHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		panic(err)
 	}
-	err = db.QueryRow(`update requests set reqnumber=luhn_generate($1)::numeric where id=$2 returning reqnumber::numeric`, id, id).Scan(&reqnumber)
+	err = db.QueryRow(`update requests set reqnumber=luhn_generate($1)::numeric where id=$2 returning reqnumber;`, id, id).Scan(&reqnumber)
 	if err != nil {
 		panic(err)
 	}
