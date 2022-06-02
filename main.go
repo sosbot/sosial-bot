@@ -174,6 +174,10 @@ type repositoryUsers struct {
 	Repos []repositoryUser
 }
 
+type repositoryServiceRequestReq struct {
+	Id string
+}
+
 var questionsArrMap map[int64]*questionsArr
 var questionArrMapCurrentState int
 var req1Map map[int]*req1
@@ -1098,9 +1102,32 @@ func main() {
 	router.HandleFunc("/servicesrequeststoclient", servicesRequestsToClientGetHandler).Methods("GET")
 	router.HandleFunc("/export", login).Methods("GET")
 	router.HandleFunc("/save", save).Methods("POST")
+	router.HandleFunc("/servicecRequestsRegs", serviceRequestsReqsGetHandler).Methods("GET")
 
 	log.Fatal(http.ListenAndServe(":"+port, router))
 
+}
+
+func serviceRequestsReqsGetHandler(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	reqfrom := params["reqfrom"]
+	servreqid := params["servicereqid"]
+
+	repo := repositoryServiceRequestReq{}
+	err := queryServiceRequestReq(&repo, reqfrom, servreqid)
+
+	if err != nil {
+		http.Error(w, err.Error(), 500)
+		return
+	}
+
+	out, err := json.Marshal(repo)
+	if err != nil {
+		http.Error(w, err.Error(), 500)
+		return
+	}
+
+	fmt.Fprintf(w, string(out))
 }
 
 func messageToGetHandler(w http.ResponseWriter, r *http.Request) {
@@ -1251,202 +1278,6 @@ func messagesCountGetHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	fmt.Fprintf(w, string(out))
-}
-
-func queryUserRepos(repos *repositoryUsers) error {
-	rows, err := db.Query(`select a.tel_chat_id,a.cnt from (select tel_chat_id,coalesce((select count(*) from messages where tel_chat_id=m.tel_chat_id and viewedat is null group by m.tel_chat_id),0) as cnt from messages m where tel_chat_id is not null group by tel_chat_id) a order by a.cnt desc`)
-
-	if err != nil {
-		return err
-	}
-	defer rows.Close()
-	var i = 0
-	repo := repositoryUser{}
-	for rows.Next() {
-		i = 1
-
-		err = rows.Scan(&repo.User, &repo.UnviewedCnt)
-		if err != nil {
-			return err
-		}
-		repos.Repos = append(repos.Repos, repo)
-	}
-	if i == 0 {
-		repo.User = "0"
-		repo.UnviewedCnt = 0
-		repos.Repos = append(repos.Repos, repo)
-	}
-
-	err = rows.Err()
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-func queryMessageRepos(repos *repositoryMesages) error {
-	//rows, err := db.Query(`select m.id,m.text,m.sent,m.sentby,m.tel_chat_id,m.tel_message_id,m.message_type,coalesce(cast(m.viewedBy as varchar),''),coalesce(cast(m.viewedAt as varchar),''),coalesce(cast(m.replyto as varchar),''),encode(v.voice::bytea,'hex') as hex_voice from messages m left join voices v on m.id=v.messages_id`)
-	rows, err := db.Query(`select m.id,coalesce(m.text,'') as text,m.sent,m.sentby,coalesce(cast(m.tel_chat_id as varchar),'') as  tel_chat_id,coalesce(cast(m.tel_message_id as varchar),'') as tel_message_id,coalesce(cast(m.message_type as varchar),'') as message_type,coalesce(cast(m.viewedBy as varchar),'') as  viewedBy,coalesce(cast(m.viewedAt as varchar),'') as viewedAt,coalesce(cast(m.replyto as varchar),'') as replyTo,coalesce(cast(v.duration as varchar),'') as duration,coalesce(encode(v.voice::bytea,'hex'),'') as hex_voice from messages m left join voices v on m.id=v.messages_id where tel_chat_id is not null`)
-	if err != nil {
-		return err
-	}
-
-	defer rows.Close()
-	for rows.Next() {
-		repo := repositoryMessage{}
-		err = rows.Scan(&repo.Id,
-			&repo.Text,
-			&repo.Sent,
-			&repo.SentBy,
-			&repo.TelChatId,
-			&repo.TelMessageId,
-			&repo.MessageType,
-			&repo.ViewedBy,
-			&repo.ViewedAt,
-			&repo.RepltyTo,
-			&repo.Duration,
-			&repo.VoiceText)
-		if err != nil {
-			return err
-		}
-
-		repos.Repos = append(repos.Repos, repo)
-	}
-	err = rows.Err()
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-func queryMessageReposById(repos *repositoryMesages, id string) error {
-
-	rows, err := db.Query(`select m.id,coalesce(m.text,'') as  text,m.sent,m.sentby,coalesce(cast(m.tel_chat_id as varchar),'') as tel_chat_id,coalesce(cast(m.tel_message_id as varchar),'') as tel_message_id,coalesce(cast(m.message_type as varchar),'') as  message_type,coalesce(cast(m.viewedBy as varchar),'') as  viewedBy,coalesce(cast(m.viewedAt as varchar),'') as viewedAt,coalesce(cast(m.replyto as varchar),'') as replyTo,coalesce(cast(v.duration as varchar),'') as duration,coalesce(encode(v.voice::bytea,'hex'),'') as hex_voice from messages m left join voices v on m.id=v.messages_id where tel_chat_id is not null and tel_chat_id=$1 order by sent asc`, id)
-	if err != nil {
-		return err
-	}
-
-	defer rows.Close()
-	for rows.Next() {
-		repo := repositoryMessage{}
-		err = rows.Scan(&repo.Id,
-			&repo.Text,
-			&repo.Sent,
-			&repo.SentBy,
-			&repo.TelChatId,
-			&repo.TelMessageId,
-			&repo.MessageType,
-			&repo.ViewedBy,
-			&repo.ViewedAt,
-			&repo.RepltyTo,
-			&repo.Duration,
-			&repo.VoiceText)
-		if err != nil {
-			return err
-		}
-
-		repos.Repos = append(repos.Repos, repo)
-	}
-	err = rows.Err()
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-func queryMessagesCountReposById(repos *repositoryMessagesCountArr, id string) error {
-	rows, err := db.Query(`select count(*) as cnt from messages m left join voices v on m.id=v.messages_id where tel_chat_id is not null and tel_chat_id=$1`, id)
-	if err != nil {
-		return err
-	}
-
-	defer rows.Close()
-	for rows.Next() {
-		repo := repositoryMessagesCount{}
-		err = rows.Scan(&repo.Count)
-		if err != nil {
-			return err
-		}
-
-		repos.Repos = append(repos.Repos, repo)
-	}
-	err = rows.Err()
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-func queryRequestTypes(repos *repositoryRequestTypeArr) error {
-
-	rows, err := db.Query(`select id,name from request_type`)
-	if err != nil {
-		return err
-	}
-
-	defer rows.Close()
-	for rows.Next() {
-		repo := repositoryRequestType{}
-		err = rows.Scan(&repo.Id, &repo.Name)
-		if err != nil {
-			return err
-		}
-
-		repos.Repos = append(repos.Repos, repo)
-	}
-	err = rows.Err()
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-func queryServiceRequests(repos *repositoryServiceRequestArr, reqtypeid int64) error {
-
-	rows, err := db.Query(`select sr.id,sr.service_name from  servicesrequests sr where request_type_id=$1`, reqtypeid)
-	if err != nil {
-		return err
-	}
-
-	defer rows.Close()
-	for rows.Next() {
-		repo := repositoryServiceRequest{}
-		err = rows.Scan(&repo.Id, &repo.Name)
-		if err != nil {
-			return err
-		}
-
-		repos.Repos = append(repos.Repos, repo)
-	}
-	err = rows.Err()
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-func queryServiceRequestToClient(repos *repositoryServiceRequestToClientArr) error {
-
-	rows, err := db.Query(`select rt.name as req_type_name,sr.service_name from request_type rt left join servicesrequests sr on rt.id=sr.request_type_id`)
-	if err != nil {
-		return err
-	}
-
-	defer rows.Close()
-	for rows.Next() {
-		repo := repositoryServiceRequestToClient{}
-		err = rows.Scan(&repo.TypeName, &repo.ServiceName)
-		if err != nil {
-			return err
-		}
-
-		repos.Repos = append(repos.Repos, repo)
-	}
-	err = rows.Err()
-	if err != nil {
-		return err
-	}
-	return nil
 }
 
 func save(w http.ResponseWriter, r *http.Request) {
@@ -1656,4 +1487,215 @@ func login(w http.ResponseWriter, r *http.Request) {
 	}
 	tmpl, _ := template.ParseFiles("templates/index.html")
 	tmpl.Execute(w, data)
+}
+
+func queryUserRepos(repos *repositoryUsers) error {
+	rows, err := db.Query(`select a.tel_chat_id,a.cnt from (select tel_chat_id,coalesce((select count(*) from messages where tel_chat_id=m.tel_chat_id and viewedat is null group by m.tel_chat_id),0) as cnt from messages m where tel_chat_id is not null group by tel_chat_id) a order by a.cnt desc`)
+
+	if err != nil {
+		return err
+	}
+	defer rows.Close()
+	var i = 0
+	repo := repositoryUser{}
+	for rows.Next() {
+		i = 1
+
+		err = rows.Scan(&repo.User, &repo.UnviewedCnt)
+		if err != nil {
+			return err
+		}
+		repos.Repos = append(repos.Repos, repo)
+	}
+	if i == 0 {
+		repo.User = "0"
+		repo.UnviewedCnt = 0
+		repos.Repos = append(repos.Repos, repo)
+	}
+
+	err = rows.Err()
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func queryMessageRepos(repos *repositoryMesages) error {
+	//rows, err := db.Query(`select m.id,m.text,m.sent,m.sentby,m.tel_chat_id,m.tel_message_id,m.message_type,coalesce(cast(m.viewedBy as varchar),''),coalesce(cast(m.viewedAt as varchar),''),coalesce(cast(m.replyto as varchar),''),encode(v.voice::bytea,'hex') as hex_voice from messages m left join voices v on m.id=v.messages_id`)
+	rows, err := db.Query(`select m.id,coalesce(m.text,'') as text,m.sent,m.sentby,coalesce(cast(m.tel_chat_id as varchar),'') as  tel_chat_id,coalesce(cast(m.tel_message_id as varchar),'') as tel_message_id,coalesce(cast(m.message_type as varchar),'') as message_type,coalesce(cast(m.viewedBy as varchar),'') as  viewedBy,coalesce(cast(m.viewedAt as varchar),'') as viewedAt,coalesce(cast(m.replyto as varchar),'') as replyTo,coalesce(cast(v.duration as varchar),'') as duration,coalesce(encode(v.voice::bytea,'hex'),'') as hex_voice from messages m left join voices v on m.id=v.messages_id where tel_chat_id is not null`)
+	if err != nil {
+		return err
+	}
+
+	defer rows.Close()
+	for rows.Next() {
+		repo := repositoryMessage{}
+		err = rows.Scan(&repo.Id,
+			&repo.Text,
+			&repo.Sent,
+			&repo.SentBy,
+			&repo.TelChatId,
+			&repo.TelMessageId,
+			&repo.MessageType,
+			&repo.ViewedBy,
+			&repo.ViewedAt,
+			&repo.RepltyTo,
+			&repo.Duration,
+			&repo.VoiceText)
+		if err != nil {
+			return err
+		}
+
+		repos.Repos = append(repos.Repos, repo)
+	}
+	err = rows.Err()
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func queryMessageReposById(repos *repositoryMesages, id string) error {
+
+	rows, err := db.Query(`select m.id,coalesce(m.text,'') as  text,m.sent,m.sentby,coalesce(cast(m.tel_chat_id as varchar),'') as tel_chat_id,coalesce(cast(m.tel_message_id as varchar),'') as tel_message_id,coalesce(cast(m.message_type as varchar),'') as  message_type,coalesce(cast(m.viewedBy as varchar),'') as  viewedBy,coalesce(cast(m.viewedAt as varchar),'') as viewedAt,coalesce(cast(m.replyto as varchar),'') as replyTo,coalesce(cast(v.duration as varchar),'') as duration,coalesce(encode(v.voice::bytea,'hex'),'') as hex_voice from messages m left join voices v on m.id=v.messages_id where tel_chat_id is not null and tel_chat_id=$1 order by sent asc`, id)
+	if err != nil {
+		return err
+	}
+
+	defer rows.Close()
+	for rows.Next() {
+		repo := repositoryMessage{}
+		err = rows.Scan(&repo.Id,
+			&repo.Text,
+			&repo.Sent,
+			&repo.SentBy,
+			&repo.TelChatId,
+			&repo.TelMessageId,
+			&repo.MessageType,
+			&repo.ViewedBy,
+			&repo.ViewedAt,
+			&repo.RepltyTo,
+			&repo.Duration,
+			&repo.VoiceText)
+		if err != nil {
+			return err
+		}
+
+		repos.Repos = append(repos.Repos, repo)
+	}
+	err = rows.Err()
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func queryMessagesCountReposById(repos *repositoryMessagesCountArr, id string) error {
+	rows, err := db.Query(`select count(*) as cnt from messages m left join voices v on m.id=v.messages_id where tel_chat_id is not null and tel_chat_id=$1`, id)
+	if err != nil {
+		return err
+	}
+
+	defer rows.Close()
+	for rows.Next() {
+		repo := repositoryMessagesCount{}
+		err = rows.Scan(&repo.Count)
+		if err != nil {
+			return err
+		}
+
+		repos.Repos = append(repos.Repos, repo)
+	}
+	err = rows.Err()
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func queryRequestTypes(repos *repositoryRequestTypeArr) error {
+
+	rows, err := db.Query(`select id,name from request_type`)
+	if err != nil {
+		return err
+	}
+
+	defer rows.Close()
+	for rows.Next() {
+		repo := repositoryRequestType{}
+		err = rows.Scan(&repo.Id, &repo.Name)
+		if err != nil {
+			return err
+		}
+
+		repos.Repos = append(repos.Repos, repo)
+	}
+	err = rows.Err()
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func queryServiceRequests(repos *repositoryServiceRequestArr, reqtypeid int64) error {
+
+	rows, err := db.Query(`select sr.id,sr.service_name from  servicesrequests sr where request_type_id=$1`, reqtypeid)
+	if err != nil {
+		return err
+	}
+
+	defer rows.Close()
+	for rows.Next() {
+		repo := repositoryServiceRequest{}
+		err = rows.Scan(&repo.Id, &repo.Name)
+		if err != nil {
+			return err
+		}
+
+		repos.Repos = append(repos.Repos, repo)
+	}
+	err = rows.Err()
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func queryServiceRequestToClient(repos *repositoryServiceRequestToClientArr) error {
+
+	rows, err := db.Query(`select rt.name as req_type_name,sr.service_name from request_type rt left join servicesrequests sr on rt.id=sr.request_type_id`)
+	if err != nil {
+		return err
+	}
+
+	defer rows.Close()
+	for rows.Next() {
+		repo := repositoryServiceRequestToClient{}
+		err = rows.Scan(&repo.TypeName, &repo.ServiceName)
+		if err != nil {
+			return err
+		}
+
+		repos.Repos = append(repos.Repos, repo)
+	}
+	err = rows.Err()
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func queryServiceRequestReq(repo *repositoryServiceRequestReq, reqFrom string, servicesrequestsid string) error {
+
+	var id int64
+	err := db.QueryRow(`insert into requests(reqfrom,servicesrequestsid,status) 
+                                   values($1,$2,$3) returning id`).Scan(&id)
+
+	if err != nil {
+		return err
+	}
+
+	repo.Id = string(id)
+
+	return nil
 }
