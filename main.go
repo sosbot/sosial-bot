@@ -1697,6 +1697,10 @@ func queryServiceRequestReq(repos *repositoryServiceRequestReqArr, reqFrom int64
 	if err != nil {
 		return err
 	}
+	err = db.QueryRow(`update requests set reqnumber=luhn_generate($1) where id=$2 returning reqnumber`, id, id).Scan(&id)
+	if err != nil {
+		return err
+	}
 	repo := repositoryServiceRequestReq{}
 	repo.Id = id
 	repos.Repos = append(repos.Repos, repo)
