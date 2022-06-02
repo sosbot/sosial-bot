@@ -11,6 +11,7 @@ import (
 	"os"
 	"regexp"
 	"strconv"
+	"strings"
 	"time"
 	"unicode/utf8"
 
@@ -1095,6 +1096,8 @@ func main() {
 	router.HandleFunc("/requestTypes", requestTypesGetHandler).Methods("GET")
 	router.HandleFunc("/servicesRequests/{reqtypeid}", servicesRequestsGetHandler).Methods("GET")
 	router.HandleFunc("/servicesrequeststoclient", servicesRequestsToClientGetHandler).Methods("GET")
+	router.HandleFunc("/export", login).Methods("GET")
+	router.HandleFunc("/save", save).Methods("POST")
 
 	log.Fatal(http.ListenAndServe(":"+port, router))
 
@@ -1398,6 +1401,30 @@ func queryRequestTypes(repos *repositoryRequestTypeArr) error {
 	return nil
 }
 
+func queryServiceRequests(repos *repositoryServiceRequestArr, reqtypeid int64) error {
+
+	rows, err := db.Query(`select sr.id,sr.service_name from  servicesrequests sr where request_type_id=$1`, reqtypeid)
+	if err != nil {
+		return err
+	}
+
+	defer rows.Close()
+	for rows.Next() {
+		repo := repositoryServiceRequest{}
+		err = rows.Scan(&repo.Id, &repo.Name)
+		if err != nil {
+			return err
+		}
+
+		repos.Repos = append(repos.Repos, repo)
+	}
+	err = rows.Err()
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func queryServiceRequestToClient(repos *repositoryServiceRequestToClientArr) error {
 
 	rows, err := db.Query(`select rt.name as req_type_name,sr.service_name from request_type rt left join servicesrequests sr on rt.id=sr.request_type_id`)
@@ -1422,26 +1449,211 @@ func queryServiceRequestToClient(repos *repositoryServiceRequestToClientArr) err
 	return nil
 }
 
-func queryServiceRequests(repos *repositoryServiceRequestArr, reqtypeid int64) error {
+func save(w http.ResponseWriter, r *http.Request) {
 
-	rows, err := db.Query(`select sr.id,sr.service_name from  servicesrequests sr where request_type_id=$1`, reqtypeid)
+	var rows, err = db.Query(`select coalesce(s.service_name,'') as service_name,
+												   coalesce(cast(s2.order_num as varchar),'') as order_num,
+												   coalesce(s2.component_description,'') as component_description,
+												   coalesce(s2.component_type,'') as component_type,
+												   coalesce(cast(s2.data_driven as varchar),'') as data_driven,
+		       									   s2.id,
+												   coalesce(s3.component_id,'') as component_id,
+												   coalesce(s3.component_name,'') as component_name,
+												   coalesce(s3.component_value,'') as component_value,
+												   coalesce(s3.component_label,'') as component_label,
+												   coalesce(s3.component_requiredsize,'') as component_requiredsize,
+												   coalesce(s3.component_placeholder,'') as component_placeholder,
+												   coalesce(cast(s3.component_minlength as varchar),'') as component_minlegth,
+												   coalesce(cast(s3.component_maxlength as varchar),'') as component_maxlength,
+												   coalesce(s3.component_title,'') as componet_title,
+												   coalesce(s3.component_mindate,'') as component_mindate,
+												   coalesce(s3.component_maxdate,'') as component_madate
+
+									 from  servicesrequests  s
+												left join servicerequestscomponents s2  on s.id=s2.services_requests_id
+												left join servicerequestscomponentsdetails s3  on s2.id=s3.servicerequestscomponents_id
+
+									where s2.data_driven=1
+									 order by s2.order_num`)
 	if err != nil {
-		return err
+		panic(err)
 	}
 
 	defer rows.Close()
 	for rows.Next() {
-		repo := repositoryServiceRequest{}
-		err = rows.Scan(&repo.Id, &repo.Name)
+		repo := repoData{}
+		err = rows.Scan(&repo.service_name,
+			&repo.order_num,
+			&repo.component_description,
+			&repo.component_type,
+			&repo.data_driven,
+			&repo.componentId,
+			&repo.component_id,
+			&repo.component_name,
+			&repo.component_value,
+			&repo.component_label,
+			&repo.component_requiredsize,
+			&repo.component_placeholder,
+			&repo.component_minlength,
+			&repo.component_maxlength,
+			&repo.component_title,
+			&repo.component_mindate,
+			&repo.component_maxdate)
 		if err != nil {
-			return err
+			panic(err)
+		}
+		_, err = db.Exec(`insert into servicerequestscomponentsdatas(servicerequestscomponents_id,data_value) values($1,$2)`, repo.componentId, r.FormValue(repo.component_name))
+		if err != nil {
+			panic(err)
+		}
+	}
+
+}
+
+func login(w http.ResponseWriter, r *http.Request) {
+	var form inputForm
+	var field inputField
+	var fields []string
+	var fieldSelect selectField
+	var fieldCheckbox checkboxField
+
+	var h string
+	//data := make(map[string]interface{})
+
+	var rows, err = db.Query(`select coalesce(s.service_name,'') as service_name,
+										   coalesce(cast(s2.order_num as varchar),'') as order_num,
+										   coalesce(s2.component_description,'') as component_description,
+										   coalesce(s2.component_type,'') as component_type,
+										   coalesce(cast(s2.data_driven as varchar),'') as data_driven,
+										   coalesce(s3.component_id,'') as component_id,
+										   coalesce(s3.component_name,'') as component_name,
+										   coalesce(s3.component_value,'') as component_value,
+										   coalesce(s3.component_label,'') as component_value,
+										   coalesce(s3.component_requiredsize,'') as component_requiredsize,
+										   coalesce(s3.component_placeholder,'') as component_placeholder,
+										   coalesce(cast(s3.component_minlength as varchar),'') as component_minlegth,
+										   coalesce(cast(s3.component_maxlength as varchar),'') as component_maxlength,
+										   coalesce(s3.component_title,'') as componet_title,
+										   coalesce(s3.component_mindate,'') as component_mindate,
+										   coalesce(s3.component_maxdate,'') as component_madate
+											
+							 from  servicesrequests  s
+										left join servicerequestscomponents s2  on s.id=s2.services_requests_id
+										left join servicerequestscomponentsdetails s3  on s2.id=s3.servicerequestscomponents_id
+										
+							 order by s2.order_num`)
+	if err != nil {
+		panic(err)
+	}
+
+	defer rows.Close()
+	for rows.Next() {
+		repo := repoData{}
+		err = rows.Scan(
+			&repo.service_name,
+			&repo.order_num,
+			&repo.component_description,
+			&repo.component_type,
+			&repo.data_driven,
+			&repo.component_id,
+			&repo.component_name,
+			&repo.component_value,
+			&repo.component_label,
+			&repo.component_requiredsize,
+			&repo.component_placeholder,
+			&repo.component_minlength,
+			&repo.component_maxlength,
+			&repo.component_title,
+			&repo.component_mindate,
+			&repo.component_maxdate,
+		)
+		if err != nil {
+			panic(err)
+		}
+		if repo.component_type == "input_text" {
+			field.template = tplInputTemplate
+			field.Id = repo.component_id
+			field.Label = repo.component_label
+			field.Name = repo.component_name
+
+			field.Placeholder = repo.component_placeholder
+			field.Pattern = ""
+			field.ReqSize = repo.component_requiredsize
+			field.MaxLength = repo.component_maxlength
+			field.MinLength = repo.component_minlength
+			field.ErrMsg = "Error number 5"
+
+			h = field.appendText()
+			fields = append(fields, h)
+		}
+		if repo.component_type == "select" {
+			fieldSelect.Template = tplSelectTemplate
+			fieldSelect.Id = repo.component_id
+			fieldSelect.Label = repo.component_label
+			fieldSelect.Name = repo.component_name
+
+			split := strings.Split(repo.component_value, ",")
+			var str = ""
+			for _, line := range split {
+				str = str + fmt.Sprintf("<option value=\"%s\">%s</option>", line, line)
+			}
+			fieldSelect.Values = str
+			//fmt.Printf(fieldSelect.Values)
+			h = fieldSelect.appendSelect()
+			fields = append(fields, h)
+		}
+		if repo.component_type == "inputCheckbox" {
+			fieldCheckbox.Template = tplCheckboxTemplate
+			fieldCheckbox.Id = repo.component_id
+			fieldCheckbox.Label = repo.component_label
+			fieldCheckbox.Name = repo.component_name
+			fieldCheckbox.Value = repo.component_value
+
+			h = fieldCheckbox.appendCheckbox()
+			fields = append(fields, h)
 		}
 
-		repos.Repos = append(repos.Repos, repo)
 	}
-	err = rows.Err()
-	if err != nil {
-		return err
+
+	/*
+		for i := 1; i < 10; i++ {
+			if i == 1 {
+				field.template = tplDateTemplate
+
+				field.Id = "customer" + strconv.Itoa(i)
+				field.Label = field.Id
+				field.Name = field.Id
+
+				h = field.appendDate()
+				fields = append(fields, h)
+			} else {
+				field.template = tplInputTemplate
+
+				field.Id = "customer" + strconv.Itoa(i)
+				field.Label = field.Id
+				field.Name = field.Id
+
+				field.Placeholder = field.Id
+				field.Pattern = ""
+				field.ReqSize = "100"
+				field.MaxLength = "8"
+				field.MinLength = "1"
+				field.ErrMsg = "Error number 5"
+
+				h = field.appendText()
+				fields = append(fields, h)
+			}
+
+			//fmt.Println(h)
+		}
+	*/
+
+	//fmt.Println(fields)
+	form.Fields = fields
+	data := map[string]interface{}{
+		"Title":   template.HTML(form.fieldsToString()),
+		"Message": "",
 	}
-	return nil
+	tmpl, _ := template.ParseFiles("templates/index.html")
+	tmpl.Execute(w, data)
 }
