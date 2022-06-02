@@ -419,7 +419,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 			if err != nil {
 				panic(err)
 			}
-		} else {
+		} else if 1 == 2 {
 
 			if update.Message.Text == mainMenu.Keyboard[0][0].Text {
 				cmdLine = mainMenu.Keyboard[0][0].Text
@@ -1481,7 +1481,7 @@ func save(w http.ResponseWriter, r *http.Request) {
 
 	defer rows.Close()
 	for rows.Next() {
-		repo := repoData{}
+		repo := RepoData{}
 		err = rows.Scan(&repo.service_name,
 			&repo.order_num,
 			&repo.component_description,
@@ -1548,7 +1548,7 @@ func login(w http.ResponseWriter, r *http.Request) {
 
 	defer rows.Close()
 	for rows.Next() {
-		repo := repoData{}
+		repo := RepoData{}
 		err = rows.Scan(
 			&repo.service_name,
 			&repo.order_num,

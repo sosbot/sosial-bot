@@ -52,7 +52,7 @@ type Field struct {
 	Value string
 }
 
-type repoData struct {
+type RepoData struct {
 	service_name           string
 	order_num              string
 	component_description  string
