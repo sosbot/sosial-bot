@@ -1688,8 +1688,7 @@ func queryServiceRequestToClient(repos *repositoryServiceRequestToClientArr) err
 func queryServiceRequestReq(repo *repositoryServiceRequestReq, reqFrom string, servicesrequestsid string) error {
 
 	var id int64
-	err := db.QueryRow(`insert into requests(reqfrom,servicesrequestsid,status) 
-                                   values($1,$2,0) returning id`, reqFrom, servicesrequestsid).Scan(&id)
+	err := db.QueryRow("insert into requests(reqfrom,servicesrequestsid,status) values($1,$2,0) returning id;", reqFrom, servicesrequestsid).Scan(&id)
 
 	if err != nil {
 		return err
