@@ -381,16 +381,16 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 				bot.Send(msg)
 			}
 			if cmdText == "stop" {
-				message := "Müraciət etdiyiniz üçün, təşəkkür edirik! 🤝"
-				msg := tgbotapi.NewMessage(update.Message.Chat.ID, message)
-				msg.ReplyMarkup = tgbotapi.NewRemoveKeyboard(true)
-				bot.Send(msg)
+				//message := "Müraciət etdiyiniz üçün, təşəkkür edirik! 🤝"
+				//msg := tgbotapi.NewMessage(update.Message.Chat.ID, message)
+				//msg.ReplyMarkup = tgbotapi.NewRemoveKeyboard(true)
+				//bot.Send(msg)
 			}
 			if cmdText == "menu" {
-				message := "Əsas səhifəyə keçid edildi"
-				msg := tgbotapi.NewMessage(update.Message.Chat.ID, message)
-				msg.ReplyMarkup = mainMenu
-				bot.Send(msg)
+				//message := "Əsas səhifəyə keçid edildi"
+				//msg := tgbotapi.NewMessage(update.Message.Chat.ID, message)
+				//msg.ReplyMarkup = mainMenu
+				//bot.Send(msg)
 			}
 		} else if update.Message.Voice != nil {
 
