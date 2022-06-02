@@ -1143,7 +1143,7 @@ func serviceRequestsReqsGetHandler(w http.ResponseWriter, r *http.Request) {
 
 	msg := tgbotapi.NewMessage(reqfrom, txt)
 	//msg.ReplyMarkup = mainMenu
-	bot.Send(msg)
+	//bot.Send(msg)
 
 	var numericKeyboard = tgbotapi.NewInlineKeyboardMarkup(
 		tgbotapi.NewInlineKeyboardRow(
