@@ -5,11 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="329891d6-e1be-480b-b063-64e37689b7b4" name="Changes" comment="voice table altered">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/a07b9cca-ad5f-416e-8a9a-0bc852c612b6.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/a07b9cca-ad5f-416e-8a9a-0bc852c612b6.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/a07b9cca-ad5f-416e-8a9a-0bc852c612b6/storage_v2/_src_/database/nyrdyxoc.8L_Vaw/schema/public.abK9xQ.meta" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/a07b9cca-ad5f-416e-8a9a-0bc852c612b6/storage_v2/_src_/database/nyrdyxoc.8L_Vaw/schema/public.abK9xQ.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/template.go" beforeDir="false" afterPath="$PROJECT_DIR$/template.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
