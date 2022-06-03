@@ -1104,7 +1104,7 @@ func main() {
 	router.HandleFunc("/requestTypes", requestTypesGetHandler).Methods("GET")
 	router.HandleFunc("/servicesRequests/{reqtypeid}", servicesRequestsGetHandler).Methods("GET")
 	router.HandleFunc("/servicesrequeststoclient", servicesRequestsToClientGetHandler).Methods("GET")
-	router.HandleFunc("/export/{reqNumber}", login).Methods("GET")
+	router.HandleFunc("/export/{reqnumber}", login).Methods("GET")
 	router.HandleFunc("/save", save).Methods("POST")
 	router.HandleFunc("/servicecRequestsRegs", serviceRequestsReqsGetHandler).Methods("GET")
 
@@ -1391,7 +1391,7 @@ func login(w http.ResponseWriter, r *http.Request) {
 	//data := make(map[string]interface{})
 
 	params := mux.Vars(r)
-	reqNumber, _ := strconv.ParseInt(params["reqNumber"], 10, 64)
+	reqnumber, _ := strconv.ParseInt(params["reqnumber"], 10, 64)
 	fmt.Println(reqNumber)
 	var rows, err = db.Query(`select coalesce(s.service_name,'') as service_name,
 										   coalesce(cast(s2.order_num as varchar),'') as order_num,
@@ -1413,8 +1413,9 @@ func login(w http.ResponseWriter, r *http.Request) {
 							 from  servicesrequests  s
 										left join servicerequestscomponents s2  on s.id=s2.services_requests_id
 										left join servicerequestscomponentsdetails s3  on s2.id=s3.servicerequestscomponents_id
-										
-							 order by s2.order_num`)
+										join requests r on  r.servicesrequestsid=s.id
+        						  where r.reqnumber=$1
+							 order by s2.order_num`, reqnumber)
 	if err != nil {
 		panic(err)
 	}
