@@ -1540,6 +1540,7 @@ func userRequestsGetHandler(w http.ResponseWriter, r *http.Request) {
 	data := map[string]interface{}{
 		"Title":   template.HTML(form.fieldsToString()),
 		"Message": "",
+		"reqnum":  reqnumber,
 	}
 	tmpl, _ := template.ParseFiles("templates/index.html")
 	tmpl.Execute(w, data)
