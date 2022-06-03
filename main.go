@@ -1104,8 +1104,8 @@ func main() {
 	router.HandleFunc("/requestTypes", requestTypesGetHandler).Methods("GET")
 	router.HandleFunc("/servicesRequests/{reqtypeid}", servicesRequestsGetHandler).Methods("GET")
 	router.HandleFunc("/servicesrequeststoclient", servicesRequestsToClientGetHandler).Methods("GET")
-	router.HandleFunc("/userRequests/{reqnumber}", login).Methods("GET")
-	router.HandleFunc("/save", save).Methods("POST")
+	router.HandleFunc("/userRequests/{reqnumber}", userRequestsGetHandler).Methods("GET")
+	router.HandleFunc("/userRequestSave", userRequestSaveGetHandler).Methods("POST")
 	router.HandleFunc("/servicecRequestsRegs", serviceRequestsReqsGetHandler).Methods("GET")
 
 	log.Fatal(http.ListenAndServe(":"+port, router))
@@ -1319,7 +1319,7 @@ func messagesCountGetHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, string(out))
 }
 
-func save(w http.ResponseWriter, r *http.Request) {
+func userRequestSaveGetHandler(w http.ResponseWriter, r *http.Request) {
 
 	var rows, err = db.Query(`select coalesce(s.service_name,'') as service_name,
 												   coalesce(cast(s2.order_num as varchar),'') as order_num,
@@ -1377,10 +1377,11 @@ func save(w http.ResponseWriter, r *http.Request) {
 			panic(err)
 		}
 	}
-
+	tmpl, _ := template.ParseFiles("templates/done.html")
+	tmpl.Execute(w, "")
 }
 
-func login(w http.ResponseWriter, r *http.Request) {
+func userRequestsGetHandler(w http.ResponseWriter, r *http.Request) {
 	var form inputForm
 	var field inputField
 	var fields []string
