@@ -1104,7 +1104,7 @@ func main() {
 	router.HandleFunc("/requestTypes", requestTypesGetHandler).Methods("GET")
 	router.HandleFunc("/servicesRequests/{reqtypeid}", servicesRequestsGetHandler).Methods("GET")
 	router.HandleFunc("/servicesrequeststoclient", servicesRequestsToClientGetHandler).Methods("GET")
-	router.HandleFunc("/export/{reqnumber}", login).Methods("GET")
+	router.HandleFunc("/userRequests/{reqnumber}", login).Methods("GET")
 	router.HandleFunc("/save", save).Methods("POST")
 	router.HandleFunc("/servicecRequestsRegs", serviceRequestsReqsGetHandler).Methods("GET")
 
