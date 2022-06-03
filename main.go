@@ -1322,8 +1322,9 @@ func messagesCountGetHandler(w http.ResponseWriter, r *http.Request) {
 func userRequestSaveGetHandler(w http.ResponseWriter, r *http.Request) {
 
 	reqnumber := r.FormValue("reqnumber")
-	var requestId int
-	err = db.QueryRow(`select id from requests where reqnumber=$1`, reqnumber).Scan(&requestId)
+	var requestId int64
+	var reqfrom int64
+	err = db.QueryRow(`select id,reqfrom from requests where reqnumber=$1`, reqnumber).Scan(&requestId, &reqfrom)
 
 	if err != nil {
 		panic(err)
@@ -1387,10 +1388,12 @@ func userRequestSaveGetHandler(w http.ResponseWriter, r *http.Request) {
 	tmpl, _ := template.ParseFiles("templates/done.html")
 	tmpl.Execute(w, "")
 
-	//msg1 := tgbotapi.NewMessage(820987449, "From-"+update.Message.From.UserName+"_"+update.Message.From.FirstName+update.Message.From.LastName+":"+update.Message.Text)
-	//msg1.ReplyToMessageID = update.Message.MessageID
-	//msg1.ReplyMarkup = mainMenu
-	//bot.Send(msg1)
+	txt := `Hörmətli Vətəndaş, ` + reqnumber + ` nömrəli müraciətiniz qəbul olundu. Xahiş edirik, müraciətlə bağlı Operatorla əlaqə saxladıqda, bu qeydiyyat nömrəsini təqdim etməyinizi xahiş edirik. Qısa zamanda Operator Sizin əlaqə saxlayacaqdır.`
+
+	msg := tgbotapi.NewMessage(reqfrom, txt)
+	//msg.ReplyToMessageID = update.Message.MessageID
+	//msg.ReplyMarkup = mainMenu
+	bot.Send(msg)
 }
 
 func userRequestsGetHandler(w http.ResponseWriter, r *http.Request) {
