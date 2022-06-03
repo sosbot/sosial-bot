@@ -1321,6 +1321,13 @@ func messagesCountGetHandler(w http.ResponseWriter, r *http.Request) {
 
 func userRequestSaveGetHandler(w http.ResponseWriter, r *http.Request) {
 
+	reqnumber := r.FormValue("reqnumber")
+	var requestId int
+	err = db.QueryRow(`select id from requests where reqnumber=$1`, reqnumber).Scan(&requestId)
+
+	if err != nil {
+		panic(err)
+	}
 	var rows, err = db.Query(`select coalesce(s.service_name,'') as service_name,
 												   coalesce(cast(s2.order_num as varchar),'') as order_num,
 												   coalesce(s2.component_description,'') as component_description,
@@ -1372,13 +1379,18 @@ func userRequestSaveGetHandler(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			panic(err)
 		}
-		_, err = db.Exec(`insert into servicerequestscomponentsdatas(servicerequestscomponents_id,data_value) values($1,$2)`, repo.componentId, r.FormValue(repo.component_name))
+		_, err = db.Exec(`insert into servicerequestscomponentsdatas(servicerequestscomponents_id,data_value,requests_id) values($1,$2,$3)`, repo.componentId, r.FormValue(repo.component_name), requestId)
 		if err != nil {
 			panic(err)
 		}
 	}
 	tmpl, _ := template.ParseFiles("templates/done.html")
 	tmpl.Execute(w, "")
+
+	//msg1 := tgbotapi.NewMessage(820987449, "From-"+update.Message.From.UserName+"_"+update.Message.From.FirstName+update.Message.From.LastName+":"+update.Message.Text)
+	//msg1.ReplyToMessageID = update.Message.MessageID
+	//msg1.ReplyMarkup = mainMenu
+	//bot.Send(msg1)
 }
 
 func userRequestsGetHandler(w http.ResponseWriter, r *http.Request) {
