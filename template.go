@@ -10,10 +10,10 @@ type ViewData struct {
 	Message string
 }
 
-var tplInputTemplate = `<label for="%s">%s</label> <input type="text" class="mx-auto" id="%s" name="%s" required size="%s" placeholder="%s" minlength="%s" maxlength="%s" title="%s">`
-var tplDateTemplate = `<label for="%s">%s</label><input type="date" id="%s" name="%s" value="" min="1900-01-01" max="2030-12-31">`
-var tplSelectTemplate = `<label for="%s">%s</label><select class="browser-default custom-select"  name="%s" id="%s">%s</select>`
-var tplCheckboxTemplate = `<input  class="form-check-input"  type="checkbox" id="%s" name="%s" value=%s><label for="%s">%s</label>`
+var tplInputTemplate = `<div><label for="%s">%s</label> <input type="text" class="mx-auto" id="%s" name="%s" required size="%s" placeholder="%s" minlength="%s" maxlength="%s" title="%s"></div>`
+var tplDateTemplate = `<div><label for="%s">%s</label><input type="date" id="%s" name="%s" value="" min="1900-01-01" max="2030-12-31"></div>`
+var tplSelectTemplate = `<div><label for="%s">%s</label><select class="browser-default custom-select"  name="%s" id="%s">%s</select></div>`
+var tplCheckboxTemplate = `<div><input  class="form-check-input"  type="checkbox" id="%s" name="%s" value=%s><label for="%s">%s</label></div>`
 
 type inputForm struct {
 	Fields []string
