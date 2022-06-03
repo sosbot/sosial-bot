@@ -97,7 +97,7 @@ func (m *selectField) appendSelect() string {
 }
 
 func (m *checkboxField) appendCheckbox() string {
-	res := fmt.Sprintf(m.Template, m.Id, m.Name, m.Value, m.Id, m.Label)
+	res := fmt.Sprintf(m.Template, m.Id, m.Label, m.Id, m.Name, m.Value)
 	return res
 }
 
