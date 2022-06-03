@@ -1387,7 +1387,7 @@ func userRequestSaveGetHandler(w http.ResponseWriter, r *http.Request) {
 
 	}
 
-	_, err = db.Exec(`update requests set status=1 where id=$ and status=0`, requestId)
+	_, err = db.Exec(`update requests set status=1 where id=$1 and status=0`, requestId)
 	if err != nil {
 		panic(err)
 	}
