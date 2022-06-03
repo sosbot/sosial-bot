@@ -407,7 +407,8 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 			r, _ := http.Get("https://api.telegram.org/file/bot" + botToken + "/" + resp.FilePath)
 			fmt.Println(r)
 			defer r.Body.Close()
-			msg := tgbotapi.NewAudioShare(update.Message.Chat.ID, voice.FileID)
+			//msg := tgbotapi.NewAudioShare(update.Message.Chat.ID, voice.FileID)
+			msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Operator səsli müraciətinizi qısa zamanda cavabalandıracaq.")
 			msg.ReplyToMessageID = update.Message.MessageID
 			bot.Send(msg)
 
