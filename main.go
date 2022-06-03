@@ -1384,7 +1384,14 @@ func userRequestSaveGetHandler(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			panic(err)
 		}
+
 	}
+
+	_, err = db.Exec(`update requests set status=1 where id=$ and status=0`, requestId)
+	if err != nil {
+		panic(err)
+	}
+
 	tmpl, _ := template.ParseFiles("templates/done.html")
 	tmpl.Execute(w, "")
 
