@@ -1388,7 +1388,7 @@ func userRequestSaveGetHandler(w http.ResponseWriter, r *http.Request) {
 	tmpl, _ := template.ParseFiles("templates/done.html")
 	tmpl.Execute(w, "")
 
-	txt := `Hörmətli Vətəndaş, ` + reqnumber + ` nömrəli müraciətiniz qəbul olundu. Xahiş edirik, müraciətlə bağlı Operatorla əlaqə saxladıqda, bu qeydiyyat nömrəsini təqdim etməyinizi xahiş edirik. Qısa zamanda Operator Sizin əlaqə saxlayacaqdır.`
+	txt := `Hörmətli Vətəndaş, ` + reqnumber + ` nömrəli müraciətiniz qəbul olundu. Müraciətlə bağlı Operatorla əlaqə saxladıqda, bu qeydiyyat nömrəsini təqdim etməyinizi xahiş edirik. Qısa zamanda Operator Sizinlə əlaqə saxlayacaqdır.`
 
 	msg := tgbotapi.NewMessage(reqfrom, txt)
 	//msg.ReplyToMessageID = update.Message.MessageID
