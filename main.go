@@ -1525,7 +1525,7 @@ func login(w http.ResponseWriter, r *http.Request) {
 	//fmt.Println(fields)
 	form.Fields = fields
 	data := map[string]interface{}{
-		"Title":   template.HTML(form.fieldsToString()),
+		"Title":   template.HTML(`<form> <div class="form-group">` + form.fieldsToString() + `</form>`),
 		"Message": "",
 	}
 	tmpl, _ := template.ParseFiles("templates/index.html")
