@@ -10,10 +10,10 @@ type ViewData struct {
 	Message string
 }
 
-var tplInputTemplate = `<div class="form-group row" ><label for="%s" class="form-label">%s</label> <input type="text" class="form-control-lg" id="%s" name="%s" required size="%s" placeholder="%s" minlength="%s" maxlength="%s" title="%s"></div><br>`
-var tplDateTemplate = `<div class="cform-group row"><label for="%s" class="form-label">%s</label><input type="date"  class="form-control-lg" id="%s" name="%s" value="" min="1900-01-01" max="2030-12-31"></div><br>`
-var tplSelectTemplate = `<div class="form-group row"><label for="%s" class="form-label">%s</label><select class="form-control-lg"  name="%s" id="%s">%s</select></div><br>`
-var tplCheckboxTemplate = `<div class="form-group row"><label for="%s" class="form-check-label">%s</label><input  class="form-check-input form-control-lg"  type="checkbox" id="%s" name="%s" value=%s></div><br>`
+var tplInputTemplate = `<div class="form-group" ><label for="%s" class="form-label">%s</label> <input type="text" class="form-control-lg" id="%s" name="%s" required size="%s" placeholder="%s" minlength="%s" maxlength="%s" title="%s"></div><br>`
+var tplDateTemplate = `<div class="form-group"><label for="%s" class="form-label">%s</label><input type="date"  class="form-control-lg" id="%s" name="%s" value="" min="1900-01-01" max="2030-12-31"></div><br>`
+var tplSelectTemplate = `<div class="form-group"><label for="%s" class="form-label">%s</label><select class="form-control-lg"  name="%s" id="%s">%s</select></div><br>`
+var tplCheckboxTemplate = `<div class="form-group"><label for="%s" class="form-check-label">%s</label><input  class="form-check-input form-control-lg"  type="checkbox" id="%s" name="%s" value=%s></div><br>`
 
 type inputForm struct {
 	Fields []string
