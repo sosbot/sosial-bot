@@ -41,7 +41,7 @@
             <td>{{.ReqNumber}}</td>
             <td>{{.Status}}</td>
             <td>
-                 <button id="{{.ReqNumber}}"  onclick="reply_click(event);showThisDialog()"  class="btn btn-primary" type="submit" enabled>Ətraflı</button>
+                 <button   formaction="http://google.ru" id="{{.ReqNumber}}"  onclick="reply_click(event);showThisDialog()"  class="btn btn-primary" type="submit" enabled>Ətraflı</button>
 
             </td>
         </tr>
@@ -61,12 +61,18 @@
         <td>{{.ReqDate}}</td>
         <td>{{.ReqNumber}}</td>
         <td>{{.Status}}</td>
+        <td>this.res()</td>
+
     </tr>
     {{end}}
     <button onClick="hideThisDialog();">Close Me! </button>
 </dialog>
 
     <script>
+
+        function res(){
+          return e.target.id;
+        };
         function reply_click(e) {
             console.log(e.target.id);
         }
