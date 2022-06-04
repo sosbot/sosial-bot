@@ -1149,7 +1149,7 @@ select  rt.name as req_type_name,
 	defer rows.Close()
 	for rows.Next() {
 		repo := RepoRequest{}
-		err = rows.Scan(&repo.ReqSubTypeName,
+		err = rows.Scan(&repo.ReqTypeName,
 			&data.ReqSubTypeId,
 			&data.ReqSubTypeName,
 			&data.ReqNumber,
