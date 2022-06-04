@@ -10,6 +10,7 @@
 
 </head>
 <body>
+
 <div class="container-fluid">
     <br>
     <input class="form-control" id="myInput" type="text" placeholder="Axtar..">
@@ -40,7 +41,7 @@
             <td>{{.ReqNumber}}</td>
             <td>{{.Status}}</td>
             <td><form method="post" class="form-group">
-                 <button class="btn btn-primary" type="submit" enabled>Ətraflı</button>
+                 <button  onclick="showThisDialog()"  class="btn btn-primary" type="submit" enabled>Ətraflı</button>
                 </form>
             </td>
         </tr>
@@ -51,6 +52,23 @@
 
 </div>
 
+<dialog id="this-dialog">
+    <p> I am a dialog-box with backdrop</p>
+    <button onclick="hideThisDialog()">Close Me! </button>
+<dialog>
+
+    <script>
+    var dialog = document.querySelector('dialog');
+    dialogPolyfill.registerDialog(dialog);
+
+    function showThisDialog() {
+        document.getElementById('this-dialog').showModal();
+    }
+
+    function hideThisDialog() {
+        document.getElementById('this-dialog').close();
+    }
+</script>
 
 <script>
     $(document).ready(function(){
