@@ -42,12 +42,10 @@
             <td>{{.Status}}</td>
             <td>
                 <form>
-                <button  formaction="sosialbot.herokuapp.com/Requests/{{.ReqNumber}}"  id="{{.ReqNumber}}"  onclick="reply_click(event);showThisDialog()"  class="btn btn-primary" type="submit" enabled>Ətraflı</button>
+                <button  formaction="/Requests/{{.ReqNumber}}"  id="{{.ReqNumber}}"  onclick="reply_click(event);showThisDialog()"  class="btn btn-primary" type="submit" enabled>Ətraflı</button>
                 </form>
             </td>
-            <td>
-                <a href="https://sosialbot.herokuapp.com/Requests" data-rel="dialog">Open dialog</a>
-            </td>
+
         </tr>
         {{end}}
         </tbody>
