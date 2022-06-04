@@ -1809,14 +1809,14 @@ func queryRepoRequests(repos *RepoRequestArr) error {
 select  rt.name as req_type_name,
         s.id,
         s.service_name as req_subtype_name,
-        coalesce(cast(r.reqnumber as  varchar),' '),
+        coalesce(cast(r.reqnumber as  varchar),''),
         r.datetime as reqdate,
         r.status
 
         from request_type rt
    join servicesrequests s on rt.id = s.request_type_id
    join requests r on r.servicesrequestsid=s.id
-   where s.status>0`)
+   where r.status>0`)
 	if err != nil {
 		return err
 	}
