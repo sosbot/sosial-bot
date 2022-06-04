@@ -41,7 +41,7 @@
             <td>{{.ReqNumber}}</td>
             <td>{{.Status}}</td>
             <td>
-                 <button   formaction="http://google.ru" id="{{.ReqNumber}}"  onclick="reply_click(event);showThisDialog()"  class="btn btn-primary" type="submit" enabled>Ətraflı</button>
+                 <button   id="{{.ReqNumber}}"  onclick="reply_click(event);showThisDialog()"  class="btn btn-primary" type="submit" enabled>Ətraflı</button>
 
             </td>
             <td>
@@ -58,13 +58,8 @@
 <dialog id="this-dialog">
     {{ range .}}
     <tr>
-        <td>{{.ReqTypeName}}</td>
-        <td>{{.ReqSubTypeId}}</td>
-        <td>{{.ReqSubTypeName}}</td>
-        <td>{{.ReqDate}}</td>
-        <td>{{.ReqNumber}}</td>
-        <td>{{.Status}}</td>
-        <td>this.res()</td>
+        <td>{{.Description}}</td>
+        <td>{{.Value}}</td>
 
     </tr>
     {{end}}

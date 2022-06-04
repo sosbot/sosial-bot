@@ -195,6 +195,15 @@ type RepoRequestArr struct {
 	Repos []RepoRequest
 }
 
+type RepoComponent struct {
+	Description string
+	Value       string
+}
+
+type RepoComponentArr struct {
+	Repos []RepoComponent
+}
+
 var questionsArrMap map[int64]*questionsArr
 var questionArrMapCurrentState int
 var req1Map map[int]*req1
@@ -1122,8 +1131,42 @@ func main() {
 	router.HandleFunc("/userRequestSave", userRequestSaveGetHandler).Methods("POST")
 	router.HandleFunc("/servicecRequestsRegs", serviceRequestsReqsGetHandler).Methods("GET")
 	router.HandleFunc("/Requests", requestsGetHandler).Methods("GET")
+	router.HandleFunc("/Requests/{reqnumber}", requestsIdGetHandler).Methods("GET")
 	log.Fatal(http.ListenAndServe(":"+port, router))
 
+}
+
+func requestsIdGetHandler(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	reqnumber := params["reqnumber"]
+
+	var data RepoComponent
+	datas := []RepoComponent{}
+	rows, err := db.Query(`select src.component_description,
+       srcd.data_value
+       from servicerequestscomponents src
+     join servicerequestscomponentsdatas srcd on src.id=srcd.servicerequestscomponents_id
+     join requests r on r.id=srcd.requests_id
+ where r.reqnumber=$1`, reqnumber)
+	if err != nil {
+		panic(err)
+	}
+
+	defer rows.Close()
+	for rows.Next() {
+		err = rows.Scan(&data.Description,
+			&data.Value)
+		if err != nil {
+			panic(err)
+		}
+		datas = append(datas, data)
+	}
+	err = rows.Err()
+	if err != nil {
+		panic(err)
+	}
+
+	templates.ExecuteTemplate(w, "requests.html", datas)
 }
 
 func requestsGetHandler(w http.ResponseWriter, r *http.Request) {
