@@ -41,7 +41,7 @@
             <td>{{.ReqNumber}}</td>
             <td>{{.Status}}</td>
             <td>
-                 <button id="{{.ReqNumber}}"  onclick="showThisDialog()"  class="btn btn-primary" type="submit" enabled>Ətraflı</button>
+                 <button id="{{.ReqNumber}}"  onclick="reply_click(event);showThisDialog()"  class="btn btn-primary" type="submit" enabled>Ətraflı</button>
 
             </td>
         </tr>
@@ -63,7 +63,7 @@
         <td>{{.Status}}</td>
     </tr>
     {{end}}
-    <button onClick="reply_click(event);hideThisDialog();">Close Me! </button>
+    <button onClick="hideThisDialog();">Close Me! </button>
 </dialog>
 
     <script>
