@@ -1135,13 +1135,13 @@ func requestsGetHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	out, err := json.Marshal(repos)
+	//out, err := json.Marshal(repos)
 	if err != nil {
 		http.Error(w, err.Error(), 500)
 		return
 	}
 
-	templates.ExecuteTemplate(w, "templates/requests.html", out)
+	templates.ExecuteTemplate(w, "templates/requests.html", repos)
 }
 
 func serviceRequestsReqsGetHandler(w http.ResponseWriter, r *http.Request) {
