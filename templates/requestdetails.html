@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <link rel="stylesheet" href="/static/main.css">
+  <link rel="stylesheet" href="/static/storage_order_new_list.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+</head>
+<body>
+
+<div class="container-fluid">
+  <br>
+  <input class="form-control" id="myInput" type="text" placeholder="Axtar..">
+  <br>
+
+  <table class="table table-striped">
+    <caption></caption>
+    <thead>
+    <tr>
+      <th scope="center">Məlumat</th>
+      <th scope="center">Dəyər</th>
+
+
+
+
+    </tr>
+    </thead>
+    <tbody id="tb">
+    {{ range .}}
+    <tr>
+      <td>{{.Description}}</td>
+      <td>{{.Value}}</td>
+
+
+    </tr>
+    {{end}}
+    </tbody>
+  </table>
+
+
+</div>
+
+<dialog id="this-dialog">
+  {{ range .}}
+  <tr>
+    <td>{{.Description}}</td>
+    <td>{{.Value}}</td>
+
+  </tr>
+  {{end}}
+  <button onClick="hideThisDialog();">Close Me! </button>
+</dialog>
+
+<script>
+
+  function res(){
+    return e.target.id;
+  };
+  function reply_click(e) {
+    console.log(e.target.id);
+  }
+</script>
+
+<script>
+  var dialog = document.querySelector('dialog');
+  dialogPolyfill.registerDialog(dialog);
+
+  function showThisDialog() {
+    document.getElementById('this-dialog').showModal();
+  }
+
+  function hideThisDialog() {
+    document.getElementById('this-dialog').close();
+  }
+</script>
+
+<script>
+  $(document).ready(function(){
+    $("#myInput").on("keyup", function() {
+      var value = $(this).val().toLowerCase();
+      $("#tb tr").filter(function() {
+        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+      });
+    });
+  });
+
+</script>
+
+</body>
+
+</html>
