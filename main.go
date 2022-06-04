@@ -1141,7 +1141,7 @@ func requestsGetHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	templates.ExecuteTemplate(w, "templates/requests.html", repos)
+	templates.ExecuteTemplate(w, "requests.html", repos)
 }
 
 func serviceRequestsReqsGetHandler(w http.ResponseWriter, r *http.Request) {
