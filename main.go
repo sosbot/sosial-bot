@@ -1143,7 +1143,7 @@ func requestsIdGetHandler(w http.ResponseWriter, r *http.Request) {
 	var data RepoComponent
 	datas := []RepoComponent{}
 	rows, err := db.Query(`select src.component_description,
-       srcd.data_value
+       coalesce(srcd.data_value,'Məlumat yoxdur')
        from servicerequestscomponents src
      join servicerequestscomponentsdatas srcd on src.id=srcd.servicerequestscomponents_id
      join requests r on r.id=srcd.requests_id
