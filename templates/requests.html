@@ -53,7 +53,16 @@
 </div>
 
 <dialog id="this-dialog">
-    <p> I am a dialog-box with backdrop</p>
+    {{ range .}}
+    <tr>
+        <td>{{.ReqTypeName}}</td>
+        <td>{{.ReqSubTypeId}}</td>
+        <td>{{.ReqSubTypeName}}</td>
+        <td>{{.ReqDate}}</td>
+        <td>{{.ReqNumber}}</td>
+        <td>{{.Status}}</td>
+    </tr>
+    {{end}}
     <button onclick="hideThisDialog()">Close Me! </button>
 <dialog>
 
