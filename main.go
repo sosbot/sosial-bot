@@ -182,6 +182,19 @@ type repositoryServiceRequestReqArr struct {
 	Repos []repositoryServiceRequestReq
 }
 
+type RepoRequest struct {
+	ReqTypeName    string
+	ReqSubTypeId   string
+	ReqSubTypeName string
+	ReqNumber      string
+	ReqDate        string
+	Status         string
+}
+
+type RepoRequestArr struct {
+	Repos []RepoRequest
+}
+
 var questionsArrMap map[int64]*questionsArr
 var questionArrMapCurrentState int
 var req1Map map[int]*req1
@@ -1108,9 +1121,27 @@ func main() {
 	router.HandleFunc("/userRequests/{reqnumber}", userRequestsGetHandler).Methods("GET")
 	router.HandleFunc("/userRequestSave", userRequestSaveGetHandler).Methods("POST")
 	router.HandleFunc("/servicecRequestsRegs", serviceRequestsReqsGetHandler).Methods("GET")
-
+	router.HandleFunc("/Requests", requestsGetHandler).Methods("GET")
 	log.Fatal(http.ListenAndServe(":"+port, router))
 
+}
+
+func requestsGetHandler(w http.ResponseWriter, r *http.Request) {
+
+	repos := RepoRequestArr{}
+	err := queryRepoRequests(&repos)
+	if err != nil {
+		http.Error(w, err.Error(), 500)
+		return
+	}
+
+	out, err := json.Marshal(repos)
+	if err != nil {
+		http.Error(w, err.Error(), 500)
+		return
+	}
+
+	templates.ExecuteTemplate(w, "templates/requests.html", out)
 }
 
 func serviceRequestsReqsGetHandler(w http.ResponseWriter, r *http.Request) {
@@ -1769,5 +1800,44 @@ func queryServiceRequestReq(repos *repositoryServiceRequestReqArr, reqFrom int64
 	repo.Id = id
 	repos.Repos = append(repos.Repos, repo)
 
+	return nil
+}
+
+func queryRepoRequests(repos *RepoRequestArr) error {
+
+	rows, err := db.Query(`
+select  rt.name as req_type_name,
+        s.id,
+        s.service_name as req_subtype_name,
+        r.reqnumber,
+        r.datetime as reqdate,
+        r.status
+
+        from request_type rt
+   join servicesrequests s on rt.id = s.request_type_id
+   join requests r on r.servicesrequestsid=s.id`)
+	if err != nil {
+		return err
+	}
+
+	defer rows.Close()
+	for rows.Next() {
+		repo := RepoRequest{}
+		err = rows.Scan(&repo.ReqSubTypeName,
+			&repo.ReqSubTypeId,
+			&repo.ReqSubTypeName,
+			&repo.ReqNumber,
+			&repo.ReqDate,
+			&repo.Status)
+		if err != nil {
+			return err
+		}
+
+		repos.Repos = append(repos.Repos, repo)
+	}
+	err = rows.Err()
+	if err != nil {
+		return err
+	}
 	return nil
 }

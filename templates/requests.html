@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/static/main.css">
+    <link rel="stylesheet" href="/static/storage_order_new_list.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+</head>
+<body>
+<div class="container-fluid">
+    <a href="/storage_main">Əsas səhifə</a>
+    <br>
+    <input class="form-control" id="myInput" type="text" placeholder="Axtar..">
+    <br>
+
+    <table class="table table-striped">
+        <caption></caption>
+        <thead>
+        <tr>
+            <th scope="center">Müraciətin növü</th>
+            <th scope="center">Müraciətin alt növü İD</th>
+            <th scope="center">Müraciətin alt növü</th>
+            <th scope="center">Müraciətin qeydiyyat nömrəsi</th>
+            <th scope="center">Müraciətin tarixi</th>
+            <th scope="center">Müraciətin statusu</th>
+
+
+
+        </tr>
+        </thead>
+        <tbody id="tb">
+        {{ range .}}
+        <tr>
+            <td>{{.ReqTypeName}}</td>
+            <td>{{.ReqSubTypeID}}</td>
+            <td>{{.ReqSubTypeName}}</td>
+            <td>{{.ReqNumber}}</td>
+            <td>{{.Status}}</td>
+            <td><form method="post" class="form-group">
+                 <button class="btn btn-primary" type="submit" enabled>Ətraflı</button>
+                </form>
+            </td>
+        </tr>
+        {{end}}
+        </tbody>
+    </table>
+
+
+</div>
+
+
+<script>
+    $(document).ready(function(){
+        $("#myInput").on("keyup", function() {
+            var value = $(this).val().toLowerCase();
+            $("#tb tr").filter(function() {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    });
+
+</script>
+
+</body>
+
+</html>
