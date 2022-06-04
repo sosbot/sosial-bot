@@ -11,7 +11,6 @@
 </head>
 <body>
 <div class="container-fluid">
-    <a href="/storage_main">Əsas səhifə</a>
     <br>
     <input class="form-control" id="myInput" type="text" placeholder="Axtar..">
     <br>
@@ -35,8 +34,9 @@
         {{ range .}}
         <tr>
             <td>{{.ReqTypeName}}</td>
-            <td>{{.ReqSubTypeID}}</td>
+            <td>{{.ReqSubTypeId}}</td>
             <td>{{.ReqSubTypeName}}</td>
+            <td>{{.ReqDate}}</td>
             <td>{{.ReqNumber}}</td>
             <td>{{.Status}}</td>
             <td><form method="post" class="form-group">
