@@ -1128,20 +1128,44 @@ func main() {
 
 func requestsGetHandler(w http.ResponseWriter, r *http.Request) {
 
-	repos := RepoRequestArr{}
-	err := queryRepoRequests(&repos)
+	var data RepoRequest
+	datas := []RepoRequest{}
+	rows, err := db.Query(`
+select  rt.name as req_type_name,
+        s.id,
+        s.service_name as req_subtype_name,
+        coalesce(cast(r.reqnumber as  varchar),''),
+        r.datetime as reqdate,
+        r.status
+
+        from request_type rt
+   join servicesrequests s on rt.id = s.request_type_id
+   join requests r on r.servicesrequestsid=s.id
+   where r.status>0`)
 	if err != nil {
-		http.Error(w, err.Error(), 500)
-		return
+		panic(err)
 	}
 
-	//out, err := json.Marshal(repos)
+	defer rows.Close()
+	for rows.Next() {
+		repo := RepoRequest{}
+		err = rows.Scan(&repo.ReqSubTypeName,
+			&data.ReqSubTypeId,
+			&data.ReqSubTypeName,
+			&data.ReqNumber,
+			&data.ReqDate,
+			&data.Status)
+		if err != nil {
+			panic(err)
+		}
+		datas = append(datas, data)
+	}
+	err = rows.Err()
 	if err != nil {
-		http.Error(w, err.Error(), 500)
-		return
+		panic(err)
 	}
 
-	templates.ExecuteTemplate(w, "requests.html", repos)
+	templates.ExecuteTemplate(w, "requests.html", datas)
 }
 
 func serviceRequestsReqsGetHandler(w http.ResponseWriter, r *http.Request) {
