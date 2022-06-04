@@ -1809,7 +1809,7 @@ func queryRepoRequests(repos *RepoRequestArr) error {
 select  rt.name as req_type_name,
         s.id,
         s.service_name as req_subtype_name,
-        coalesce(r.reqnumber,''),
+        coalesce(cast(r.reqnumber as  varchar),''),
         r.datetime as reqdate,
         r.status
 
