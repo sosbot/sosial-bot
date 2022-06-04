@@ -41,7 +41,7 @@
             <td>{{.ReqNumber}}</td>
             <td>{{.Status}}</td>
             <td>
-                 <button  onclick="showThisDialog()"  class="btn btn-primary" type="submit" enabled>Ətraflı</button>
+                 <button id="{{.ReqNumber}}"  onclick="showThisDialog()"  class="btn btn-primary" type="submit" enabled>Ətraflı</button>
 
             </td>
         </tr>
@@ -65,6 +65,12 @@
     {{end}}
     <button onclick="hideThisDialog()">Close Me! </button>
 <dialog>
+
+    <script>
+        function reply_click(e) {
+            console.log(e.target.id);
+        }
+    </script>
 
     <script>
     var dialog = document.querySelector('dialog');
