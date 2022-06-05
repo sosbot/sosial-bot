@@ -1166,7 +1166,9 @@ func requestsIdGetHandler(w http.ResponseWriter, r *http.Request) {
 	var data RepoComponent
 	datas := []RepoComponent{}
 	rows, err := db.Query(`select src.component_description,
-       coalesce(srcd.data_value,'Məlumat yoxdur')
+       case when srcd.data_value is  null  then 'Məlumat yoxdur' 
+            when srcd.data_value='' then 'Xeyr'
+            else srcd.data_value end 
 
        from servicerequestscomponents src
      join servicerequestscomponentsdatas srcd on src.id=srcd.servicerequestscomponents_id
