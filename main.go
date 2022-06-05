@@ -1147,7 +1147,7 @@ func requestsDoneGetHandler(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	msg := tgbotapi.NewMessage(telegramid, `Hörmətli Vətəndaş, `+qreqnumber+` saylı müraciətiniz sonlandırıldı. Müraciət etdiyiniz üçün Sizə təşəkkür edirik!`)
+	msg := tgbotapi.NewMessage(telegramid, `Hörmətli Vətəndaş, `+reqnumber+` saylı müraciətiniz sonlandırıldı. Müraciət etdiyiniz üçün Sizə təşəkkür edirik!`)
 	//msg.ReplyMarkup = mainMenu
 	bot.Send(msg)
 
