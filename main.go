@@ -1132,8 +1132,30 @@ func main() {
 	router.HandleFunc("/servicecRequestsRegs", serviceRequestsReqsGetHandler).Methods("GET")
 	router.HandleFunc("/Requests", requestsGetHandler).Methods("GET")
 	router.HandleFunc("/Requests/{reqnumber}", requestsIdGetHandler).Methods("GET")
+	router.HandleFunc("RequestsDone/{reqnumber}", requestsDoneGetHandler).Methods("GET")
 	log.Fatal(http.ListenAndServe(":"+port, router))
 
+}
+
+func requestsDoneGetHandler(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	reqnumber := params["reqnumber"]
+	var telegramid int64
+	err := db.QueryRow(`update requests set status=2
+ where r.reqnumber=$1 and status=1 returning reqfrom `, reqnumber).Scan(&telegramid)
+	if err != nil {
+		panic(err)
+	}
+
+	msg := tgbotapi.NewMessage(telegramid, `Hörmətli Vətəndaş, `+qreqnumber+` saylı müraciətiniz sonlandırıldı. Müraciət etdiyiniz üçün Sizə təşəkkür edirik!`)
+	//msg.ReplyMarkup = mainMenu
+	bot.Send(msg)
+
+	if err != nil {
+		panic(err)
+	}
+
+	templates.ExecuteTemplate(w, "requestdone.html", nil)
 }
 
 func requestsIdGetHandler(w http.ResponseWriter, r *http.Request) {
