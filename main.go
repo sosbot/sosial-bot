@@ -1147,16 +1147,18 @@ func requestsDoneGetHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil && err != sql.ErrNoRows {
 		panic(err)
 	}
-
-	msg := tgbotapi.NewMessage(telegramid, `Hörmətli Vətəndaş, `+reqnumber+` saylı müraciətiniz sonlandırıldı. Müraciət etdiyiniz üçün Sizə təşəkkür edirik!`)
-	//msg.ReplyMarkup = mainMenu
-	bot.Send(msg)
-
+	if err != sql.ErrNoRows {
+		msg := tgbotapi.NewMessage(telegramid, `Hörmətli Vətəndaş, `+reqnumber+` saylı müraciətiniz sonlandırıldı. Müraciət etdiyiniz üçün Sizə təşəkkür edirik!`)
+		//msg.ReplyMarkup = mainMenu
+		bot.Send(msg)
+		templates.ExecuteTemplate(w, "requestsdone.html", nil)
+	} else {
+		templates.ExecuteTemplate(w, "requestsdonealready.html", nil)
+	}
 	if err != nil {
 		panic(err)
 	}
 
-	templates.ExecuteTemplate(w, "requestsdone.html", nil)
 	//http.Redirect(w, r, "/requestsdone", 301)
 }
 
