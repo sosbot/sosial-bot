@@ -48,6 +48,13 @@ type checkboxField struct {
 	Label    string
 }
 
+type dateField struct {
+	Template string
+	Id       string
+	Label    string
+	Name     string
+}
+
 type Field struct {
 	Value string
 }
@@ -86,8 +93,8 @@ func (m *inputField) appendText() string {
 	return res
 }
 
-func (m *inputField) appendDate() string {
-	res := fmt.Sprintf(m.template, m.Id, m.Label, m.Id, m.Name)
+func (m *dateField) appendDate() string {
+	res := fmt.Sprintf(m.Template, m.Id, m.Label, m.Id, m.Name)
 	return res
 }
 

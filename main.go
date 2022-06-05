@@ -1533,6 +1533,7 @@ func userRequestsGetHandler(w http.ResponseWriter, r *http.Request) {
 	var fields []string
 	var fieldSelect selectField
 	var fieldCheckbox checkboxField
+	var fieldDate dateField
 
 	var h string
 	//data := make(map[string]interface{})
@@ -1631,6 +1632,15 @@ func userRequestsGetHandler(w http.ResponseWriter, r *http.Request) {
 			fieldCheckbox.Value = repo.component_value
 
 			h = fieldCheckbox.appendCheckbox()
+			fields = append(fields, h)
+		}
+		if repo.component_type == "inputdate" {
+			fieldDate.Template = tplDateTemplate
+			fieldDate.Id = repo.component_id
+			fieldDate.Label = repo.component_label
+			fieldDate.Name = repo.component_name
+
+			h = fieldDate.appendDate()
 			fields = append(fields, h)
 		}
 
