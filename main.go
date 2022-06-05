@@ -1475,8 +1475,8 @@ func userRequestSaveGetHandler(w http.ResponseWriter, r *http.Request) {
 												left join servicerequestscomponents s2  on s.id=s2.services_requests_id
 												left join servicerequestscomponentsdetails s3  on s2.id=s3.servicerequestscomponents_id
 
-									where s2.data_driven=1
-									 order by s2.order_num`)
+									where  s.reqnumber=$1 and  s2.data_driven=1 
+									 order by s2.order_num`, reqnumber)
 	if err != nil {
 		panic(err)
 	}
