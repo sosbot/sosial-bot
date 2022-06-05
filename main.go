@@ -1210,7 +1210,7 @@ select  rt.name as req_type_name,
         from request_type rt
    join servicesrequests s on rt.id = s.request_type_id
    join requests r on r.servicesrequestsid=s.id
-   where r.status>0`)
+   where r.status>0 order by r.reqnumber desc`)
 	if err != nil {
 		panic(err)
 	}
