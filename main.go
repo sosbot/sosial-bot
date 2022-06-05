@@ -1156,7 +1156,7 @@ func requestsDoneGetHandler(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	templates.ExecuteTemplate(w, "requestdone.html", nil)
+	templates.ExecuteTemplate(w, "requestsdone.html", nil)
 }
 
 func requestsIdGetHandler(w http.ResponseWriter, r *http.Request) {
