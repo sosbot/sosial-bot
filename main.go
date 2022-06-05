@@ -1448,7 +1448,8 @@ func userRequestSaveGetHandler(w http.ResponseWriter, r *http.Request) {
 	reqnumber := r.FormValue("reqnumber")
 	var requestId int64
 	var reqfrom int64
-	err = db.QueryRow(`select id,reqfrom from requests where reqnumber=$1`, reqnumber).Scan(&requestId, &reqfrom)
+	var servicesrequestsid int64
+	err = db.QueryRow(`select id,reqfrom,servicesrequestsid from requests where reqnumber=$1`, reqnumber).Scan(&requestId, &reqfrom, &servicesrequestsid)
 
 	if err != nil {
 		panic(err)
@@ -1475,7 +1476,7 @@ func userRequestSaveGetHandler(w http.ResponseWriter, r *http.Request) {
 												left join servicerequestscomponents s2  on s.id=s2.services_requests_id
 												left join servicerequestscomponentsdetails s3  on s2.id=s3.servicerequestscomponents_id
 
-									where  s.reqnumber=$1 and  s2.data_driven=1 
+									where  s.id=$1 and  s2.data_driven=1 
 									 order by s2.order_num`, reqnumber)
 	if err != nil {
 		panic(err)
