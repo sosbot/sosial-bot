@@ -1144,7 +1144,7 @@ func requestsDoneGetHandler(w http.ResponseWriter, r *http.Request) {
 	var telegramid int64
 	err := db.QueryRow(`update requests set status=2
  where reqnumber=$1 and status=1 returning reqfrom `, reqnumber).Scan(&telegramid)
-	if err != nil {
+	if err != nil && err != sql.ErrNoRows {
 		panic(err)
 	}
 
