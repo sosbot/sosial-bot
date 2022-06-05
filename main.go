@@ -1156,7 +1156,8 @@ func requestsDoneGetHandler(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	templates.ExecuteTemplate(w, "requestsdone.html", nil)
+	//templates.ExecuteTemplate(w, "requestsdone.html", nil)
+	http.Redirect(w, r, "/requestsdone", 301)
 }
 
 func requestsIdGetHandler(w http.ResponseWriter, r *http.Request) {
