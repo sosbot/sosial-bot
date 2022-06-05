@@ -1186,7 +1186,7 @@ func requestsIdGetHandler(w http.ResponseWriter, r *http.Request) {
 		datas = append(datas, data)
 	}
 	m["data"] = datas
-	m["reqNumber"] = reqnumber
+	m["ReqNumber"] = reqnumber
 	err = rows.Err()
 	if err != nil {
 		panic(err)
