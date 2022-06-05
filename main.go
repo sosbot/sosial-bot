@@ -198,11 +198,11 @@ type RepoRequestArr struct {
 type RepoComponent struct {
 	Description string
 	Value       string
-	ReqNumber   string
 }
 
 type RepoComponentArr struct {
-	Repos []RepoComponent
+	Repos     []RepoComponent
+	ReqNumber string
 }
 
 var questionsArrMap map[int64]*questionsArr
@@ -1162,7 +1162,7 @@ func requestsDoneGetHandler(w http.ResponseWriter, r *http.Request) {
 func requestsIdGetHandler(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	reqnumber := params["reqnumber"]
-
+	m := map[string]interface{}{}
 	var data RepoComponent
 	datas := []RepoComponent{}
 	rows, err := db.Query(`select src.component_description,
@@ -1179,18 +1179,20 @@ func requestsIdGetHandler(w http.ResponseWriter, r *http.Request) {
 	defer rows.Close()
 	for rows.Next() {
 		err = rows.Scan(&data.Description,
-			&data.Value, &data.ReqNumber)
+			&data.Value)
 		if err != nil {
 			panic(err)
 		}
 		datas = append(datas, data)
 	}
+	m["data"] = datas
+	m["reqNumber"] = reqnumber
 	err = rows.Err()
 	if err != nil {
 		panic(err)
 	}
 
-	templates.ExecuteTemplate(w, "requestdetails.html", datas)
+	templates.ExecuteTemplate(w, "requestdetails.html", m)
 }
 
 func requestsGetHandler(w http.ResponseWriter, r *http.Request) {
