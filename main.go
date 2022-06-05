@@ -198,6 +198,7 @@ type RepoRequestArr struct {
 type RepoComponent struct {
 	Description string
 	Value       string
+	ReqNumber   string
 }
 
 type RepoComponentArr struct {
@@ -1165,7 +1166,8 @@ func requestsIdGetHandler(w http.ResponseWriter, r *http.Request) {
 	var data RepoComponent
 	datas := []RepoComponent{}
 	rows, err := db.Query(`select src.component_description,
-       coalesce(srcd.data_value,'Məlumat yoxdur')
+       coalesce(srcd.data_value,'Məlumat yoxdur'),
+       r.reqnumber
        from servicerequestscomponents src
      join servicerequestscomponentsdatas srcd on src.id=srcd.servicerequestscomponents_id
      join requests r on r.id=srcd.requests_id
@@ -1177,7 +1179,7 @@ func requestsIdGetHandler(w http.ResponseWriter, r *http.Request) {
 	defer rows.Close()
 	for rows.Next() {
 		err = rows.Scan(&data.Description,
-			&data.Value)
+			&data.Value, &data.ReqNumber)
 		if err != nil {
 			panic(err)
 		}
