@@ -1133,7 +1133,7 @@ func main() {
 	router.HandleFunc("/servicecRequestsRegs", serviceRequestsReqsGetHandler).Methods("GET")
 	router.HandleFunc("/Requests", requestsGetHandler).Methods("GET")
 	router.HandleFunc("/Requests/{reqnumber}", requestsIdGetHandler).Methods("GET")
-	router.HandleFunc("RequestsDone/{reqnumber}", requestsDoneGetHandler).Methods("GET")
+	router.HandleFunc("/RequestsDone/{reqnumber}", requestsDoneGetHandler).Methods("GET")
 	log.Fatal(http.ListenAndServe(":"+port, router))
 
 }
@@ -1156,8 +1156,8 @@ func requestsDoneGetHandler(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	//templates.ExecuteTemplate(w, "requestsdone.html", nil)
-	http.Redirect(w, r, "/requestsdone", 301)
+	templates.ExecuteTemplate(w, "requestsdone.html", nil)
+	//http.Redirect(w, r, "/requestsdone", 301)
 }
 
 func requestsIdGetHandler(w http.ResponseWriter, r *http.Request) {
