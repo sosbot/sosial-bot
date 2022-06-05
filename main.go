@@ -1155,9 +1155,6 @@ func requestsDoneGetHandler(w http.ResponseWriter, r *http.Request) {
 	} else {
 		templates.ExecuteTemplate(w, "requestsdonealready.html", nil)
 	}
-	if err != nil {
-		panic(err)
-	}
 
 	//http.Redirect(w, r, "/requestsdone", 301)
 }
