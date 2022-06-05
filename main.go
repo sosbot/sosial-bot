@@ -1143,7 +1143,7 @@ func requestsDoneGetHandler(w http.ResponseWriter, r *http.Request) {
 	reqnumber := params["reqnumber"]
 	var telegramid int64
 	err := db.QueryRow(`update requests set status=2
- where r.reqnumber=$1 and status=1 returning reqfrom `, reqnumber).Scan(&telegramid)
+ where reqnumber=$1 and status=1 returning reqfrom `, reqnumber).Scan(&telegramid)
 	if err != nil {
 		panic(err)
 	}
