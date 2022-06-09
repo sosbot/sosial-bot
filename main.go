@@ -1124,7 +1124,7 @@ func main() {
 	router.HandleFunc("/messages/{id}", messagesIdGetHandler).Methods("GET")
 	router.HandleFunc("/messagesCount/{id}", messagesCountGetHandler).Methods("GET")
 	router.HandleFunc("/users", usersGetHandler).Methods("GET")
-	router.HandleFunc("/messageTo/{id}", messageToGetHandler).Methods("GET")
+	router.HandleFunc("/messageTo/{id}", messageToGetHandler).Methods("POST")
 	router.HandleFunc("/requestTypes", requestTypesGetHandler).Methods("GET")
 	router.HandleFunc("/servicesRequests/{reqtypeid}", servicesRequestsGetHandler).Methods("GET")
 	router.HandleFunc("/servicesrequeststoclient", servicesRequestsToClientGetHandler).Methods("GET")
@@ -1296,14 +1296,14 @@ func serviceRequestsReqsGetHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func messageToGetHandler(w http.ResponseWriter, r *http.Request) {
-
-	params := mux.Vars(r)
-	telegramId, _ := strconv.ParseInt(params["id"], 10, 64)
-	msg := tgbotapi.NewMessage(telegramId, r.URL.Query().Get("message"))
+	// r.FormValue("reqnumber")
+	//params := mux.Vars(r)
+	telegramId, _ := strconv.ParseInt(r.FormValue("telegramId"), 10, 64) //strconv.ParseInt(params["id"], 10, 64)
+	msg := tgbotapi.NewMessage(telegramId, r.FormValue("message"))       //r.URL.Query().Get("message"))
 	//msg.ReplyMarkup = mainMenu
 	bot.Send(msg)
 
-	_, err = db.Exec(`insert into messages(text,sent,sentby,tel_chat_id,message_type,viewedby,viewedat) values($1,$2,$3,$4,$5,$6,$7)`, r.URL.Query().Get("message"), time.Now(), 1, params["id"], 1, 1, time.Now())
+	_, err = db.Exec(`insert into messages(text,sent,sentby,tel_chat_id,message_type,viewedby,viewedat) values($1,$2,$3,$4,$5,$6,$7)`, r.URL.Query().Get("message"), time.Now(), 1, telegramId, 1, 1, time.Now())
 	checkErr(err)
 	fmt.Fprintf(w, "")
 }
