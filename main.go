@@ -1124,7 +1124,7 @@ func main() {
 	router.HandleFunc("/messages/{id}", messagesIdGetHandler).Methods("GET")
 	router.HandleFunc("/messagesCount/{id}", messagesCountGetHandler).Methods("GET")
 	router.HandleFunc("/users", usersGetHandler).Methods("GET")
-	router.HandleFunc("/messageTo/{id}", messageToGetHandler).Methods("POST")
+	router.HandleFunc("/messageTo", messageToGetHandler).Methods("POST")
 	router.HandleFunc("/requestTypes", requestTypesGetHandler).Methods("GET")
 	router.HandleFunc("/servicesRequests/{reqtypeid}", servicesRequestsGetHandler).Methods("GET")
 	router.HandleFunc("/servicesrequeststoclient", servicesRequestsToClientGetHandler).Methods("GET")
