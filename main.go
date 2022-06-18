@@ -1245,7 +1245,8 @@ select  rt.name as req_type_name,
         s.service_name as req_subtype_name,
         coalesce(cast(r.reqnumber as  varchar),''),
         r.datetime as reqdate,
-        case r.status when 1 then 'Açıq' when 2 then 'Bağlı' end as status
+        case r.status when 1 then 'Açıq' when 2 then 'Bağlı' end as status,
+        coalesce(r.feedback,'Yoxdur')
 
         from request_type rt
    join servicesrequests s on rt.id = s.request_type_id
@@ -1262,7 +1263,8 @@ select  rt.name as req_type_name,
 			&data.ReqSubTypeName,
 			&data.ReqNumber,
 			&data.ReqDate,
-			&data.Status)
+			&data.Status,
+			&data.Feedback)
 		if err != nil {
 			panic(err)
 		}
