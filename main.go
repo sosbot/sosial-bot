@@ -392,17 +392,23 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 		//good
 		if update.CallbackQuery.Data[:i] == "good" {
 			_, err := db.Exec("update requests set feedback=$1 where reqnumber=$2", "yaxşı", reqnumber)
-			checkErr(err)
+			if err != nil {
+				panic(err)
+			}
 		}
 		//good
 		if update.CallbackQuery.Data[:i] == "middle" {
 			_, err := db.Exec("update requests set feedback=$1 where reqnumber=$2", "orta", reqnumber)
-			checkErr(err)
+			if err != nil {
+				panic(err)
+			}
 		}
 		//good
 		if update.CallbackQuery.Data[:i] == "bad" {
 			_, err := db.Exec("update requests set feedback=$1 where reqnumber=$2", "kafi", reqnumber)
-			checkErr(err)
+			if err != nil {
+				panic(err)
+			}
 		}
 		// Respond to the callback query, telling Telegram to show the user
 		// a message with the data received.
@@ -1949,7 +1955,7 @@ select  rt.name as req_type_name,
         coalesce(cast(r.reqnumber as  varchar),''),
         r.datetime as reqdate,
         r.status,
-        coalesce(cast(r.feedback as  varchar),'Yoxdur')
+        coalesce(r.feedback,'Yoxdur')
 
         from request_type rt
    join servicesrequests s on rt.id = s.request_type_id
