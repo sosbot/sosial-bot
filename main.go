@@ -1151,6 +1151,19 @@ func requestsDoneGetHandler(w http.ResponseWriter, r *http.Request) {
 		msg := tgbotapi.NewMessage(telegramid, `Hörmətli Vətəndaş, `+reqnumber+` saylı müraciətiniz sonlandırıldı. Müraciət etdiyiniz üçün Sizə təşəkkür edirik!`)
 		//msg.ReplyMarkup = mainMenu
 		bot.Send(msg)
+
+		var numericKeyboard = tgbotapi.NewInlineKeyboardMarkup(
+
+			tgbotapi.NewInlineKeyboardRow(
+				tgbotapi.NewInlineKeyboardButtonData("good_"+reqnumber, "Yaxşı"),
+				tgbotapi.NewInlineKeyboardButtonData("middle_"+reqnumber, "Orta"),
+				tgbotapi.NewInlineKeyboardButtonData("bad_"+reqnumber, "Kafi"),
+			),
+		)
+
+		msg = tgbotapi.NewMessage(telegramid, `Hörmətli Vətəndaş, xidmət keyfiyyətinin yüksəldilməsi səbəbilə müraciətiniz üzrə göstərilən xidməti dəyərləndirmənizi xahiş edirik.`)
+		msg.ReplyMarkup = numericKeyboard
+		bot.Send(msg)
 		templates.ExecuteTemplate(w, "requestsdone.html", nil)
 	} else {
 		templates.ExecuteTemplate(w, "requestsdonealready.html", nil)
