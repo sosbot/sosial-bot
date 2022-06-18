@@ -384,7 +384,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 		//fmt.Println("duyme " + update.CallbackQuery.Data[:i])
 		var reqId int64
 		if update.CallbackQuery.Data[:i] == "good" {
-			err := db.QueryRow("update requests set feedback=$1 where reqnumber=$2 and status<>2 returning id::numeric", "Yaxşı", reqnumber).Scan(&reqId)
+			err := db.QueryRow("update requests set feedback=$1 where reqnumber=$2 and feedback is null returning id::numeric", "Yaxşı", reqnumber).Scan(&reqId)
 			if err != nil && err != sql.ErrNoRows {
 				panic(err)
 			}
@@ -396,7 +396,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 		}
 		//middle
 		if update.CallbackQuery.Data[:i] == "middle" {
-			err := db.QueryRow("update requests set feedback=$1 where reqnumber=$2 and status<>2 returning id::numeric", "Orta", reqnumber).Scan(&reqId)
+			err := db.QueryRow("update requests set feedback=$1 where reqnumber=$2 and feedback is null returning id::numeric", "Orta", reqnumber).Scan(&reqId)
 			if err != nil && err != sql.ErrNoRows {
 				panic(err)
 			}
@@ -408,7 +408,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 		}
 		//bad
 		if update.CallbackQuery.Data[:i] == "bad" {
-			err := db.QueryRow("update requests set feedback=$1 where reqnumber=$2 and status<>2 returning id:numeric", "Kafi", reqnumber).Scan(&reqId)
+			err := db.QueryRow("update requests set feedback=$1 where reqnumber=$2 and feedback is null returning id:numeric", "Kafi", reqnumber).Scan(&reqId)
 			if err != nil && err != sql.ErrNoRows {
 				panic(err)
 			}
