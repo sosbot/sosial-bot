@@ -339,15 +339,6 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 	//temporary disabled for the reason callback
 	// to monitor changes run: heroku logs --tail
 	// log.Printf("FromID: %+v  From: %+v Text: %+v\n", update.Message.Chat.ID, update.Message.From, update.Message.Text)
-	var id int64
-	var text = strings.Replace(update.Message.Text, "%", "", -1)
-	if len(text) > 0 {
-		err = db.QueryRow("insert into public.messages(text,sent,sentby,tel_chat_id,tel_message_id,message_type) values($1,$2,$3,$4,$5,$6) returning id;", update.Message.Text, time.Now(), update.Message.From.ID, update.Message.Chat.ID, update.Message.MessageID, 1).Scan(&id)
-		if err != nil {
-			log.Println(err)
-			return
-		}
-	}
 
 	//var chatid int
 	//chatid := int(update.Message.Chat.ID)
@@ -421,7 +412,15 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 		//	panic(err)
 		//}
 	} else if update.Message != nil {
-
+		var id int64
+		var text = strings.Replace(update.Message.Text, "%", "", -1)
+		if len(text) > 0 {
+			err = db.QueryRow("insert into public.messages(text,sent,sentby,tel_chat_id,tel_message_id,message_type) values($1,$2,$3,$4,$5,$6) returning id;", update.Message.Text, time.Now(), update.Message.From.ID, update.Message.Chat.ID, update.Message.MessageID, 1).Scan(&id)
+			if err != nil {
+				log.Println(err)
+				return
+			}
+		}
 		//if update.Message.From.ID != 820987449 {
 		//	msg := tgbotapi.NewMessage(update.Message.Chat.ID, "SosialBot-un funksionallığını daha da yaxşılaşdırmaq məqsədilə komanda olaraq, gecə-gündüz işləyirik. Hal-hazırda yeni dəyişikliklərimizi tətbiq etməyə çalışırıq. Bu səbəbdən botun funksionallığını müvəqqəti olaraq dayandırmışıq. Az sonra, son yeniliklərlə, bot fəaliyyətini davam etidərəcək. Anlayışınız üçün təşəkkür edirik.")
 		//	bot.Send(msg)
