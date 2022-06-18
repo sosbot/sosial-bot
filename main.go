@@ -377,9 +377,9 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 	cmdText := ""
 
 	if update.CallbackQuery != nil {
-		logger(123, "not nil", LogAppInfo)
-		logger(update.CallbackQuery.Message.Chat.ID, "Top message chat id  "+fmt.Sprint(update.CallbackQuery.Message.Chat.ID), LogAppInfo)
-		logger(update.CallbackQuery.Message.Chat.ID, "Top message  id  "+fmt.Sprint(update.CallbackQuery.Message.MessageID), LogAppInfo)
+		//logger(123, "not nil", LogAppInfo)
+		//logger(update.CallbackQuery.Message.Chat.ID, "Top message chat id  "+fmt.Sprint(update.CallbackQuery.Message.Chat.ID), LogAppInfo)
+		//logger(update.CallbackQuery.Message.Chat.ID, "Top message  id  "+fmt.Sprint(update.CallbackQuery.Message.MessageID), LogAppInfo)
 		/*
 			if update.CallbackQuery.Data != "nextButton" {
 				execQuestionsAnswer(&update, cmdLine, update.CallbackQuery.Message.Chat.ID, CurrentState, update.CallbackQuery.Data)
