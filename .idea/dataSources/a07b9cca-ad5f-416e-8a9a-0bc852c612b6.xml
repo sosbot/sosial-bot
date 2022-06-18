@@ -15773,7 +15773,7 @@
 8629771||8629770|c|G
 8629771||8629770|C|G
 8629771||8629770|T|G</Grants>
-      <IntrospectionStateNumber>55605215</IntrospectionStateNumber>
+      <IntrospectionStateNumber>55610146</IntrospectionStateNumber>
       <ServerVersion>11.11</ServerVersion>
       <StartupTime>1627879758</StartupTime>
       <TimeZones>true ACDT
@@ -29279,7 +29279,7 @@ true posixrules
 12825||10|C|G
 12825||-9223372036854775808|U|G
 12825||10|U|G</Grants>
-      <IntrospectionStateNumber>55605220</IntrospectionStateNumber>
+      <IntrospectionStateNumber>55610151</IntrospectionStateNumber>
       <ObjectId>2903294</ObjectId>
       <Relations>sequence|table|2919841|2919843|1
 sequence|table|5314350|5314352|1
@@ -70992,7 +70992,7 @@ sequence|table|8473846|8473848|1
 18318||10|t|G
 18318||10|D|G
 18318||10|w|G</Grants>
-      <IntrospectionStateNumber>55605220</IntrospectionStateNumber>
+      <IntrospectionStateNumber>55610151</IntrospectionStateNumber>
       <ObjectId>2200</ObjectId>
       <StateNumber>359</StateNumber>
       <OwnerName>postgres</OwnerName>
@@ -71275,7 +71275,7 @@ sequence|table|8473846|8473848|1
     </table>
     <table id="11459" parent="11418" name="messages">
       <ObjectId>2919843</ObjectId>
-      <StateNumber>54805601</StateNumber>
+      <StateNumber>55610141</StateNumber>
       <OwnerName>nyrdyxoc</OwnerName>
     </table>
     <table id="11460" parent="11418" name="question_answers">
@@ -71310,7 +71310,7 @@ sequence|table|8473846|8473848|1
     </table>
     <table id="11466" parent="11418" name="requests">
       <ObjectId>5370100</ObjectId>
-      <StateNumber>55605210</StateNumber>
+      <StateNumber>55610137</StateNumber>
       <OwnerName>nyrdyxoc</OwnerName>
     </table>
     <table id="11467" parent="11418" name="servicerequestscomponents">
@@ -71320,7 +71320,7 @@ sequence|table|8473846|8473848|1
     </table>
     <table id="11468" parent="11418" name="servicerequestscomponentsdatas">
       <ObjectId>8450380</ObjectId>
-      <StateNumber>54805600</StateNumber>
+      <StateNumber>55610140</StateNumber>
       <OwnerName>nyrdyxoc</OwnerName>
     </table>
     <table id="11469" parent="11418" name="servicerequestscomponentsdetails">
@@ -71657,7 +71657,23 @@ sequence|table|8473846|8473848|1
       <StateNumber>53349552</StateNumber>
       <TypeId>1700</TypeId>
     </column>
-    <column id="11529" parent="11460" name="id">
+    <index id="11529" parent="11459" name="idx_messages_telchatid">
+      <ClassIds>3124</ClassIds>
+      <ColNames>tel_chat_id</ColNames>
+      <CollationIds>0</CollationIds>
+      <ObjectId>8469746</ObjectId>
+      <StateNumber>55610141</StateNumber>
+      <AccessMethodId>403</AccessMethodId>
+    </index>
+    <index id="11530" parent="11459" name="idx_messages_viewedat">
+      <ClassIds>3127</ClassIds>
+      <ColNames>viewedat</ColNames>
+      <CollationIds>0</CollationIds>
+      <ObjectId>8469747</ObjectId>
+      <StateNumber>55610141</StateNumber>
+      <AccessMethodId>403</AccessMethodId>
+    </index>
+    <column id="11531" parent="11460" name="id">
       <DataType>bigint|0s</DataType>
       <DefaultExpression>nextval(&apos;question_answers_id_seq&apos;::regclass)</DefaultExpression>
       <NotNull>1</NotNull>
@@ -71665,39 +71681,39 @@ sequence|table|8473846|8473848|1
       <StateNumber>27182255</StateNumber>
       <TypeId>20</TypeId>
     </column>
-    <column id="11530" parent="11460" name="questions_id">
+    <column id="11532" parent="11460" name="questions_id">
       <DataType>bigint|0s</DataType>
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StateNumber>27182255</StateNumber>
       <TypeId>20</TypeId>
     </column>
-    <column id="11531" parent="11460" name="value">
+    <column id="11533" parent="11460" name="value">
       <DataType>varchar|0s</DataType>
       <Position>3</Position>
       <StateNumber>27182255</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="11532" parent="11460" name="chat_id">
+    <column id="11534" parent="11460" name="chat_id">
       <DataType>bigint|0s</DataType>
       <Position>4</Position>
       <StateNumber>27182255</StateNumber>
       <TypeId>20</TypeId>
     </column>
-    <column id="11533" parent="11460" name="timestamp">
+    <column id="11535" parent="11460" name="timestamp">
       <DataType>timestamp with time zone|0s</DataType>
       <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
       <Position>5</Position>
       <StateNumber>27183293</StateNumber>
       <TypeId>1184</TypeId>
     </column>
-    <column id="11534" parent="11460" name="request_number">
+    <column id="11536" parent="11460" name="request_number">
       <DataType>bigint|0s</DataType>
       <Position>6</Position>
       <StateNumber>27182497</StateNumber>
       <TypeId>20</TypeId>
     </column>
-    <column id="11535" parent="11461" name="id">
+    <column id="11537" parent="11461" name="id">
       <DataType>bigint|0s</DataType>
       <DefaultExpression>nextval(&apos;question_list_id_seq&apos;::regclass)</DefaultExpression>
       <NotNull>1</NotNull>
@@ -71705,27 +71721,27 @@ sequence|table|8473846|8473848|1
       <StateNumber>27702097</StateNumber>
       <TypeId>20</TypeId>
     </column>
-    <column id="11536" parent="11461" name="order">
+    <column id="11538" parent="11461" name="order">
       <DataType>bigint|0s</DataType>
       <Position>2</Position>
       <StateNumber>27702097</StateNumber>
       <TypeId>20</TypeId>
     </column>
-    <column id="11537" parent="11461" name="question_id">
+    <column id="11539" parent="11461" name="question_id">
       <DataType>bigint|0s</DataType>
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StateNumber>27702097</StateNumber>
       <TypeId>20</TypeId>
     </column>
-    <column id="11538" parent="11461" name="value">
+    <column id="11540" parent="11461" name="value">
       <DataType>varchar|0s</DataType>
       <NotNull>1</NotNull>
       <Position>4</Position>
       <StateNumber>27702097</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="11539" parent="11462" name="id">
+    <column id="11541" parent="11462" name="id">
       <DataType>bigint|0s</DataType>
       <DefaultExpression>nextval(&apos;question_type_id_seq&apos;::regclass)</DefaultExpression>
       <NotNull>1</NotNull>
@@ -71733,14 +71749,14 @@ sequence|table|8473846|8473848|1
       <StateNumber>27113597</StateNumber>
       <TypeId>20</TypeId>
     </column>
-    <column id="11540" parent="11462" name="name">
+    <column id="11542" parent="11462" name="name">
       <DataType>varchar|0s</DataType>
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StateNumber>27701792</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="11541" parent="11463" name="id">
+    <column id="11543" parent="11463" name="id">
       <DataType>bigint|0s</DataType>
       <DefaultExpression>nextval(&apos;questions_id_seq&apos;::regclass)</DefaultExpression>
       <NotNull>1</NotNull>
@@ -71748,44 +71764,44 @@ sequence|table|8473846|8473848|1
       <StateNumber>27113571</StateNumber>
       <TypeId>20</TypeId>
     </column>
-    <column id="11542" parent="11463" name="state">
+    <column id="11544" parent="11463" name="state">
       <DataType>numeric|0s</DataType>
       <Position>2</Position>
       <StateNumber>27113571</StateNumber>
       <TypeId>1700</TypeId>
     </column>
-    <column id="11543" parent="11463" name="question_type_id">
+    <column id="11545" parent="11463" name="question_type_id">
       <DataType>numeric|0s</DataType>
       <Position>3</Position>
       <StateNumber>27113571</StateNumber>
       <TypeId>1700</TypeId>
     </column>
-    <column id="11544" parent="11463" name="request_text">
+    <column id="11546" parent="11463" name="request_text">
       <DataType>varchar|0s</DataType>
       <Position>4</Position>
       <StateNumber>27113571</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="11545" parent="11463" name="request_error_text">
+    <column id="11547" parent="11463" name="request_error_text">
       <DataType>varchar|0s</DataType>
       <Position>5</Position>
       <StateNumber>27113571</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="11546" parent="11463" name="response_validation_type">
+    <column id="11548" parent="11463" name="response_validation_type">
       <DataType>varchar|0s</DataType>
       <Position>6</Position>
       <StateNumber>27113571</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="11547" parent="11463" name="response_type">
+    <column id="11549" parent="11463" name="response_type">
       <Comment>1-no list 2-list with only one selection 3-list with multi selection</Comment>
       <DataType>integer|0s</DataType>
       <Position>7</Position>
       <StateNumber>27702567</StateNumber>
       <TypeId>23</TypeId>
     </column>
-    <column id="11548" parent="11464" name="id">
+    <column id="11550" parent="11464" name="id">
       <DataType>bigint|0s</DataType>
       <DefaultExpression>nextval(&apos;request_statuses_id_seq&apos;::regclass)</DefaultExpression>
       <NotNull>1</NotNull>
@@ -71793,28 +71809,28 @@ sequence|table|8473846|8473848|1
       <StateNumber>27207557</StateNumber>
       <TypeId>20</TypeId>
     </column>
-    <column id="11549" parent="11464" name="status">
+    <column id="11551" parent="11464" name="status">
       <DataType>varchar|0s</DataType>
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StateNumber>27207557</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="11550" parent="11464" name="request_id">
+    <column id="11552" parent="11464" name="request_id">
       <DataType>bigint|0s</DataType>
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StateNumber>27207557</StateNumber>
       <TypeId>20</TypeId>
     </column>
-    <column id="11551" parent="11464" name="insertedby">
+    <column id="11553" parent="11464" name="insertedby">
       <DataType>varchar|0s</DataType>
       <NotNull>1</NotNull>
       <Position>5</Position>
       <StateNumber>27207557</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="11552" parent="11464" name="insertedat">
+    <column id="11554" parent="11464" name="insertedat">
       <DataType>timestamp with time zone|0s</DataType>
       <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
       <NotNull>1</NotNull>
@@ -71822,7 +71838,7 @@ sequence|table|8473846|8473848|1
       <StateNumber>27210925</StateNumber>
       <TypeId>1184</TypeId>
     </column>
-    <column id="11553" parent="11465" name="id">
+    <column id="11555" parent="11465" name="id">
       <DataType>bigint|0s</DataType>
       <DefaultExpression>nextval(&apos;request_type_id_seq&apos;::regclass)</DefaultExpression>
       <NotNull>1</NotNull>
@@ -71830,31 +71846,31 @@ sequence|table|8473846|8473848|1
       <StateNumber>54169575</StateNumber>
       <TypeId>20</TypeId>
     </column>
-    <column id="11554" parent="11465" name="name">
+    <column id="11556" parent="11465" name="name">
       <DataType>varchar(1000)|0s</DataType>
       <Position>2</Position>
       <StateNumber>54169575</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="11555" parent="11466" name="reqnumber">
+    <column id="11557" parent="11466" name="reqnumber">
       <DataType>numeric|0s</DataType>
       <Position>1</Position>
       <StateNumber>24921848</StateNumber>
       <TypeId>1700</TypeId>
     </column>
-    <column id="11556" parent="11466" name="reqfrom">
+    <column id="11558" parent="11466" name="reqfrom">
       <DataType>numeric|0s</DataType>
       <Position>2</Position>
       <StateNumber>24921848</StateNumber>
       <TypeId>1700</TypeId>
     </column>
-    <column id="11557" parent="11466" name="reqtype">
+    <column id="11559" parent="11466" name="reqtype">
       <DataType>varchar(200)|0s</DataType>
       <Position>3</Position>
       <StateNumber>24921848</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="11558" parent="11466" name="datetime">
+    <column id="11560" parent="11466" name="datetime">
       <DataType>timestamp with time zone|0s</DataType>
       <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
       <NotNull>1</NotNull>
@@ -71862,7 +71878,7 @@ sequence|table|8473846|8473848|1
       <StateNumber>27319937</StateNumber>
       <TypeId>1184</TypeId>
     </column>
-    <column id="11559" parent="11466" name="id">
+    <column id="11561" parent="11466" name="id">
       <DataType>bigint|0s</DataType>
       <DefaultExpression>nextval(&apos;requests_id_seq&apos;::regclass)</DefaultExpression>
       <NotNull>1</NotNull>
@@ -71870,7 +71886,7 @@ sequence|table|8473846|8473848|1
       <StateNumber>27207457</StateNumber>
       <TypeId>20</TypeId>
     </column>
-    <column id="11560" parent="11466" name="status">
+    <column id="11562" parent="11466" name="status">
       <Comment>sorğunun bütün sualları cavablandırlıb-1 , əks halda-0</Comment>
       <DataType>integer|0s</DataType>
       <DefaultExpression>0</DefaultExpression>
@@ -71879,49 +71895,49 @@ sequence|table|8473846|8473848|1
       <StateNumber>27319936</StateNumber>
       <TypeId>23</TypeId>
     </column>
-    <column id="11561" parent="11466" name="servicesrequestsid">
+    <column id="11563" parent="11466" name="servicesrequestsid">
       <DataType>bigint|0s</DataType>
       <Position>7</Position>
       <StateNumber>54202468</StateNumber>
       <TypeId>20</TypeId>
     </column>
-    <column id="11562" parent="11466" name="feedback">
+    <column id="11564" parent="11466" name="feedback">
       <DataType>varchar(50)|0s</DataType>
       <Position>8</Position>
       <StateNumber>55605210</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="11563" parent="11467" name="services_requests_id">
+    <column id="11565" parent="11467" name="services_requests_id">
       <DataType>numeric|0s</DataType>
       <Position>1</Position>
       <StateNumber>53590463</StateNumber>
       <TypeId>1700</TypeId>
     </column>
-    <column id="11564" parent="11467" name="order_num">
+    <column id="11566" parent="11467" name="order_num">
       <DataType>numeric|0s</DataType>
       <Position>2</Position>
       <StateNumber>53590463</StateNumber>
       <TypeId>1700</TypeId>
     </column>
-    <column id="11565" parent="11467" name="component_description">
+    <column id="11567" parent="11467" name="component_description">
       <DataType>varchar(100)|0s</DataType>
       <Position>3</Position>
       <StateNumber>53590463</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="11566" parent="11467" name="component_type">
+    <column id="11568" parent="11467" name="component_type">
       <DataType>varchar(50)|0s</DataType>
       <Position>4</Position>
       <StateNumber>53590463</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="11567" parent="11467" name="data_driven">
+    <column id="11569" parent="11467" name="data_driven">
       <DataType>numeric(1)|0s</DataType>
       <Position>5</Position>
       <StateNumber>53590463</StateNumber>
       <TypeId>1700</TypeId>
     </column>
-    <column id="11568" parent="11467" name="id">
+    <column id="11570" parent="11467" name="id">
       <DataType>integer|0s</DataType>
       <DefaultExpression>nextval(&apos;servicerequestscomponents_id_seq&apos;::regclass)</DefaultExpression>
       <NotNull>1</NotNull>
@@ -71929,97 +71945,97 @@ sequence|table|8473846|8473848|1
       <StateNumber>53590488</StateNumber>
       <TypeId>23</TypeId>
     </column>
-    <column id="11569" parent="11468" name="servicerequestscomponents_id">
+    <column id="11571" parent="11468" name="servicerequestscomponents_id">
       <DataType>numeric|0s</DataType>
       <Position>1</Position>
       <StateNumber>53692551</StateNumber>
       <TypeId>1700</TypeId>
     </column>
-    <column id="11570" parent="11468" name="data_value">
+    <column id="11572" parent="11468" name="data_value">
       <DataType>varchar(1000)|0s</DataType>
       <Position>2</Position>
       <StateNumber>53692551</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="11571" parent="11468" name="requests_id">
+    <column id="11573" parent="11468" name="requests_id">
       <DataType>bigint|0s</DataType>
       <Position>3</Position>
       <StateNumber>54266793</StateNumber>
       <TypeId>20</TypeId>
     </column>
-    <column id="11572" parent="11469" name="servicerequestscomponents_id">
+    <column id="11574" parent="11469" name="servicerequestscomponents_id">
       <DataType>numeric|0s</DataType>
       <Position>1</Position>
       <StateNumber>53590661</StateNumber>
       <TypeId>1700</TypeId>
     </column>
-    <column id="11573" parent="11469" name="component_id">
+    <column id="11575" parent="11469" name="component_id">
       <DataType>varchar(1000)|0s</DataType>
       <Position>2</Position>
       <StateNumber>53590661</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="11574" parent="11469" name="component_name">
+    <column id="11576" parent="11469" name="component_name">
       <DataType>varchar(1000)|0s</DataType>
       <Position>3</Position>
       <StateNumber>53590661</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="11575" parent="11469" name="component_value">
+    <column id="11577" parent="11469" name="component_value">
       <DataType>varchar(1000)|0s</DataType>
       <Position>4</Position>
       <StateNumber>53590661</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="11576" parent="11469" name="component_label">
+    <column id="11578" parent="11469" name="component_label">
       <DataType>varchar(1000)|0s</DataType>
       <Position>5</Position>
       <StateNumber>53590661</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="11577" parent="11469" name="component_requiredsize">
+    <column id="11579" parent="11469" name="component_requiredsize">
       <DataType>varchar(1000)|0s</DataType>
       <Position>6</Position>
       <StateNumber>53590661</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="11578" parent="11469" name="component_placeholder">
+    <column id="11580" parent="11469" name="component_placeholder">
       <DataType>varchar(1000)|0s</DataType>
       <Position>7</Position>
       <StateNumber>53590661</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="11579" parent="11469" name="component_minlength">
+    <column id="11581" parent="11469" name="component_minlength">
       <DataType>varchar(1000)|0s</DataType>
       <Position>8</Position>
       <StateNumber>53590661</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="11580" parent="11469" name="component_maxlength">
+    <column id="11582" parent="11469" name="component_maxlength">
       <DataType>varchar(1000)|0s</DataType>
       <Position>9</Position>
       <StateNumber>53590661</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="11581" parent="11469" name="component_title">
+    <column id="11583" parent="11469" name="component_title">
       <DataType>varchar(1000)|0s</DataType>
       <Position>10</Position>
       <StateNumber>53590661</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="11582" parent="11469" name="component_mindate">
+    <column id="11584" parent="11469" name="component_mindate">
       <DataType>varchar(1000)|0s</DataType>
       <Position>11</Position>
       <StateNumber>53590661</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="11583" parent="11469" name="component_maxdate">
+    <column id="11585" parent="11469" name="component_maxdate">
       <DataType>varchar(1000)|0s</DataType>
       <Position>12</Position>
       <StateNumber>53590661</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="11584" parent="11469" name="id">
+    <column id="11586" parent="11469" name="id">
       <DataType>integer|0s</DataType>
       <DefaultExpression>nextval(&apos;servicerequestscomponentsdetails_id_seq&apos;::regclass)</DefaultExpression>
       <NotNull>1</NotNull>
@@ -72027,7 +72043,7 @@ sequence|table|8473846|8473848|1
       <StateNumber>53590953</StateNumber>
       <TypeId>23</TypeId>
     </column>
-    <column id="11585" parent="11470" name="id">
+    <column id="11587" parent="11470" name="id">
       <DataType>integer|0s</DataType>
       <DefaultExpression>nextval(&apos;servicesrequests_id_seq&apos;::regclass)</DefaultExpression>
       <NotNull>1</NotNull>
@@ -72035,85 +72051,85 @@ sequence|table|8473846|8473848|1
       <StateNumber>53590043</StateNumber>
       <TypeId>23</TypeId>
     </column>
-    <column id="11586" parent="11470" name="service_name">
+    <column id="11588" parent="11470" name="service_name">
       <DataType>varchar(1000)|0s</DataType>
       <Position>2</Position>
       <StateNumber>53590043</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="11587" parent="11470" name="request_type_id">
+    <column id="11589" parent="11470" name="request_type_id">
       <DataType>bigint|0s</DataType>
       <Position>3</Position>
       <StateNumber>54202396</StateNumber>
       <TypeId>20</TypeId>
     </column>
-    <column id="11588" parent="11471" name="id">
+    <column id="11590" parent="11471" name="id">
       <DataType>numeric|0s</DataType>
       <Position>1</Position>
       <StateNumber>53694424</StateNumber>
       <TypeId>1700</TypeId>
     </column>
-    <column id="11589" parent="11471" name="name">
+    <column id="11591" parent="11471" name="name">
       <DataType>varchar(40)|0s</DataType>
       <Position>2</Position>
       <StateNumber>53694424</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="11590" parent="11472" name="tel_chat_id">
+    <column id="11592" parent="11472" name="tel_chat_id">
       <DataType>varchar(100)|0s</DataType>
       <Position>1</Position>
       <StateNumber>53599697</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="11591" parent="11472" name="servicesrequests_id">
+    <column id="11593" parent="11472" name="servicesrequests_id">
       <DataType>numeric|0s</DataType>
       <Position>2</Position>
       <StateNumber>53599697</StateNumber>
       <TypeId>1700</TypeId>
     </column>
-    <column id="11592" parent="11472" name="request_datetime">
+    <column id="11594" parent="11472" name="request_datetime">
       <DataType>timestamp with time zone|0s</DataType>
       <Position>3</Position>
       <StateNumber>53599697</StateNumber>
       <TypeId>1184</TypeId>
     </column>
-    <column id="11593" parent="11473" name="voice">
+    <column id="11595" parent="11473" name="voice">
       <DataType>bytea|0s</DataType>
       <Position>1</Position>
       <StateNumber>52614480</StateNumber>
       <TypeId>17</TypeId>
     </column>
-    <column id="11594" parent="11473" name="chatid">
+    <column id="11596" parent="11473" name="chatid">
       <DataType>varchar(50)|0s</DataType>
       <Position>2</Position>
       <StateNumber>53239588</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="11595" parent="11473" name="messageid">
+    <column id="11597" parent="11473" name="messageid">
       <DataType>varchar(50)|0s</DataType>
       <Position>3</Position>
       <StateNumber>53239589</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="11596" parent="11473" name="voicesize">
+    <column id="11598" parent="11473" name="voicesize">
       <DataType>numeric|0s</DataType>
       <Position>4</Position>
       <StateNumber>53239606</StateNumber>
       <TypeId>1700</TypeId>
     </column>
-    <column id="11597" parent="11473" name="duration">
+    <column id="11599" parent="11473" name="duration">
       <DataType>numeric|0s</DataType>
       <Position>5</Position>
       <StateNumber>53239591</StateNumber>
       <TypeId>1700</TypeId>
     </column>
-    <column id="11598" parent="11473" name="sentdate">
+    <column id="11600" parent="11473" name="sentdate">
       <DataType>timestamp with time zone|0s</DataType>
       <Position>6</Position>
       <StateNumber>53239592</StateNumber>
       <TypeId>1184</TypeId>
     </column>
-    <column id="11599" parent="11473" name="id">
+    <column id="11601" parent="11473" name="id">
       <DataType>integer|0s</DataType>
       <DefaultExpression>nextval(&apos;voices_id_seq&apos;::regclass)</DefaultExpression>
       <NotNull>1</NotNull>
@@ -72121,123 +72137,123 @@ sequence|table|8473846|8473848|1
       <StateNumber>53245381</StateNumber>
       <TypeId>23</TypeId>
     </column>
-    <column id="11600" parent="11473" name="messages_id">
+    <column id="11602" parent="11473" name="messages_id">
       <DataType>numeric|0s</DataType>
       <Position>10</Position>
       <StateNumber>53283787</StateNumber>
       <TypeId>1700</TypeId>
     </column>
-    <column id="11601" parent="11474" name="userid">
+    <column id="11603" parent="11474" name="userid">
       <DataType>oid|0s</DataType>
       <Position>1</Position>
       <StateNumber>591</StateNumber>
     </column>
-    <column id="11602" parent="11474" name="dbid">
+    <column id="11604" parent="11474" name="dbid">
       <DataType>oid|0s</DataType>
       <Position>2</Position>
       <StateNumber>591</StateNumber>
     </column>
-    <column id="11603" parent="11474" name="queryid">
+    <column id="11605" parent="11474" name="queryid">
       <DataType>bigint|0s</DataType>
       <Position>3</Position>
       <StateNumber>591</StateNumber>
     </column>
-    <column id="11604" parent="11474" name="query">
+    <column id="11606" parent="11474" name="query">
       <DataType>text|0s</DataType>
       <Position>4</Position>
       <StateNumber>591</StateNumber>
     </column>
-    <column id="11605" parent="11474" name="calls">
+    <column id="11607" parent="11474" name="calls">
       <DataType>bigint|0s</DataType>
       <Position>5</Position>
       <StateNumber>591</StateNumber>
     </column>
-    <column id="11606" parent="11474" name="total_time">
+    <column id="11608" parent="11474" name="total_time">
       <DataType>double precision|0s</DataType>
       <Position>6</Position>
       <StateNumber>591</StateNumber>
     </column>
-    <column id="11607" parent="11474" name="min_time">
+    <column id="11609" parent="11474" name="min_time">
       <DataType>double precision|0s</DataType>
       <Position>7</Position>
       <StateNumber>591</StateNumber>
     </column>
-    <column id="11608" parent="11474" name="max_time">
+    <column id="11610" parent="11474" name="max_time">
       <DataType>double precision|0s</DataType>
       <Position>8</Position>
       <StateNumber>591</StateNumber>
     </column>
-    <column id="11609" parent="11474" name="mean_time">
+    <column id="11611" parent="11474" name="mean_time">
       <DataType>double precision|0s</DataType>
       <Position>9</Position>
       <StateNumber>591</StateNumber>
     </column>
-    <column id="11610" parent="11474" name="stddev_time">
+    <column id="11612" parent="11474" name="stddev_time">
       <DataType>double precision|0s</DataType>
       <Position>10</Position>
       <StateNumber>591</StateNumber>
     </column>
-    <column id="11611" parent="11474" name="rows">
+    <column id="11613" parent="11474" name="rows">
       <DataType>bigint|0s</DataType>
       <Position>11</Position>
       <StateNumber>591</StateNumber>
     </column>
-    <column id="11612" parent="11474" name="shared_blks_hit">
+    <column id="11614" parent="11474" name="shared_blks_hit">
       <DataType>bigint|0s</DataType>
       <Position>12</Position>
       <StateNumber>591</StateNumber>
     </column>
-    <column id="11613" parent="11474" name="shared_blks_read">
+    <column id="11615" parent="11474" name="shared_blks_read">
       <DataType>bigint|0s</DataType>
       <Position>13</Position>
       <StateNumber>591</StateNumber>
     </column>
-    <column id="11614" parent="11474" name="shared_blks_dirtied">
+    <column id="11616" parent="11474" name="shared_blks_dirtied">
       <DataType>bigint|0s</DataType>
       <Position>14</Position>
       <StateNumber>591</StateNumber>
     </column>
-    <column id="11615" parent="11474" name="shared_blks_written">
+    <column id="11617" parent="11474" name="shared_blks_written">
       <DataType>bigint|0s</DataType>
       <Position>15</Position>
       <StateNumber>591</StateNumber>
     </column>
-    <column id="11616" parent="11474" name="local_blks_hit">
+    <column id="11618" parent="11474" name="local_blks_hit">
       <DataType>bigint|0s</DataType>
       <Position>16</Position>
       <StateNumber>591</StateNumber>
     </column>
-    <column id="11617" parent="11474" name="local_blks_read">
+    <column id="11619" parent="11474" name="local_blks_read">
       <DataType>bigint|0s</DataType>
       <Position>17</Position>
       <StateNumber>591</StateNumber>
     </column>
-    <column id="11618" parent="11474" name="local_blks_dirtied">
+    <column id="11620" parent="11474" name="local_blks_dirtied">
       <DataType>bigint|0s</DataType>
       <Position>18</Position>
       <StateNumber>591</StateNumber>
     </column>
-    <column id="11619" parent="11474" name="local_blks_written">
+    <column id="11621" parent="11474" name="local_blks_written">
       <DataType>bigint|0s</DataType>
       <Position>19</Position>
       <StateNumber>591</StateNumber>
     </column>
-    <column id="11620" parent="11474" name="temp_blks_read">
+    <column id="11622" parent="11474" name="temp_blks_read">
       <DataType>bigint|0s</DataType>
       <Position>20</Position>
       <StateNumber>591</StateNumber>
     </column>
-    <column id="11621" parent="11474" name="temp_blks_written">
+    <column id="11623" parent="11474" name="temp_blks_written">
       <DataType>bigint|0s</DataType>
       <Position>21</Position>
       <StateNumber>591</StateNumber>
     </column>
-    <column id="11622" parent="11474" name="blk_read_time">
+    <column id="11624" parent="11474" name="blk_read_time">
       <DataType>double precision|0s</DataType>
       <Position>22</Position>
       <StateNumber>591</StateNumber>
     </column>
-    <column id="11623" parent="11474" name="blk_write_time">
+    <column id="11625" parent="11474" name="blk_write_time">
       <DataType>double precision|0s</DataType>
       <Position>23</Position>
       <StateNumber>591</StateNumber>

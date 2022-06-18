@@ -382,31 +382,41 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 		reqnumber := update.CallbackQuery.Data[i+1:]
 		//good
 		fmt.Println("duyme " + update.CallbackQuery.Data[:i])
+		var reqId = 0
 		if update.CallbackQuery.Data[:i] == "good" {
-			_, err := db.Exec("update requests set feedback=$1 where reqnumber=$2", "Yaxşı", reqnumber)
+			err := db.QueryRow("update requests set feedback=$1 where reqnumber=$2 and status<>2 returning id", "Yaxşı", reqnumber).Scan(&reqId)
 			if err != nil {
 				panic(err)
 			}
-			msg := tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "Xidməti dəyərləndirdiyiniz üçün təşəkkür edirik.")
-			bot.Send(msg)
+			if reqId > 0 {
+				msg := tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "Xidməti dəyərləndirdiyiniz üçün təşəkkür edirik.")
+				bot.Send(msg)
+			}
+
 		}
 		//good
 		if update.CallbackQuery.Data[:i] == "middle" {
-			_, err := db.Exec("update requests set feedback=$1 where reqnumber=$2", "Orta", reqnumber)
+			err := db.QueryRow("update requests set feedback=$1 where reqnumber=$2 and status<>2 returning id", "Orta", reqnumber).Scan(&reqId)
 			if err != nil {
 				panic(err)
 			}
-			msg := tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "Xidməti dəyərləndirdiyiniz üçün təşəkkür edirik.")
-			bot.Send(msg)
+			if reqId > 0 {
+				msg := tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "Xidməti dəyərləndirdiyiniz üçün təşəkkür edirik.")
+				bot.Send(msg)
+			}
+
 		}
 		//good
 		if update.CallbackQuery.Data[:i] == "bad" {
-			_, err := db.Exec("update requests set feedback=$1 where reqnumber=$2", "Kafi", reqnumber)
+			err := db.QueryRow("update requests set feedback=$1 where reqnumber=$2 and status<>2 returning id", "Kafi", reqnumber).Scan(&reqId)
 			if err != nil {
 				panic(err)
 			}
-			msg := tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "Xidməti dəyərləndirdiyiniz üçün təşəkkür edirik.")
-			bot.Send(msg)
+			if reqId > 0 {
+				msg := tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "Xidməti dəyərləndirdiyiniz üçün təşəkkür edirik.")
+				bot.Send(msg)
+			}
+
 		}
 		// Respond to the callback query, telling Telegram to show the user
 		// a message with the data received.
