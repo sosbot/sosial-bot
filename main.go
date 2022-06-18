@@ -1956,8 +1956,8 @@ select  rt.name as req_type_name,
         s.service_name as req_subtype_name,
         coalesce(cast(r.reqnumber as  varchar),''),
         r.datetime as reqdate,
-        r.status,
-        coalesce(r.feedback,'Yoxdur')
+        r.status
+      
 
         from request_type rt
    join servicesrequests s on rt.id = s.request_type_id
@@ -1975,8 +1975,7 @@ select  rt.name as req_type_name,
 			&repo.ReqSubTypeName,
 			&repo.ReqNumber,
 			&repo.ReqDate,
-			&repo.Status,
-			&repo.Feedback)
+		)
 		if err != nil {
 			return err
 		}
