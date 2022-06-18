@@ -408,7 +408,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 		}
 		//bad
 		if update.CallbackQuery.Data[:i] == "bad" {
-			err := db.QueryRow("update requests set feedback=$1 where reqnumber=$2 and feedback is null returning id:numeric", "Kafi", reqnumber).Scan(&reqId)
+			err := db.QueryRow("update requests set feedback=$1 where reqnumber=$2 and feedback is null returning id::numeric", "Kafi", reqnumber).Scan(&reqId)
 			if err != nil && err != sql.ErrNoRows {
 				panic(err)
 			}
