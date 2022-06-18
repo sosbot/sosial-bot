@@ -390,6 +390,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 		i := strings.Index(update.CallbackQuery.Data, "_")
 		reqnumber := update.CallbackQuery.Data[i+1:]
 		//good
+		fmt.Println("duyme " + update.CallbackQuery.Data[:i])
 		if update.CallbackQuery.Data[:i] == "good" {
 			_, err := db.Exec("update requests set feedback=$1 where reqnumber=$2", "yaxşı", reqnumber)
 			if err != nil {
