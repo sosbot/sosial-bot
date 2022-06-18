@@ -387,7 +387,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 			if err != nil {
 				panic(err)
 			}
-			msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Xidməti dəyərləndirdiyiniz üçün təşəkkür edirik.")
+			msg := tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "Xidməti dəyərləndirdiyiniz üçün təşəkkür edirik.")
 			bot.Send(msg)
 		}
 		//good
@@ -396,7 +396,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 			if err != nil {
 				panic(err)
 			}
-			msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Xidməti dəyərləndirdiyiniz üçün təşəkkür edirik.")
+			msg := tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "Xidməti dəyərləndirdiyiniz üçün təşəkkür edirik.")
 			bot.Send(msg)
 		}
 		//good
@@ -405,7 +405,7 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 			if err != nil {
 				panic(err)
 			}
-			msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Xidməti dəyərləndirdiyiniz üçün təşəkkür edirik.")
+			msg := tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "Xidməti dəyərləndirdiyiniz üçün təşəkkür edirik.")
 			bot.Send(msg)
 		}
 		// Respond to the callback query, telling Telegram to show the user
