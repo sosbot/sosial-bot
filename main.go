@@ -383,24 +383,30 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 		//good
 		fmt.Println("duyme " + update.CallbackQuery.Data[:i])
 		if update.CallbackQuery.Data[:i] == "good" {
-			_, err := db.Exec("update requests set feedback=$1 where reqnumber=$2", "yaxşı", reqnumber)
+			_, err := db.Exec("update requests set feedback=$1 where reqnumber=$2", "Yaxşı", reqnumber)
 			if err != nil {
 				panic(err)
 			}
+			msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Xidməti dəyərləndirdiyiniz üçün təşəkkür edirik.")
+			bot.Send(msg)
 		}
 		//good
 		if update.CallbackQuery.Data[:i] == "middle" {
-			_, err := db.Exec("update requests set feedback=$1 where reqnumber=$2", "orta", reqnumber)
+			_, err := db.Exec("update requests set feedback=$1 where reqnumber=$2", "Orta", reqnumber)
 			if err != nil {
 				panic(err)
 			}
+			msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Xidməti dəyərləndirdiyiniz üçün təşəkkür edirik.")
+			bot.Send(msg)
 		}
 		//good
 		if update.CallbackQuery.Data[:i] == "bad" {
-			_, err := db.Exec("update requests set feedback=$1 where reqnumber=$2", "kafi", reqnumber)
+			_, err := db.Exec("update requests set feedback=$1 where reqnumber=$2", "Kafi", reqnumber)
 			if err != nil {
 				panic(err)
 			}
+			msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Xidməti dəyərləndirdiyiniz üçün təşəkkür edirik.")
+			bot.Send(msg)
 		}
 		// Respond to the callback query, telling Telegram to show the user
 		// a message with the data received.
