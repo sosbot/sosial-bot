@@ -26,6 +26,7 @@
             <th scope="center">Müraciətin tarixi</th>
             <th scope="center">Müraciətin qeydiyyat nömrəsi</th>
             <th scope="center">Müraciətin statusu</th>
+            <th scope="center">Müraciət üzrə rəy</th>
 
 
 
@@ -40,6 +41,7 @@
             <td>{{.ReqDate}}</td>
             <td>{{.ReqNumber}}</td>
             <td>{{.Status}}</td>
+            <td>{{.Feedback}}</td>
             <td>
                 <form>
                 <button  formaction="/Requests/{{.ReqNumber}}"  id="{{.ReqNumber}}"  class="btn btn-primary" type="submit" enabled>Digər</button>

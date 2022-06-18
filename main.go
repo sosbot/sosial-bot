@@ -189,6 +189,7 @@ type RepoRequest struct {
 	ReqNumber      string
 	ReqDate        string
 	Status         string
+	Feedback       string
 }
 
 type RepoRequestArr struct {
@@ -379,12 +380,30 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 		logger(123, "not nil", LogAppInfo)
 		logger(update.CallbackQuery.Message.Chat.ID, "Top message chat id  "+fmt.Sprint(update.CallbackQuery.Message.Chat.ID), LogAppInfo)
 		logger(update.CallbackQuery.Message.Chat.ID, "Top message  id  "+fmt.Sprint(update.CallbackQuery.Message.MessageID), LogAppInfo)
-		if update.CallbackQuery.Data != "nextButton" {
-			execQuestionsAnswer(&update, cmdLine, update.CallbackQuery.Message.Chat.ID, CurrentState, update.CallbackQuery.Data)
-		} else {
-			execQuestions(cmdLine, update.CallbackQuery.Message.Chat.ID, CurrentState)
+		/*
+			if update.CallbackQuery.Data != "nextButton" {
+				execQuestionsAnswer(&update, cmdLine, update.CallbackQuery.Message.Chat.ID, CurrentState, update.CallbackQuery.Data)
+			} else {
+				execQuestions(cmdLine, update.CallbackQuery.Message.Chat.ID, CurrentState)
+			}
+		*/
+		i := strings.Index(update.CallbackQuery.Data, "_")
+		reqnumber := update.CallbackQuery.Data[i+1:]
+		//good
+		if update.CallbackQuery.Data[:i] == "good" {
+			_, err := db.Exec("update requests set feedback=$1 where reqnumber=$2", "yaxşı", reqnumber)
+			checkErr(err)
 		}
-
+		//good
+		if update.CallbackQuery.Data[:i] == "middle" {
+			_, err := db.Exec("update requests set feedback=$1 where reqnumber=$2", "orta", reqnumber)
+			checkErr(err)
+		}
+		//good
+		if update.CallbackQuery.Data[:i] == "bad" {
+			_, err := db.Exec("update requests set feedback=$1 where reqnumber=$2", "kafi", reqnumber)
+			checkErr(err)
+		}
 		// Respond to the callback query, telling Telegram to show the user
 		// a message with the data received.
 		//callback := tgbotapi.NewCallback(update.CallbackQuery.ID, update.CallbackQuery.Data)
@@ -1929,7 +1948,8 @@ select  rt.name as req_type_name,
         s.service_name as req_subtype_name,
         coalesce(cast(r.reqnumber as  varchar),''),
         r.datetime as reqdate,
-        r.status
+        r.status,
+        coalesce(cast(r.feedback as  varchar),'Yoxdur')
 
         from request_type rt
    join servicesrequests s on rt.id = s.request_type_id
@@ -1947,7 +1967,8 @@ select  rt.name as req_type_name,
 			&repo.ReqSubTypeName,
 			&repo.ReqNumber,
 			&repo.ReqDate,
-			&repo.Status)
+			&repo.Status,
+			&repo.Feedback)
 		if err != nil {
 			return err
 		}
