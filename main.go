@@ -1155,9 +1155,9 @@ func requestsDoneGetHandler(w http.ResponseWriter, r *http.Request) {
 		var numericKeyboard = tgbotapi.NewInlineKeyboardMarkup(
 
 			tgbotapi.NewInlineKeyboardRow(
-				tgbotapi.NewInlineKeyboardButtonData("good_"+reqnumber, "Yaxşı"),
-				tgbotapi.NewInlineKeyboardButtonData("middle_"+reqnumber, "Orta"),
-				tgbotapi.NewInlineKeyboardButtonData("bad_"+reqnumber, "Kafi"),
+				tgbotapi.NewInlineKeyboardButtonData("Yaxşı", "good_"+reqnumber),
+				tgbotapi.NewInlineKeyboardButtonData("Orta", "middle_"+reqnumber),
+				tgbotapi.NewInlineKeyboardButtonData("Kafi", "bad_"+reqnumber),
 			),
 		)
 
