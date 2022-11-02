@@ -33,7 +33,7 @@ const (
 
 var (
 	bot       *tgbotapi.BotAPI
-	botToken  = "1563958753:AAFNwjzp_Kvgqw0SIzHeJlxXjZnOYp2rNz8"
+	botToken  = "botToken"
 	baseURL   = "https://sosialbot.herokuapp.com/"
 	templates *template.Template
 )
@@ -210,6 +210,8 @@ var questionsArrMap map[int64]*questionsArr
 var questionArrMapCurrentState int
 var req1Map map[int]*req1
 var CurrentState int
+
+//https://api.telegram.org/bot1563958753:AAFNwjzp_Kvgqw0SIzHeJlxXjZnOYp2rNz8/setWebhook?url=https://sosialbot.herokuapp.com/1563958753:AAFNwjzp_Kvgqw0SIzHeJlxXjZnOYp2rNz8
 
 //https://api.telegram.org/bot1563958753:AAFNwjzp_Kvgqw0SIzHeJlxXjZnOYp2rNz8/setWebhook?url=https://sosialbot.herokuapp.com/1563958753:AAFNwjzp_Kvgqw0SIzHeJlxXjZnOYp2rNz8
 
@@ -468,7 +470,8 @@ func webhookHandler( /*c *gin.Context*/ w http.ResponseWriter, r *http.Request) 
 
 			voice := *update.Message.Voice
 			resp, _ := bot.GetFile(tgbotapi.FileConfig{voice.FileID})
-			r, _ := http.Get("https://api.telegram.org/file/bot" + botToken + "/" + resp.FilePath)
+			//r, _ := http.Get("https://api.telegram.org/file/bot" + botToken + "/" + resp.FilePath)
+			r, _ := http.Get("https://api.telegram.org/file/bot5541608830:AAHPEiy0Fx4Yd1qXXRU8F_yOt9SpXwFwl9Y/" + resp.FilePath)
 			fmt.Println(r)
 			defer r.Body.Close()
 			//msg := tgbotapi.NewAudioShare(update.Message.Chat.ID, voice.FileID)
@@ -1131,9 +1134,9 @@ func validEmail(value string) bool {
 func main() {
 	templates = template.Must(template.ParseGlob("templates/*.html"))
 	port := os.Getenv("PORT")
-
-	db, err = sql.Open("postgres", "postgres://nyrdyxoc:r4lOIZWMIoHImjb16U3u6XBQEe1Fdd7Q@queenie.db.elephantsql.com:5432/nyrdyxoc")
-	//db, err = sql.Open("postgres", "postgres://bbuitmkqevrfzf:ebcea06a881aee891ebaa6176c11aaa534fc7021091792389315020cf67ec954@ec2-3-209-65-193.compute-1.amazonaws.com:5432/dave9oelfnd2v0")
+	// os.Getenv("DATABASE_URL")
+	db, err = sql.Open("postgres", "postgres://username:passsword@queenie.db.elephantsql.com:5432/database")
+	//db, err = sql.Open("postgres", "postgres://bbuitmkqevrfzf:ebcea06a881aee891ebaa6176c11aaa534fc7021091792389315020cf67ec954@ec2-3-209-65-193.compute-1.amazonaws.com:5432/")
 
 	db.SetMaxOpenConns(5)
 	db.SetMaxIdleConns(5)
@@ -1145,7 +1148,7 @@ func main() {
 
 	initTelegram()
 	//telegram()
-	//var DB_URL = "postgres://nyrdyxoc:r4lOIZWMIoHImjb16U3u6XBQEe1Fdd7Q@queenie.db.elephantsql.com:5432/nyrdyxoc"
+	//var DB_URL = "postgres://nyrdyxoc:@queenie.db.elephantsql.com:5432/"
 	//db, err := pgx.Connect(context.Background(), DB_URL)
 	//if err != nil {
 	//	fmt.Fprintf(os.Stderr, "Unable to connect to database: %v\n", err)
