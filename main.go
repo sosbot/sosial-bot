@@ -33,8 +33,8 @@ const (
 
 var (
 	bot       *tgbotapi.BotAPI
-	botToken  = "botToken"
-	baseURL   = "https://sosialbot.herokuapp.com/"
+	botToken  = os.Getenv("botToken")
+	baseURL   = "https://sosial-bot.herokuapp.com/"
 	templates *template.Template
 )
 
@@ -211,9 +211,9 @@ var questionArrMapCurrentState int
 var req1Map map[int]*req1
 var CurrentState int
 
-//https://api.telegram.org/bot1563958753:AAFNwjzp_Kvgqw0SIzHeJlxXjZnOYp2rNz8/setWebhook?url=https://sosialbot.herokuapp.com/1563958753:AAFNwjzp_Kvgqw0SIzHeJlxXjZnOYp2rNz8
+//https://api.telegram.org/bot1563958753:AAFNwjzp_Kvgqw0SIzHeJlxXjZnOYp2rNz8/setWebhook?url=https://sosial-bot.herokuapp.com/1563958753:AAFNwjzp_Kvgqw0SIzHeJlxXjZnOYp2rNz8
 
-//https://api.telegram.org/bot1563958753:AAFNwjzp_Kvgqw0SIzHeJlxXjZnOYp2rNz8/setWebhook?url=https://sosialbot.herokuapp.com/1563958753:AAFNwjzp_Kvgqw0SIzHeJlxXjZnOYp2rNz8
+//https://api.telegram.org/bot1563958753:AAFNwjzp_Kvgqw0SIzHeJlxXjZnOYp2rNz8/setWebhook?url=https://sosial-bot.herokuapp.com/1563958753:AAFNwjzp_Kvgqw0SIzHeJlxXjZnOYp2rNz8
 
 /*
 no such file or directory
@@ -1133,10 +1133,10 @@ func validEmail(value string) bool {
 
 func main() {
 	templates = template.Must(template.ParseGlob("templates/*.html"))
-	port := os.Getenv("PORT")
-	// os.Getenv("DATABASE_URL")
-	db, err = sql.Open("postgres", "postgres://username:passsword@queenie.db.elephantsql.com:5432/database")
-	//db, err = sql.Open("postgres", "postgres://bbuitmkqevrfzf:ebcea06a881aee891ebaa6176c11aaa534fc7021091792389315020cf67ec954@ec2-3-209-65-193.compute-1.amazonaws.com:5432/")
+	port := os.Getenv("PORT") // heroku config:set PORT="port number given by heroku"
+	db_url := os.Getenv("DATABASE_URL")  // heroku config:set DATABASE_URL="database url given by heroku (URI)"
+	db, err = sql.Open("postgres", db_url)
+	//db, err = sql.Open("postgres", "postgres://ppefybvvilghye:ebcea06a881aee891ebaa6176c11aaa534fc7021091792389315020cf67ec954@ec2-3-209-65-193.compute-1.amazonaws.com:5432/")
 
 	db.SetMaxOpenConns(5)
 	db.SetMaxIdleConns(5)
@@ -1332,7 +1332,7 @@ func serviceRequestsReqsGetHandler(w http.ResponseWriter, r *http.Request) {
 
 	var numericKeyboard = tgbotapi.NewInlineKeyboardMarkup(
 		tgbotapi.NewInlineKeyboardRow(
-			tgbotapi.NewInlineKeyboardButtonURL("Linkə Keçid", "https://sosialbot.herokuapp.com/userRequests/"+reqnumber)))
+			tgbotapi.NewInlineKeyboardButtonURL("Linkə Keçid", "https://sosial-bot.herokuapp.com/userRequests/"+reqnumber)))
 
 	//markup := tgbotapi.NewInlineKeyboardMarkup(InlineButtons...)
 	msg.ReplyMarkup = &numericKeyboard
